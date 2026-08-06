@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📡 微博大V监控</title>
+<style>
+  :root {
+    --bg: #0d1117; --card: #161b22; --border: #21262d;
+    --text: #e6edf3; --muted: #8b949e; --accent: #ff8200;
+    --new-glow: rgba(255, 130, 0, 0.35);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    padding: 24px; max-width: 900px; margin: 0 auto;
+  }
+  header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  h1 { font-size: 22px; }
+  .meta { color: var(--muted); font-size: 13px; text-align: right; line-height: 1.6; }
+  .badge-new {
+    display: inline-block; background: var(--accent); color: #000;
+    font-weight: 700; border-radius: 10px; padding: 1px 9px; font-size: 13px;
+  }
+  .user-section { margin-bottom: 36px; }
+  .user-header {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; margin-bottom: 14px;
+  }
+  .user-header img { width: 52px; height: 52px; border-radius: 50%; background: #222; }
+  .user-name { font-size: 17px; font-weight: 600; }
+  .user-name a { color: var(--text); text-decoration: none; }
+  .user-name a:hover { color: var(--accent); }
+  .verified { color: #ffb800; font-size: 12px; margin-left: 6px; }
+  .user-desc { color: var(--muted); font-size: 13px; margin-top: 3px; }
+  .followers { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .post {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
+    transition: border-color .3s;
+  }
+  .post.is-new {
+    border-color: var(--accent);
+    box-shadow: 0 0 14px var(--new-glow);
+  }
+  .post-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .post-time { color: var(--muted); font-size: 12px; }
+  .new-tag { color: var(--accent); font-size: 12px; font-weight: 700; }
+  .post-text { font-size: 14.5px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+  .retweet {
+    margin-top: 8px; padding: 8px 12px; background: rgba(255,255,255,0.04);
+    border-left: 3px solid var(--border); border-radius: 4px;
+    color: var(--muted); font-size: 13px; line-height: 1.6; white-space: pre-wrap;
+  }
+  .pics { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .pics img { max-width: 160px; max-height: 160px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; }
+  .post-stats { margin-top: 10px; color: var(--muted); font-size: 12px; display: flex; gap: 18px; }
+  .post-link { color: var(--muted); text-decoration: none; }
+  .post-link:hover { color: var(--accent); }
+  .empty { color: var(--muted); text-align: center; padding: 60px 0; }
+  #loading { color: var(--muted); text-align: center; padding: 60px 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>📡 微博大V监控 <span id="new-badge"></span></h1>
+  <div class="meta">
+    <div id="updated-at">加载中...</div>
+    <div>页面每 30 秒自动刷新</div>
+  </div>
+</header>
+<div id="loading">正在加载数据，请先运行 <code>python weibo_monitor.py</code></div>
+<div id="content"></div>
+
+<script>
+function fmtTime(iso) {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (isNaN(d)) return iso;
+  const pad = n => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+function esc(s) {
+  const div = document.createElement("div");
+  div.textContent = s || "";
+  return div.innerHTML;
+}
+function fmtNum(n) {
+  if (n >= 10000) return (n / 10000).toFixed(1) + "万";
+  return String(n || 0);
+}
+function render(data) {
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("updated-at").textContent = "最后检测: " + fmtTime(data.updated_at);
+  const badge = document.getElementById("new-badge");
+  badge.innerHTML = data.new_count > 0 ? `<span class="badge-new">+${data.new_count} 新</span>` : "";
+
+  const root = document.getElementById("content");
+  if (!data.users || data.users.length === 0) {
+    root.innerHTML = '<div class="empty">暂无监控账号</div>';
+    return;
+  }
+  let html = "";
+  for (const u of data.users) {
+    html += `<div class="user-section">
+      <div class="user-header">
+        ${u.avatar ? `<img src="${esc(u.avatar)}" alt="">` : ""}
+        <div>
+          <div class="user-name">
+            <a href="${esc(u.profile_url)}" target="_blank">@${esc(u.name)}</a>
+            ${u.verified ? `<span class="verified">✔ ${esc(u.verified)}</span>` : ""}
+          </div>
+          ${u.description ? `<div class="user-desc">${esc(u.description)}</div>` : ""}
+          <div class="followers">粉丝 ${fmtNum(u.followers)} · 微博 ${u.posts ? u.posts.length : 0} 条（最近）</div>
+        </div>
+      </div>`;
+    if (!u.posts || u.posts.length === 0) {
+      html += `<div class="empty">暂无发言记录</div>`;
+    } else {
+      for (const p of u.posts) {
+        html += `<div class="post ${p.is_new ? "is-new" : ""}">
+          <div class="post-top">
+            <span class="post-time">${fmtTime(p.created_at)}${p.source ? " · " + esc(p.source) : ""}</span>
+            ${p.is_new ? '<span class="new-tag">🆕 新发言</span>' : ""}
+          </div>
+          <div class="post-text">${esc(p.text)}</div>
+          ${p.is_retweet && p.retweet_text ? `<div class="retweet">↪ ${esc(p.retweet_text)}</div>` : ""}
+          ${p.pics && p.pics.length ? `<div class="pics">${p.pics.map(x => `<a href="${esc(x)}" target="_blank"><img src="${esc(x)}" loading="lazy"></a>`).join("")}</div>` : ""}
+          <div class="post-stats">
+            <span>🔁 ${fmtNum(p.reposts)}</span>
+            <span>💬 ${fmtNum(p.comments)}</span>
+            <span>❤️ ${fmtNum(p.likes)}</span>
+            <a class="post-link" href="${esc(p.url)}" target="_blank">原文链接 →</a>
+          </div>
+        </div>`;
+      }
+    }
+    html += `</div>`;
+  }
+  root.innerHTML = html;
+}
+
+async function load() {
+  try {
+    const resp = await fetch("data/weibo_monitor_data.json?t=" + Date.now(), { cache: "no-store" });
+    if (!resp.ok) throw new Error(resp.status);
+    render(await resp.json());
+  } catch (e) {
+    const el = document.getElementById("loading");
+    if (el) el.textContent = "暂无数据 — 请先运行 python weibo_monitor.py 生成";
+  }
+}
+load();
+setInterval(load, 30000);
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "users": [
+    {
+      "uid": "1593163950",
+      "name": "周思CIO"
+    }
+  ],
+  "poll_interval_sec": 300,
+  "pages_per_user": 2
+}

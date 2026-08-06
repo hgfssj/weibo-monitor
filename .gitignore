@@ -1,0 +1,11 @@
+# 运行时数据（登录态/采集历史/日志）
+data/
+frontend/data/
+
+# Python
+__pycache__/
+*.pyc
+nohup.out
+
+# macOS
+.DS_Store
