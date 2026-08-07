@@ -121,6 +121,7 @@ def extract_post(mblog: Dict, uid: str, author: str) -> Dict:
     return {
         "id": mid,
         "mid": mid,
+        "type": "post",
         "uid": uid,
         "author": author,
         "text": strip_html(mblog.get("text", "")),
@@ -133,6 +134,30 @@ def extract_post(mblog: Dict, uid: str, author: str) -> Dict:
         "is_retweet": bool(retweet),
         "retweet_text": retweet_text,
         "url": f"https://m.weibo.cn/detail/{mid}",
+        "collected_at": datetime.now().isoformat(),
+    }
+
+
+def extract_comment(comment: Dict, uid: str, author: str, post: Dict) -> Dict:
+    """把大V在自己微博评论区的留言转为标准条目（含被回复的粉丝提问）"""
+    cid = str(comment.get("id"))
+    raw_text = comment.get("text", "")
+    # 从 "回复<a>@某人</a>:内容" 中提取被回复人昵称
+    m = re.search(r"@([^<]+?)</a>", raw_text)
+    reply_to_user = m.group(1) if m else ""
+    return {
+        "id": f"c_{cid}",  # 加前缀避免与帖子 mid 冲突
+        "type": "comment",
+        "uid": uid,
+        "author": author,
+        "text": strip_html(raw_text),
+        "created_at": parse_created_at(comment.get("created_at", "")),
+        "likes": comment.get("like_counts", comment.get("like_count", 0)),
+        "reply_to": strip_html(comment.get("reply_text", "")),  # 被回复的原评论（粉丝提问）
+        "reply_to_user": reply_to_user,
+        "original_post": post.get("text", "")[:120],
+        "original_url": post.get("url", ""),
+        "url": post.get("url", ""),
         "collected_at": datetime.now().isoformat(),
     }
 
@@ -190,6 +215,10 @@ async def ensure_login(context, timeout_sec: int = 300) -> bool:
     return False
 
 
+def cfg_max_comments_posts(cfg: Optional[Dict]) -> int:
+    return (cfg or {}).get("comment_scan_posts", 8)
+
+
 # ============================ 数据采集 ============================
 
 async def fetch_user_info(page, uid: str) -> Optional[Dict]:
@@ -240,11 +269,41 @@ async def fetch_user_posts(page, uid: str, author: str, pages: int = 2) -> List[
     return posts
 
 
+async def fetch_own_comments(page, uid: str, author: str, posts: List[Dict],
+                             max_posts: int = 8, pages_per_post: int = 2) -> List[Dict]:
+    """扫描用户最近微博的评论区，收集他自己发的评论（含对旧发言的补充留言）"""
+    comments = []
+    for post in posts[:max_posts]:
+        # 没有评论的帖子跳过
+        if not post.get("comments"):
+            continue
+        for page_no in range(1, pages_per_post + 1):
+            url = (f"https://m.weibo.cn/api/comments/show"
+                   f"?id={post['mid']}&page={page_no}")
+            try:
+                data = await page.evaluate(JS_FETCH_JSON, url)
+            except Exception as e:
+                print(f"    ⚠️ 评论区请求失败: {e}")
+                break
+            if data.get("ok") != 1:
+                break
+            items = (data.get("data") or {}).get("data") or []
+            if not items:
+                break
+            for c in items:
+                cuser = c.get("user") or {}
+                if str(cuser.get("id")) == str(uid):
+                    comments.append(extract_comment(c, uid, author, post))
+            await asyncio.sleep(1.5)
+        await asyncio.sleep(1)
+    return comments
+
+
 async def collect_users(users: List[Dict], pages: int = 2,
-                        headless: bool = True) -> Dict[str, Dict]:
+                        headless: bool = True, cfg: Optional[Dict] = None) -> Dict[str, Dict]:
     """
     采集多个用户。
-    返回: {uid: {"user": 用户信息, "posts": [帖子...]}}
+    返回: {uid: {"user": 用户信息, "posts": [帖子...], "own_comments": [本人评论...]}}
     """
     result = {}
     async with async_playwright() as p:
@@ -274,10 +333,18 @@ async def collect_users(users: List[Dict], pages: int = 2,
                 # 回填昵称到配置
                 if not u.get("name") and info["name"]:
                     u["name"] = info["name"]
-                posts = await fetch_user_posts(page, uid, info["name"], pages=pages)
-                result[uid] = {"user": info, "posts": posts}
+                posts = await fetch_user_posts(page, uid, info["name"],
+                                               pages=int(u.get("fetch_pages") or pages))
+                # 扫描评论区：收集大V在自己微博下的留言（含对旧发言的补充）
+                own_comments = await fetch_own_comments(
+                    page, uid, info["name"], posts,
+                    max_posts=int(u.get("comment_scan_posts")
+                                  or cfg_max_comments_posts(cfg)),
+                    pages_per_post=2)
+                result[uid] = {"user": info, "posts": posts,
+                               "own_comments": own_comments}
                 print(f"    ✅ {info['name']} 粉丝{info['followers']} "
-                      f"最新 {len(posts)} 条")
+                      f"最新 {len(posts)} 条微博 + {len(own_comments)} 条本人评论")
                 await asyncio.sleep(2)
         finally:
             await context.close()

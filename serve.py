@@ -18,6 +18,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=FRONTEND_DIR, **kwargs)
 
+    def do_GET(self):
+        # 根路径直接跳转到看板页
+        if self.path in ("/", ""):
+            self.send_response(302)
+            self.send_header("Location", "/weibo.html")
+            self.end_headers()
+            return
+        super().do_GET()
+
     def end_headers(self):
         # 禁止缓存，保证页面数据实时刷新
         self.send_header("Cache-Control", "no-store")

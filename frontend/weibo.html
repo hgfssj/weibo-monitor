@@ -3,12 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📡 微博大V监控</title>
+<title>📡 大V监控 · 微博/雪球</title>
 <style>
   :root {
-    --bg: #0d1117; --card: #161b22; --border: #21262d;
-    --text: #e6edf3; --muted: #8b949e; --accent: #ff8200;
-    --new-glow: rgba(255, 130, 0, 0.35);
+    --bg: #f6f8fa; --card: #ffffff; --border: #d8dee4;
+    --text: #1f2328; --muted: #656d76; --accent: #e8590c;
+    --new-glow: rgba(232, 89, 12, 0.25);
+  }
+  /* 雪球平台主题色 */
+  body.platform-xueqiu {
+    --accent: #1e6fff; --new-glow: rgba(30, 111, 255, 0.25);
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -20,26 +24,44 @@
   h1 { font-size: 22px; }
   .meta { color: var(--muted); font-size: 13px; text-align: right; line-height: 1.6; }
   .badge-new {
-    display: inline-block; background: var(--accent); color: #000;
+    display: inline-block; background: var(--accent); color: #fff;
     font-weight: 700; border-radius: 10px; padding: 1px 9px; font-size: 13px;
   }
+  .tab-bar { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+  .platform-bar { margin-bottom: 12px; }
+  .platform-tab { font-size: 15px; padding: 10px 28px; border-radius: 12px; font-weight: 600; }
+  .tab {
+    background: var(--card); border: 1px solid var(--border); color: var(--muted);
+    padding: 8px 20px; border-radius: 20px; cursor: pointer; font-size: 14px;
+    transition: all .2s;
+  }
+  .tab:hover { border-color: var(--accent); color: var(--accent); }
+  .tab.active { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  .mode-tag {
+    display: inline-block; font-size: 11px; font-weight: 600; border-radius: 8px;
+    padding: 1px 8px; margin-left: 8px; vertical-align: middle;
+  }
+  .mode-filter { background: #fff3e0; color: var(--accent); }
+  .mode-all { background: #e6f4ea; color: #1a7f37; }
   .user-section { margin-bottom: 36px; }
   .user-header {
     display: flex; align-items: center; gap: 14px;
     background: var(--card); border: 1px solid var(--border);
     border-radius: 12px; padding: 16px; margin-bottom: 14px;
+    box-shadow: 0 1px 3px rgba(31,35,40,0.06);
   }
-  .user-header img { width: 52px; height: 52px; border-radius: 50%; background: #222; }
+  .user-header img { width: 52px; height: 52px; border-radius: 50%; background: #eee; }
   .user-name { font-size: 17px; font-weight: 600; }
   .user-name a { color: var(--text); text-decoration: none; }
   .user-name a:hover { color: var(--accent); }
-  .verified { color: #ffb800; font-size: 12px; margin-left: 6px; }
+  .verified { color: #d4a000; font-size: 12px; margin-left: 6px; }
   .user-desc { color: var(--muted); font-size: 13px; margin-top: 3px; }
   .followers { color: var(--muted); font-size: 12px; margin-top: 2px; }
   .post {
     background: var(--card); border: 1px solid var(--border);
     border-radius: 10px; padding: 14px 16px; margin-bottom: 10px;
     transition: border-color .3s;
+    box-shadow: 0 1px 2px rgba(31,35,40,0.05);
   }
   .post.is-new {
     border-color: var(--accent);
@@ -48,9 +70,14 @@
   .post-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .post-time { color: var(--muted); font-size: 12px; }
   .new-tag { color: var(--accent); font-size: 12px; font-weight: 700; }
+  .comment-tag {
+    display: inline-block; background: #ddf4ff; color: #0969da;
+    font-size: 12px; font-weight: 600; border-radius: 10px; padding: 1px 8px;
+    margin-right: 6px;
+  }
   .post-text { font-size: 14.5px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
   .retweet {
-    margin-top: 8px; padding: 8px 12px; background: rgba(255,255,255,0.04);
+    margin-top: 8px; padding: 8px 12px; background: rgba(31,35,40,0.04);
     border-left: 3px solid var(--border); border-radius: 4px;
     color: var(--muted); font-size: 13px; line-height: 1.6; white-space: pre-wrap;
   }
@@ -65,8 +92,9 @@
 </head>
 <body>
 <header>
-  <h1>📡 微博大V监控 <span id="new-badge"></span></h1>
+  <h1>📡 大V监控 <span id="new-badge"></span></h1>
   <div class="meta">
+    <div>一级 Tab 切平台 · 二级 Tab 切大V</div>
     <div id="updated-at">加载中...</div>
     <div>页面每 30 秒自动刷新</div>
   </div>
@@ -77,7 +105,7 @@
 <script>
 function fmtTime(iso) {
   if (!iso) return "";
-  const d = new Date(iso);
+  const d = new Date(String(iso).replace(" ", "T"));
   if (isNaN(d)) return iso;
   const pad = n => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
@@ -91,41 +119,41 @@ function fmtNum(n) {
   if (n >= 10000) return (n / 10000).toFixed(1) + "万";
   return String(n || 0);
 }
-function render(data) {
-  document.getElementById("loading").style.display = "none";
-  document.getElementById("updated-at").textContent = "最后检测: " + fmtTime(data.updated_at);
-  const badge = document.getElementById("new-badge");
-  badge.innerHTML = data.new_count > 0 ? `<span class="badge-new">+${data.new_count} 新</span>` : "";
+const PLATFORMS = {
+  weibo:  { label: "微博", icon: "🔴" },
+  xueqiu: { label: "雪球", icon: "🔵" },
+};
+let activePlatform = "weibo";  // 一级 Tab
+let activeUid = {};            // 每个平台各自记住选中的大V
+let lastData = null;
 
-  const root = document.getElementById("content");
-  if (!data.users || data.users.length === 0) {
-    root.innerHTML = '<div class="empty">暂无监控账号</div>';
-    return;
-  }
-  let html = "";
-  for (const u of data.users) {
-    html += `<div class="user-section">
+function renderUser(u) {
+  let html = `<div class="user-section">
       <div class="user-header">
         ${u.avatar ? `<img src="${esc(u.avatar)}" alt="">` : ""}
         <div>
           <div class="user-name">
             <a href="${esc(u.profile_url)}" target="_blank">@${esc(u.name)}</a>
             ${u.verified ? `<span class="verified">✔ ${esc(u.verified)}</span>` : ""}
+            ${u.filter ? '<span class="mode-tag mode-filter">仅股市相关（含隐喻识别）</span>'
+                         : '<span class="mode-tag mode-all">全量展示·不过滤</span>'}
           </div>
           ${u.description ? `<div class="user-desc">${esc(u.description)}</div>` : ""}
-          <div class="followers">粉丝 ${fmtNum(u.followers)} · 微博 ${u.posts ? u.posts.length : 0} 条（最近）</div>
+          <div class="followers">粉丝 ${fmtNum(u.followers)} · 展示 ${u.posts ? u.posts.length : 0} 条${u.filter && u.filtered_count ? ` · 已过滤 ${u.filtered_count} 条无关` : ""}</div>
         </div>
       </div>`;
-    if (!u.posts || u.posts.length === 0) {
-      html += `<div class="empty">暂无发言记录</div>`;
-    } else {
-      for (const p of u.posts) {
-        html += `<div class="post ${p.is_new ? "is-new" : ""}">
+  if (!u.posts || u.posts.length === 0) {
+    html += `<div class="empty">${u.filter ? "暂无股市相关发言" : "暂无发言"}</div>`;
+  } else {
+    for (const p of u.posts) {
+      const isComment = p.type === "comment";
+      html += `<div class="post ${p.is_new ? "is-new" : ""}">
           <div class="post-top">
-            <span class="post-time">${fmtTime(p.created_at)}${p.source ? " · " + esc(p.source) : ""}</span>
+            <span class="post-time">${isComment ? '<span class="comment-tag">💬 评论</span>' : ""}${fmtTime(p.created_at)}${p.source ? " · " + esc(p.source) : ""}</span>
             ${p.is_new ? '<span class="new-tag">🆕 新发言</span>' : ""}
           </div>
           <div class="post-text">${esc(p.text)}</div>
+          ${isComment ? `<div class="retweet">↳ ${p.reply_to ? `回复粉丝 @${esc(p.reply_to_user || "")}：「${esc(p.reply_to)}」` : `评论于原微博：${esc(p.original_post || "")}`} <a class="post-link" href="${esc(p.original_url)}" target="_blank">查看→</a></div>` : ""}
           ${p.is_retweet && p.retweet_text ? `<div class="retweet">↪ ${esc(p.retweet_text)}</div>` : ""}
           ${p.pics && p.pics.length ? `<div class="pics">${p.pics.map(x => `<a href="${esc(x)}" target="_blank"><img src="${esc(x)}" loading="lazy"></a>`).join("")}</div>` : ""}
           <div class="post-stats">
@@ -135,11 +163,58 @@ function render(data) {
             <a class="post-link" href="${esc(p.url)}" target="_blank">原文链接 →</a>
           </div>
         </div>`;
-      }
     }
-    html += `</div>`;
   }
+  html += `</div>`;
+  return html;
+}
+
+function render(data) {
+  lastData = data;
+  document.getElementById("loading").style.display = "none";
+  document.getElementById("updated-at").textContent = "最后检测: " + fmtTime(data.updated_at);
+  const badge = document.getElementById("new-badge");
+  badge.innerHTML = data.new_count > 0 ? `<span class="badge-new">+${data.new_count} 新</span>` : "";
+
+  const root = document.getElementById("content");
+  const platforms = data.platforms || {};
+  const avail = Object.keys(PLATFORMS).filter(k => (platforms[k] || []).length);
+  if (!avail.length) {
+    root.innerHTML = '<div class="empty">暂无监控账号</div>';
+    return;
+  }
+  // 一级 Tab：平台切换（当前平台无数据时自动切到第一个有数据的）
+  if (!avail.includes(activePlatform)) activePlatform = avail[0];
+  let html = '<div class="tab-bar platform-bar">';
+  for (const k of avail) {
+    html += `<button class="tab platform-tab ${k === activePlatform ? "active" : ""}" onclick="switchPlatform('${k}')">${PLATFORMS[k].icon} ${PLATFORMS[k].label} · ${platforms[k].length} 人</button>`;
+  }
+  html += '</div>';
+
+  // 二级 Tab：大V切换（每个平台独立记忆选中状态）
+  const users = platforms[activePlatform];
+  if (!activeUid[activePlatform] || !users.some(u => u.uid === activeUid[activePlatform])) {
+    activeUid[activePlatform] = users[0].uid;
+  }
+  html += '<div class="tab-bar">';
+  for (const u of users) {
+    html += `<button class="tab ${u.uid === activeUid[activePlatform] ? "active" : ""}" onclick="switchUser('${u.uid}')">${esc(u.name)}</button>`;
+  }
+  html += '</div>';
+
+  html += renderUser(users.find(u => u.uid === activeUid[activePlatform]));
   root.innerHTML = html;
+  // 平台主题色：微博橙红 / 雪球蓝
+  document.body.className = "platform-" + activePlatform;
+}
+
+function switchPlatform(key) {
+  activePlatform = key;
+  if (lastData) render(lastData);
+}
+function switchUser(uid) {
+  activeUid[activePlatform] = uid;
+  if (lastData) render(lastData);
 }
 
 async function load() {

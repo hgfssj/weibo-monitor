@@ -1,10 +1,49 @@
 {
   "users": [
     {
+      "platform": "weibo",
       "uid": "1593163950",
-      "name": "周思CIO"
+      "name": "周思CIO",
+      "filter": true,
+      "display_limit": 50,
+      "fetch_pages": 3,
+      "comment_scan_posts": 12
+    },
+    {
+      "platform": "weibo",
+      "uid": "2826357207",
+      "name": "Veget超级赛亚人",
+      "filter": false,
+      "display_limit": 30,
+      "fetch_pages": 2,
+      "comment_scan_posts": 8
+    },
+    {
+      "platform": "xueqiu",
+      "uid": "9089343523",
+      "name": "我是表好胚",
+      "filter": false,
+      "display_limit": 30,
+      "fetch_pages": 2
+    },
+    {
+      "platform": "xueqiu",
+      "uid": "6286594726",
+      "name": "Veget",
+      "filter": false,
+      "display_limit": 30,
+      "fetch_pages": 2
+    },
+    {
+      "platform": "xueqiu",
+      "uid": "2292705444",
+      "name": "metalslime",
+      "filter": false,
+      "display_limit": 30,
+      "fetch_pages": 2
     }
   ],
-  "poll_interval_sec": 300,
+  "peak_interval_sec": 480,
+  "offpeak_interval_sec": 1200,
   "pages_per_user": 2
 }
