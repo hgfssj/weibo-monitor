@@ -26,6 +26,14 @@ sys.path.insert(0, BASE_DIR)
 from weibo_collector import collect_users, load_config, save_config
 from xueqiu_collector import collect_users as collect_xueqiu_users
 from weibo_filter import is_stock_related
+from weibo_summary import analyze_bigv, heuristic_summary, LLM_AVAILABLE
+from industry_collector import collect_industries
+from industry_summary import (analyze_industry, heuristic_industry_summary,
+                                analyze_stock, build_commentary)
+from a_share_collector import collect_macro_data
+from if_ocr import update_index_futures_positions as update_if_ocr
+from index_futures_public import update_index_futures_positions as update_if_public
+from national_team_etf import collect as collect_national_team_etf
 
 DATA_DIR = os.path.join(BASE_DIR, "data")
 FRONTEND_DATA_DIR = os.path.join(BASE_DIR, "frontend", "data")
@@ -33,6 +41,11 @@ FRONTEND_DATA_DIR = os.path.join(BASE_DIR, "frontend", "data")
 POSTS_FILE = os.path.join(DATA_DIR, "weibo_posts.json")
 STATE_FILE = os.path.join(DATA_DIR, "weibo_state.json")
 PAGE_DATA_FILE = os.path.join(DATA_DIR, "weibo_monitor_data.json")
+SUMMARY_CACHE_FILE = os.path.join(DATA_DIR, "weibo_summary_cache.json")
+INDUSTRY_DATA_FILE = os.path.join(DATA_DIR, "industry_data.json")
+INDUSTRY_CACHE_FILE = os.path.join(DATA_DIR, "industry_summary_cache.json")
+MACRO_DATA_FILE = os.path.join(DATA_DIR, "macro_data.json")
+FRONTEND_MACRO_DATA_FILE = os.path.join(FRONTEND_DATA_DIR, "macro_data.json")
 
 
 # ============================ 持久化 ============================
@@ -50,6 +63,18 @@ def save_json(path, obj):
         json.dump(obj, f, ensure_ascii=False, indent=2)
 
 
+def save_if_posts(data, name=""):
+    """写出股指期货大V原文（供前端「股指期货」页展示），不进入主大V视图。"""
+    out = {
+        "updated_at": datetime.now().isoformat(),
+        "user": data.get("user"),
+        "posts": data.get("posts", []),
+    }
+    os.makedirs(FRONTEND_DATA_DIR, exist_ok=True)
+    save_json(os.path.join(FRONTEND_DATA_DIR, "if_posts.json"), out)
+    print(f"  📊 股指期货大V原文已更新({name}): {len(out['posts'])} 条")
+
+
 # ============================ 核心逻辑 ============================
 
 def qkey(platform: str, uid: str) -> str:
@@ -64,6 +89,11 @@ def run_once(cfg) -> dict:
     weibo_users = [u for u in users if u.get("platform", "weibo") == "weibo"]
     xueqiu_users = [u for u in users if u.get("platform") == "xueqiu"]
 
+    # 股指期货大V（机构多空单复盘）：单独采集，不进入主大V视图
+    if_cfg = cfg.get("index_futures") or {}
+    if_uid = str(if_cfg.get("monitor_uid")) if if_cfg.get("monitor_uid") else None
+    if_name = if_cfg.get("monitor_name") or "股指期货机构持仓复盘"
+
     print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 🔍 开始检测 "
           f"微博 {len(weibo_users)} 个 + 雪球 {len(xueqiu_users)} 个账号...")
 
@@ -73,11 +103,38 @@ def run_once(cfg) -> dict:
         for uid, data in asyncio.run(
                 collect_users(weibo_users, pages=pages, headless=True, cfg=cfg)).items():
             collected[qkey("weibo", uid)] = dict(data, platform="weibo")
-    if xueqiu_users:
+    # 雪球采集：主大V + 股指期货大V（并入同一批次，复用浏览器会话，只采集一次）
+    xueqiu_to_collect = list(xueqiu_users)
+    if if_uid and not any(str(u.get("uid")) == if_uid for u in xueqiu_users):
+        xueqiu_to_collect.append({"uid": if_uid, "name": if_name, "fetch_pages": 2})
+    if xueqiu_to_collect:
         for uid, data in asyncio.run(
-                collect_xueqiu_users(xueqiu_users, pages=pages,
+                collect_xueqiu_users(xueqiu_to_collect, pages=pages,
                                      headless=True, cfg=cfg)).items():
             collected[qkey("xueqiu", uid)] = dict(data, platform="xueqiu")
+    # 股指期货数据更新
+    if_source = (if_cfg.get("source") or "public").lower()
+    # 公开渠道直连（中金所每日前20会员持仓）：每轮更新，
+    # 不依赖大V发图、不依赖 Tesseract，纯 HTTP 抓取 CSV。
+    if if_source == "public":
+        try:
+            update_if_public(cfg=cfg)
+        except Exception as e:
+            print(f"  ⚠️ 股指期货公开数据(CFFEX)更新失败(不影响主流程): {e}")
+
+    # 大V原文复盘 feed（可选）+ 可选 OCR 路径
+    if if_uid:
+        if_data = collected.pop(qkey("xueqiu", if_uid), None)
+        if if_data and if_data.get("posts"):
+            save_if_posts(if_data, if_name)
+            if if_source == "ocr":
+                # 对复盘图片做 OCR，自动识别中信/其他大机构净空单变化
+                try:
+                    update_if_ocr(if_data, cfg=cfg)
+                except Exception as e:
+                    print(f"  ⚠️ 股指期货图片 OCR 失败(不影响主流程): {e}")
+        else:
+            print(f"  📊 股指期货大V本轮未采集到新帖（可能风控），沿用既有 if_posts.json")
 
     # 回填昵称到配置：以磁盘最新配置为基准合并写回，
     # 避免循环进程的旧内存副本覆盖手工修改的策略字段
@@ -95,6 +152,7 @@ def run_once(cfg) -> dict:
 
     state = load_json(STATE_FILE, {"seen_ids": {}, "initialized": {}})
     all_posts = load_json(POSTS_FILE, {"posts": []})
+    summary_cache = load_json(SUMMARY_CACHE_FILE, {})
     # 兼容历史数据：补充 type / platform 字段
     for p in all_posts["posts"]:
         p.setdefault("type", "post")
@@ -209,6 +267,29 @@ def run_once(cfg) -> dict:
                     if p["uid"] == uid and p.get("platform", "weibo") == platform][:limit]
         related = [p for p in my_posts if p.get("stock_related")]
         total_filtered += len(my_posts) - len(related)
+
+        # ---- 大V观点总结（基于近期发言 + 本人评论推断）----
+        recent = sorted(
+            [p for p in all_posts["posts"]
+             if p["uid"] == uid and p.get("platform", "weibo") == platform],
+            key=lambda p: p.get("created_at", ""), reverse=True)[:25]
+        latest_id = recent[0]["id"] if recent else ""
+        s_entry = summary_cache.get(uid, {})
+        if LLM_AVAILABLE:
+            # 仅当帖子发生变化（或出现/缺失）时才调用大模型，节省额度
+            if s_entry.get("last_post_id") != latest_id or "summary" not in s_entry:
+                s = analyze_bigv(info.get("name") or uid, platform, recent)
+                if s:
+                    s_entry = {"last_post_id": latest_id, "summary": s,
+                               "generated_at": datetime.now().isoformat(),
+                               "source": "llm"}
+                    summary_cache[uid] = s_entry
+            summary = s_entry.get("summary")
+        else:
+            # 无大模型：优先保留已生成的缓存（含人工/初始 seed），否则用启发式兜底
+            summary = s_entry.get("summary") or heuristic_summary(
+                recent, info.get("name") or uid)
+
         platforms[platform].append({
             "uid": uid,
             "platform": platform,
@@ -221,6 +302,7 @@ def run_once(cfg) -> dict:
             "filter": u.get("filter", True),
             "posts": related,
             "filtered_count": len(my_posts) - len(related),
+            "summary": summary,
         })
 
     page_data = {
@@ -230,13 +312,165 @@ def run_once(cfg) -> dict:
         "platforms": platforms,
     }
     save_json(PAGE_DATA_FILE, page_data)
+    save_json(SUMMARY_CACHE_FILE, summary_cache)
     # 同步到 frontend/data/
     os.makedirs(FRONTEND_DATA_DIR, exist_ok=True)
     shutil.copy2(PAGE_DATA_FILE, os.path.join(FRONTEND_DATA_DIR, "weibo_monitor_data.json"))
 
+    # 行业监控（同一循环、同一间隔；失败不影响大V监控）
+    try:
+        run_industries(cfg)
+    except Exception as e:
+        print(f"  ⚠️ 行业监控本轮失败(不影响大V): {e}")
+
+    # A股资金面宏观数据（无浏览器依赖，失败不影响主流程）
+    try:
+        print("\n  💰 A股资金面: 更新融资融券/投资者/利率/汇率...")
+        macro_data = collect_macro_data(days=365)
+        os.makedirs(os.path.dirname(MACRO_DATA_FILE), exist_ok=True)
+        save_json(MACRO_DATA_FILE, macro_data)
+        save_json(FRONTEND_MACRO_DATA_FILE, macro_data)
+        print(f"    ✅ 已更新 {len(macro_data['series'])} 个序列，"
+              f"区间 {macro_data['date_range']['start']} ~ {macro_data['date_range']['end']}")
+    except Exception as e:
+        print(f"  ⚠️ A股资金面采集失败(不影响主流程): {e}")
+
+    # 国家队宽基ETF增减持（上交所官方每日ETF份额，无浏览器依赖）
+    try:
+        print("\n  🏦 国家队宽基ETF: 更新沪市核心ETF份额/净申购...")
+        collect_national_team_etf()
+        print("    ✅ 国家队ETF数据已更新")
+    except Exception as e:
+        print(f"  ⚠️ 国家队ETF采集失败(不影响主流程): {e}")
+
     print(f"\n  ✅ 本轮完成: 新增 {len(new_posts_total)} 条 | "
           f"历史共 {len(all_posts['posts'])} 条")
     return page_data
+
+
+# ============================ 行业监控 ============================
+
+def run_industries(cfg) -> dict:
+    """采集 + 研判各行业（股票池近 7 天帖子/评论），写出 industry_data.json。
+
+    流程：collect_industries（逐股主页抓近 7 天讨论 + 行情 + 精选有价值
+    观点及其精彩评论）→ 个股推导 + 行业聚合（LLM/缓存/启发式）→ 有价值
+    观点综合点评。复用 STATE_FILE.industry_seen 做新增检测；通过
+    industry_summary_cache.json 缓存研判（仅 LLM 可用且内容变化时重算）。
+    """
+    industries = cfg.get("industries", [])
+    if not industries:
+        return {}
+    print(f"\n  🏭 行业监控: 采集 {len(industries)} 个方向...")
+
+    ind_raw = {}
+    try:
+        ind_raw = asyncio.run(
+            collect_industries(industries, headless=True, cfg=cfg))
+    except Exception as e:
+        print(f"    ⚠️ 行业采集异常: {e}")
+
+    ind_cache = load_json(INDUSTRY_CACHE_FILE, {})
+    state = load_json(STATE_FILE, {"seen_ids": {}, "initialized": {}, "industry_seen": {}})
+    industry_seen = state.setdefault("industry_seen", {})
+    # 上一轮已生成的行业数据，用于本轮采集为空（雪球瞬时风控）时兜底沿用
+    prev_ind = load_json(INDUSTRY_DATA_FILE, {"industries": {}}).get("industries", {})
+
+    industries_out = {}
+    total_ind_new = 0
+    for ind in industries:
+        iid = ind.get("id") or ind.get("name")
+        days = int(ind.get("days", 7))
+        raw = ind_raw.get(iid, {
+            "id": iid, "name": ind.get("name", iid), "icon": ind.get("icon", "🏭"),
+            "days": days, "stocks": [], "all_posts": [], "valuable_viewpoints": []})
+        # 本轮某行业采集为空时，沿用上一轮的标的/观点，避免看板瞬间空白
+        if not raw.get("stocks") and (prev_ind.get(iid) or {}).get("stocks"):
+            raw["stocks"] = prev_ind[iid]["stocks"]
+        if not raw.get("all_posts") and (prev_ind.get(iid) or {}).get("all_posts"):
+            raw["all_posts"] = prev_ind[iid]["all_posts"]
+        if not raw.get("valuable_viewpoints") and (prev_ind.get(iid) or {}).get("valuable_viewpoints"):
+            raw["valuable_viewpoints"] = prev_ind[iid]["valuable_viewpoints"]
+
+        stocks_raw = raw.get("stocks", [])
+        all_posts = raw.get("all_posts", [])
+        vp_raw = raw.get("valuable_viewpoints", [])
+
+        # 个股推导（LLM 优先，否则启发式）
+        stocks_out = []
+        stock_summaries = []
+        for s in stocks_raw:
+            per = analyze_stock(s.get("name", ""), s.get("posts", []))
+            stocks_out.append({
+                "symbol": s.get("symbol"), "name": s.get("name"),
+                "note": s.get("note", ""), "quote": s.get("quote", {}),
+                "posts": s.get("posts", []), "summary": per,
+            })
+            stock_summaries.append({"name": s.get("name", ""), "summary": per})
+
+        # 行业聚合（LLM / 缓存 / 启发式）
+        sig = f"{len(all_posts)}|{len(stocks_out)}|{(all_posts[0]['id'] if all_posts else '')}"
+        c = ind_cache.get(iid, {})
+        if LLM_AVAILABLE:
+            if c.get("sig") != sig or "summary" not in c:
+                s = analyze_industry(ind.get("name", iid), stock_summaries,
+                                     all_posts, stocks_out)
+                if s:
+                    c = {"sig": sig, "summary": s,
+                         "generated_at": datetime.now().isoformat(),
+                         "source": "llm"}
+                    ind_cache[iid] = c
+            summary = c.get("summary")
+        else:
+            summary = c.get("summary") or heuristic_industry_summary(
+                stock_summaries, all_posts, stocks_out, ind.get("name", iid))
+
+        # 有价值观点 + 综合点评
+        valuable = []
+        for vp in vp_raw:
+            post = vp.get("post", {})
+            comments = vp.get("comments", [])
+            reply_total = vp.get("reply_count", 0)
+            commentary = build_commentary(post, comments, reply_total)
+            valuable.append({
+                "post": post, "comments": comments,
+                "reply_count": reply_total, "commentary": commentary,
+            })
+
+        # 新增检测（基于全部帖子 id）
+        prev = set(industry_seen.get(iid, []))
+        for p in all_posts:
+            p["is_new"] = p["id"] not in prev
+            if p["is_new"]:
+                total_ind_new += 1
+        industry_seen[iid] = ([p["id"] for p in all_posts] + list(prev))[:300]
+
+        industries_out[iid] = {
+            "id": iid,
+            "name": ind.get("name", iid),
+            "icon": ind.get("icon", "🏭"),
+            "days": days,
+            "summary": summary,
+            "stocks": stocks_out,
+            "viewpoints": all_posts,                 # 全部近 7 天帖子（兼容旧字段）
+            "valuable_viewpoints": valuable,
+            "posts_count": len(all_posts),
+        }
+
+    industry_data = {
+        "updated_at": datetime.now().isoformat(),
+        "new_count": total_ind_new,
+        "industries": industries_out,
+    }
+    save_json(INDUSTRY_DATA_FILE, industry_data)
+    save_json(INDUSTRY_CACHE_FILE, ind_cache)
+    save_json(STATE_FILE, state)
+    os.makedirs(FRONTEND_DATA_DIR, exist_ok=True)
+    shutil.copy2(INDUSTRY_DATA_FILE,
+                 os.path.join(FRONTEND_DATA_DIR, "industry_data.json"))
+    print(f"  ✅ 行业数据已生成: {len(industries_out)} 个方向，"
+          f"新增帖子 {total_ind_new} 条")
+    return industry_data
 
 
 # ============================ CLI ============================
@@ -253,12 +487,21 @@ def main():
     parser = argparse.ArgumentParser(description="大V监控（微博+雪球）")
     parser.add_argument("--loop", action="store_true", help="循环监控模式")
     parser.add_argument("--interval", type=int, help="固定轮询间隔秒数（覆盖动态策略）")
+    parser.add_argument("--industries-only", action="store_true",
+                        help="仅运行行业监控（采集+研判并写出 industry_data.json）")
     args = parser.parse_args()
 
     cfg = load_config()
     if not cfg.get("users"):
         print("❌ weibo_config.json 中没有配置监控账号")
         sys.exit(1)
+
+    if args.industries_only:
+        if not cfg.get("industries"):
+            print("❌ weibo_config.json 中没有配置 industries（行业监控）")
+            sys.exit(1)
+        run_industries(cfg)
+        return
 
     if args.loop:
         if args.interval:
@@ -270,6 +513,8 @@ def main():
                   f"（Ctrl+C 退出）")
         while True:
             try:
+                # 每轮重新读取配置，配置管理页保存后下一轮自动生效
+                cfg = load_config()
                 run_once(cfg)
             except KeyboardInterrupt:
                 raise

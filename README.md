@@ -1,16 +1,49 @@
-# 📡 大V监控（微博 + 雪球）
+# 📡 大V监控 + 行业监控 + A股资金面（微博 + 雪球）
 
-监控微博、雪球两个平台的大V发言与评论，增量检测新内容，按每用户独立策略过滤（股市相关性 LLM 识别），白底看板页两级 Tab 展示。
+监控**微博、雪球**两个平台的大V发言与评论，扩展**行业监控**（股票池近 7 天讨论、3 天内高价值观点、综合点评），并新增**A股资金面**看板（融资融券、投资者数量、平均维持担保比例、中美国债收益率、人民币汇率）。自带雪球风格白底蓝看板，多空红绿配色；支持前端「配置管理」页在线编辑参数并保存生效。
 
 ## 功能特性
 
+### 大V监控（微博 + 雪球）
 - **双平台采集**：微博（时间线 + 本人评论区留言，含对旧发言的补充）、雪球（时间线含评论回复）
-- **股市相关性过滤**：关键词快筛 + qwen LLM 语义判断（识别隐喻，如"村里"=监管、"五穷六绝七翻身"）
+- **股市相关性过滤**：关键词快筛 + LLM 语义判断（识别隐喻，如"村里"=监管、"五穷六绝七翻身"），按每用户独立策略开关
 - **回复语境整合**：大V的短回复（如"很快"）会连同粉丝的前置提问一起判断和展示
-- **每用户独立策略**：`filter`（是否过滤）/ `display_limit`（展示条数）/ `fetch_pages`（采集深度）
+- **每用户独立策略**：`filter` / `display_limit` / `fetch_pages` / `comment_scan_posts`
 - **增量检测**：首次采集建基线不刷屏，之后只标记新增
-- **分时段轮询**：工作日 8:00-16:00 每 8 分钟，其余时段每 20 分钟（可配）
-- **风控防护**：Playwright 持久浏览器、页面内 fetch、请求超时保护、触发风控自动降级跳过
+
+### 行业监控（6 大方向）
+- 方向：**人形机器人 / AI应用·软件 / AI医药·创新药 / 锂矿·电池·储能 / AI硬件 / 模型·云厂商**（股票池可在配置页编辑）
+- 每个行业：股票池近 **7 天**帖子与评论 → 个股近期讨论
+- **高价值观点（近 3 天）**：突出发布时间、所属个股中文名、作者，并附雪球链接可点击定位
+- **综合点评**：多空共识、估值/景气判断、关键要点（LLM 研判，未配置大模型时走启发式兜底）
+
+### A股资金面
+- **融资融券**：融资余额 / 融券余额 / 融资买入额 / 融券卖出额（东方财富 `RPTA_WEB_MARGIN_DAILYTRADE`）
+- **账户杠杆**：参与交易投资者数量 / 平均维持担保比例
+- **宏观利率/汇率**：中国/美国 10 年期国债收益率、人民币汇率中间价（美元兑人民币）
+- **近 1 年日线趋势图**：8 张 SVG 折线图卡片，自动跟随监控循环每日更新
+- **国家队宽基ETF增减持**：上交所官方每日ETF份额（沪市核心ETF历史）× 东方财富历史单位净值 = **持仓金额(亿元)**；深市ETF份额锚定最新披露快照、历史金额按净值估算。双视图「每日净申购金额(增减持信号)」与「持仓金额(亿元)」趋势，按宽基类别(沪深300/上证50/中证500/中证1000/科创50/创业板)聚合
+
+### 股指期货（公开渠道直连，无需 OCR）
+- **数据源**：中国金融期货交易所(CFFEX)每日收盘后发布的「前 20 会员成交持仓排名」CSV
+  （`http://www.cffex.com.cn/sj/ccpm/{YYYYMM}/{DD}/{VAR}_1.csv`，GBK），属公开权威数据，**不依赖任何大V、不需要 Tesseract、不需要浏览器**
+- **计算口径**：跨 IF/IC/IM/IH 全部合约汇总
+  - 中信期货净空单 = Σ(持卖单量 − 持买单量)
+  - 其他主要玩家净空单 = 前 20 会员扣除中信期货后汇总
+  - **直接得到真实绝对净空单水平**，无需 baseline 假设 / 从 0 累加
+- **双视图**：「净空单水平（绝对）」与「每日增减」可切换；含近 30 天双轴趋势图（叠加上证指数）与自动多空信号分析
+- **上证指数**：自动从 A股资金面宏观数据里取上证指数收盘填充
+- **数据源切换**：`weibo_config.json` 的 `index_futures.source` 可设 `public`（默认，中金所直连）或 `ocr`（沿用雪球大V图片 OCR 旧路径，需 Tesseract）
+
+### 看板与配置
+- **雪球风格 UI**：白底 + 蓝主题，多空红绿（看多/涨=红，看空/跌=绿）
+- **五级导航**：大V监控 / 行业监控 / 股指期货 / A股资金面 / 配置管理
+- **配置管理页（⚙️）**：在线编辑后台刷新间隔、前台轮询间隔、微博/雪球大V列表、各行业股票池；「💾 保存生效」按钮即时写回 `weibo_config.json`（自动备份 `.bak`），后台下一轮自动加载
+
+### 工程
+- **风控降级**：Playwright 持久浏览器、页面内 fetch、请求超时保护，触发风控自动跳过该轮
+- **配置/代码分离**：所有可调参数在 `weibo_config.json`，无硬编码路径
+- **空态友好**：无数据时前端显示「暂无数据」而非崩溃
 
 ## 目录结构
 
@@ -19,11 +52,20 @@ weibo-monitor/
 ├── weibo_collector.py     # 微博采集器（Playwright 持久登录态）
 ├── xueqiu_collector.py    # 雪球采集器（匿名 token，无需登录）
 ├── weibo_filter.py        # 股市相关性过滤（关键词 + LLM）
-├── weibo_monitor.py       # 主编排：采集→增量→过滤→页面数据
-├── weibo_config.json      # 监控账号与策略配置
-├── serve.py               # 静态页面服务（默认 8766 端口）
-├── frontend/weibo.html    # 看板页（两级 Tab：平台→大V）
-└── data/                  # 运行时数据（登录态/历史/日志，不入库）
+├── weibo_summary.py       # 大V研判（多空/仓位/加减仓）
+├── industry_collector.py  # 行业采集（搜索 SPA + 行情接口）
+├── industry_summary.py    # 行业研判（趋势/估值/共识/要点）
+├── a_share_collector.py   # A股资金面数据采集（融资融券/投资者/利率/汇率）
+├── national_team_etf.py   # 国家队宽基ETF增减持（上交所官方ETF份额 + 深交所快照）
+├── index_futures_public.py # 股指期货净空单（中金所公开数据直连，主路径）
+├── if_ocr.py              # 股指期货图片 OCR 旧路径（source=ocr 时启用，需 Tesseract）
+├── weibo_monitor.py       # 主编排：采集→增量→过滤→页面数据（含 --loop / --industries-only）
+├── serve.py               # 前端服务（默认 8766）+ 配置读写 API
+├── weibo_config.json      # 监控账号、行业股票池、刷新间隔（可在线编辑）
+├── frontend/weibo.html    # 看板页（五级导航：大V/行业/期指/资金面/配置）
+├── start.sh               # 一键启动 serve + monitor
+├── data/                  # 运行时数据（登录态/采集历史/日志，不入库）
+└── logs/                  # 运行日志（不入库）
 ```
 
 ## 快速开始
@@ -32,38 +74,77 @@ weibo-monitor/
 pip install -r requirements.txt
 python -m playwright install chromium chromium-headless-shell
 
-# 首次运行：微博会弹出浏览器扫码登录（登录态持久保存到 data/weibo_profile/）
-python weibo_monitor.py          # 单次检测
-python weibo_monitor.py --loop   # 后台循环（分时段间隔）
-python serve.py                  # 页面服务 http://localhost:8766
+# 股指期货默认走中金所公开数据直连（纯 HTTP，无需 Tesseract / 无需浏览器）。
+# 仅当 index_futures.source="ocr"（沿用大V图片识别旧路径）时才需要：
+# macOS:  brew install tesseract tesseract-lang
+# Ubuntu: sudo apt-get install tesseract-ocr tesseract-ocr-chi-sim
+
+# 采集一次（生成页面数据到 data/ 与 frontend/data/）
+python weibo_monitor.py            # 仅大V监控
+python weibo_monitor.py --industries-only   # 仅行业监控（雪球匿名，无需登录）
+python weibo_monitor.py --loop     # 后台循环（按配置间隔刷新）
+
+# 单独回补股指期货近 60 天（中金所直连，可随时手动跑）
+python index_futures_public.py --backfill=60
+
+# 前端页面服务
+python serve.py                    # http://localhost:8766/weibo.html
+# 或一键启动两者：
+./start.sh
 ```
 
-后台运行：
+> 首次运行微博采集会弹出浏览器扫码登录（登录态持久保存到 `data/weibo_profile/`）；雪球采集无需登录。
 
-```bash
-nohup python -u weibo_monitor.py --loop > data/weibo_monitor.log 2>&1 &
-nohup python -u serve.py > data/serve.log 2>&1 &
-```
+## 配置说明（`weibo_config.json`）
 
-## 配置示例
-
-`weibo_config.json` 中每个账号独立策略：
-
-```json
+```jsonc
 {
-  "platform": "weibo",        // weibo / xueqiu
-  "uid": "1593163950",
-  "name": "周思CIO",
-  "filter": true,             // true=仅股市相关, false=全量展示
-  "display_limit": 50,        // 页面展示条数上限
-  "fetch_pages": 3,           // 时间线采集页数
-  "comment_scan_posts": 12    // 评论区扫描范围（仅微博）
+  "users": [                      // 大V列表（微博/雪球）
+    {
+      "platform": "weibo",        // weibo / xueqiu
+      "uid": "1593163950",
+      "name": "周思CIO",
+      "filter": true,             // true=仅股市相关, false=全量展示
+      "display_limit": 50,
+      "fetch_pages": 3,
+      "comment_scan_posts": 12    // 仅微博：评论区扫描范围
+    }
+  ],
+  "industries": [                 // 行业监控股票池
+    {
+      "id": "humanoid_robot",
+      "name": "人形机器人",
+      "icon": "🤖",
+      "days": 7,                  // 个股讨论回溯天数
+      "stocks": [
+        { "url": "https://xueqiu.com/S/SH688836", "name": "宇树科技", "note": "..." }
+      ]
+    }
+  ],
+  "index_futures": {              // 股指期货配置
+    "source": "public",           // public=中金所公开数据直连（默认）；ocr=雪球大V图片 OCR 旧路径
+    "backfill_days": 60,          // 每次回补的日历日窗口（只落地其中的交易日）
+    "monitor_uid": "2411215032",  // 仅当保留「大V原文复盘」feed 时需要；设为空可彻底去掉浏览器依赖
+    "monitor_name": "股指期货机构持仓复盘",
+    "contracts": ["IF", "IH", "IC", "IM"]
+  },
+  "peak_interval_sec": 1800,      // 高峰时段后台刷新间隔（秒）
+  "offpeak_interval_sec": 1800,   // 非高峰时段后台刷新间隔（秒）
+  "frontend_poll_interval_sec": 30 // 前端页面轮询间隔（秒）
 }
 ```
 
-轮询节奏：`peak_interval_sec`（工作日 8-16 点）/ `offpeak_interval_sec`（其余时段）。
+- 也可在页面右上「⚙️ 配置管理」中在线编辑上述所有项，点「💾 保存生效」。
+- 后台刷新间隔可通过 `--interval <秒>` 单次运行覆盖。
 
 ## 依赖说明
 
-- LLM 过滤依赖上级目录 `utils/qwen_utils.py` 的 `chat()` 与 `config.yaml` 中的 DASHSCOPE_API_KEY；不可用时自动降级为纯关键词模式
-- 雪球采集无需登录；微博需要扫码登录一次（真实账号登录态，注意控制采集频率）
+- **必需**：`playwright`（浏览器采集大V/行业）、`akshare`/`requests`（宏观数据）。
+- **股指期货**：默认 `source=public` 走中金所公开数据直连，**仅用标准库 urllib+csv，无任何额外依赖、不需要 Tesseract、不需要浏览器**。仅当 `source=ocr` 时才需要 `Pillow` + `pytesseract` + 系统 `tesseract`（见上文），未安装则跳过。
+- **可选**：大模型研判（`weibo_summary.py` / `weibo_filter.py`）在设置环境变量 `DASHSCOPE_API_KEY` 后即可启用——代码内置 `urllib` 直连 DashScope（默认模型 `qwen-plus`，可用 `DASHSCOPE_MODEL` 覆盖），**无需任何第三方依赖、也无需 `utils/` 模块**。未设置该变量时自动降级为纯关键词 / 启发式模式，不影响主流程与数据采集。
+- 雪球采集无需登录；微博需要扫码登录一次（真实账号登录态，注意控制采集频率）。
+
+## 部署建议
+
+- 开发/临时：`python serve.py` + `python weibo_monitor.py --loop`（或 `./start.sh`）。
+- 常驻（macOS）：用 `launchd` plist（`KeepAlive` + `RunAtLoad`）让两个进程开机自启、崩溃自愈；注意 plist 内的路径需改为实际部署路径，且**不要**把含本机绝对路径的 plist 提交到仓库。

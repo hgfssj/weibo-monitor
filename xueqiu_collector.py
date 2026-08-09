@@ -50,7 +50,7 @@ def strip_html(text: str) -> str:
         return ""
     text = re.sub(r"<[^>]+>", "", text)
     text = text.replace("&nbsp;", " ").replace("&amp;", "&")
-    text = text.replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", '"')
+    text = text.replace("<", "<").replace(">", ">").replace("&quot;", '"')
     return text.strip()
 
 

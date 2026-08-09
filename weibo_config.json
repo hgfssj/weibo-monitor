@@ -43,7 +43,310 @@
       "fetch_pages": 2
     }
   ],
-  "peak_interval_sec": 480,
-  "offpeak_interval_sec": 1200,
-  "pages_per_user": 2
+  "peak_interval_sec": 1800,
+  "offpeak_interval_sec": 1800,
+  "pages_per_user": 2,
+  "frontend_poll_interval_sec": 60,
+  "industries": [
+    {
+      "id": "humanoid_robot",
+      "name": "人形机器人",
+      "icon": "🤖",
+      "days": 7,
+      "stocks": [
+        {
+          "url": "https://xueqiu.com/S/SH688836",
+          "name": "宇树科技",
+          "note": "人形机器人本体龙头（科创板）"
+        },
+        {
+          "url": "https://xueqiu.com/S/09880",
+          "name": "优必选",
+          "note": "港股人形机器人本体"
+        },
+        {
+          "url": "https://xueqiu.com/S/SZ002050",
+          "name": "三花智控",
+          "note": "热管理+执行器总成"
+        },
+        {
+          "url": "https://xueqiu.com/S/SH601689",
+          "name": "拓普集团",
+          "note": "Tier1 总成"
+        },
+        {
+          "url": "https://xueqiu.com/S/SH603728",
+          "name": "鸣志电器",
+          "note": "空心杯电机"
+        },
+        {
+          "url": "https://xueqiu.com/S/SH688017",
+          "name": "绿的谐波",
+          "note": "谐波减速器"
+        },
+        {
+          "url": "https://xueqiu.com/S/SZ300124",
+          "name": "汇川技术",
+          "note": "伺服/控制器"
+        },
+        {
+          "url": "https://xueqiu.com/S/TSLA",
+          "name": "特斯拉",
+          "note": "美股·人形机器人 Optimus"
+        },
+        {
+          "url": "https://xueqiu.com/S/09868",
+          "name": "小鹏集团",
+          "note": "港股·人形机器人 Iron"
+        },
+        {
+          "url": "https://xueqiu.com/S/01810",
+          "name": "小米集团",
+          "note": "港股·人形机器人/汽车"
+        }
+      ]
+    },
+    {
+      "id": "ai_application",
+      "name": "AI应用/软件",
+      "icon": "💻",
+      "days": 7,
+      "stocks": [
+        {
+          "url": "https://xueqiu.com/S/PLTR",
+          "name": "Palantir",
+          "note": "美股·AI 数据/国防软件"
+        },
+        {
+          "url": "https://xueqiu.com/S/IGV",
+          "name": "北美科技软件股指数ETF",
+          "note": "美股·软件股指数 ETF(iShares)"
+        },
+        {
+          "url": "https://xueqiu.com/S/MSFT",
+          "name": "微软",
+          "note": "美股·AI 应用/Copilot"
+        },
+        {
+          "url": "https://xueqiu.com/S/06682",
+          "name": "范式智能",
+          "note": "港股·企业级 AI/决策"
+        },
+        {
+          "url": "https://xueqiu.com/S/00354",
+          "name": "中国软件国际",
+          "note": "港股·IT 服务/鸿蒙"
+        },
+        {
+          "url": "https://xueqiu.com/S/03888",
+          "name": "金山软件",
+          "note": "港股·办公/游戏"
+        }
+      ]
+    },
+    {
+      "id": "ai_pharma",
+      "name": "AI医药/创新药",
+      "icon": "💊",
+      "days": 7,
+      "stocks": [
+        {
+          "url": "https://xueqiu.com/S/SH603259",
+          "name": "药明康德",
+          "note": "CXO 龙头"
+        },
+        {
+          "url": "https://xueqiu.com/S/09926",
+          "name": "康方生物",
+          "note": "港股·双抗"
+        },
+        {
+          "url": "https://xueqiu.com/S/01548",
+          "name": "金斯瑞生物科技",
+          "note": "港股·CXO/细胞治疗"
+        },
+        {
+          "url": "https://xueqiu.com/S/02228",
+          "name": "晶泰控股",
+          "note": "港股·AI 制药/晶型预测"
+        },
+        {
+          "url": "https://xueqiu.com/S/03696",
+          "name": "英矽智能",
+          "note": "港股·AI 制药/管线"
+        },
+        {
+          "url": "https://xueqiu.com/S/07666",
+          "name": "剂泰科技-P",
+          "note": "港股·AI 药物递送"
+        }
+      ]
+    },
+    {
+      "id": "lithium_battery",
+      "name": "锂矿/电池/储能",
+      "icon": "🔋",
+      "days": 7,
+      "stocks": [
+        {
+          "url": "https://xueqiu.com/S/SZ300750",
+          "name": "宁德时代",
+          "note": "动力电池"
+        },
+        {
+          "url": "https://xueqiu.com/S/SZ002594",
+          "name": "比亚迪",
+          "note": "整车/电池"
+        },
+        {
+          "url": "https://xueqiu.com/S/SZ002466",
+          "name": "天齐锂业",
+          "note": "锂矿"
+        },
+        {
+          "url": "https://xueqiu.com/S/SZ002460",
+          "name": "赣锋锂业",
+          "note": "锂盐"
+        },
+        {
+          "url": "https://xueqiu.com/S/SZ300014",
+          "name": "亿纬锂能",
+          "note": "储能电池"
+        },
+        {
+          "url": "https://xueqiu.com/S/SZ300274",
+          "name": "阳光电源",
+          "note": "储能逆变器"
+        },
+        {
+          "url": "https://xueqiu.com/S/TSLA",
+          "name": "特斯拉",
+          "note": "美股·储能/电动车"
+        },
+        {
+          "url": "https://xueqiu.com/S/SZ002738",
+          "name": "中矿资源",
+          "note": "锂矿/铯铷资源"
+        }
+      ]
+    },
+    {
+      "id": "ai_hardware",
+      "name": "AI硬件",
+      "icon": "🔧",
+      "days": 7,
+      "stocks": [
+        {
+          "url": "https://xueqiu.com/S/SH688256",
+          "name": "寒武纪",
+          "note": "AI 芯片"
+        },
+        {
+          "url": "https://xueqiu.com/S/SZ300308",
+          "name": "中际旭创",
+          "note": "CPO 光模块"
+        },
+        {
+          "url": "https://xueqiu.com/S/SZ300502",
+          "name": "新易盛",
+          "note": "CPO 光模块"
+        },
+        {
+          "url": "https://xueqiu.com/S/SH603986",
+          "name": "兆易创新",
+          "note": "存储"
+        },
+        {
+          "url": "https://xueqiu.com/S/NVDA",
+          "name": "英伟达",
+          "note": "美股·AI 算力"
+        },
+        {
+          "url": "https://xueqiu.com/S/SH688825",
+          "name": "长鑫科技",
+          "note": "DRAM 存储(国产)"
+        },
+        {
+          "url": "https://xueqiu.com/S/00981",
+          "name": "中芯国际",
+          "note": "港股·晶圆代工"
+        },
+        {
+          "url": "https://xueqiu.com/S/TSM",
+          "name": "台积电",
+          "note": "美股·晶圆代工"
+        },
+        {
+          "url": "https://xueqiu.com/S/SKHY",
+          "name": "海力士",
+          "note": "SK Hynix·HBM 存储"
+        },
+        {
+          "url": "https://xueqiu.com/S/MU",
+          "name": "美光",
+          "note": "美股·存储/HBM"
+        },
+        {
+          "url": "https://xueqiu.com/S/SNDK",
+          "name": "闪迪",
+          "note": "美股·存储"
+        }
+      ]
+    },
+    {
+      "id": "model_cloud",
+      "name": "模型/云厂商",
+      "icon": "☁️",
+      "days": 7,
+      "stocks": [
+        {
+          "url": "https://xueqiu.com/S/GOOGL",
+          "name": "谷歌",
+          "note": "美股·Gemini/云"
+        },
+        {
+          "url": "https://xueqiu.com/S/AMZN",
+          "name": "亚马逊",
+          "note": "美股·AWS/云"
+        },
+        {
+          "url": "https://xueqiu.com/S/META",
+          "name": "meta",
+          "note": "美股·Llama/AI"
+        },
+        {
+          "url": "https://xueqiu.com/S/02513",
+          "name": "智普",
+          "note": "港股·大模型"
+        },
+        {
+          "url": "https://xueqiu.com/S/09988",
+          "name": "阿里巴巴",
+          "note": "港股·通义/云"
+        },
+        {
+          "url": "https://xueqiu.com/S/00700",
+          "name": "腾讯",
+          "note": "港股·混元/云"
+        },
+        {
+          "url": "https://xueqiu.com/S/03896",
+          "name": "金山云",
+          "note": "港股·云服务"
+        }
+      ]
+    }
+  ],
+  "index_futures": {
+    "source": "public",
+    "backfill_days": 60,
+    "monitor_uid": "2411215032",
+    "monitor_name": "股指期货机构持仓复盘",
+    "contracts": [
+      "IF",
+      "IH",
+      "IC",
+      "IM"
+    ]
+  }
 }
