@@ -56,14 +56,18 @@ weibo-monitor/
 ├── industry_collector.py  # 行业采集（搜索 SPA + 行情接口）
 ├── industry_summary.py    # 行业研判（趋势/估值/共识/要点）
 ├── a_share_collector.py   # A股资金面数据采集（融资融券/投资者/利率/汇率）
-├── national_team_etf.py   # 国家队宽基ETF增减持（上交所官方ETF份额 + 深交所快照）
-├── index_futures_public.py # 股指期货净空单（中金所公开数据直连，主路径）
+├── national_team_etf.py   # 国家队宽基ETF增减持（沪深交易所官方份额，可回补2年）
+├── industry_turnover.py   # 申万行业成交额占比趋势（360交易日，31一级+3二级+大消费聚合）
+├── index_futures_public.py # 股指期货净空单（中金所直连：中信/其他大机构/头部机构合计）
 ├── if_ocr.py              # 股指期货图片 OCR 旧路径（source=ocr 时启用，需 Tesseract）
-├── weibo_monitor.py       # 主编排：采集→增量→过滤→页面数据（含 --loop / --industries-only）
+├── weibo_monitor.py       # 主编排：采集→增量→过滤→页面数据（含 --loop / --industries-only，单实例锁）
 ├── serve.py               # 前端服务（默认 8766）+ 配置读写 API
+├── snapshot.py            # 长周期数据快照管理（--save / --restore / --status）
+├── snapshot/              # 历史数据快照（入库，新部署自动恢复，免重抓）
 ├── weibo_config.json      # 监控账号、行业股票池、刷新间隔（可在线编辑）
 ├── frontend/weibo.html    # 看板页（五级导航：大V/行业/期指/资金面/配置）
 ├── start.sh               # 一键启动 serve + monitor
+├── .env.example           # 可选环境变量模板（大模型研判）
 ├── data/                  # 运行时数据（登录态/采集历史/日志，不入库）
 └── logs/                  # 运行日志（不入库）
 ```
@@ -93,7 +97,21 @@ python serve.py                    # http://localhost:8766/weibo.html
 ./start.sh
 ```
 
-> 首次运行微博采集会弹出浏览器扫码登录（登录态持久保存到 `data/weibo_profile/`）；雪球采集无需登录。
+> - 首次运行微博采集会弹出浏览器扫码登录（登录态持久保存到 `data/weibo_profile/`）；雪球采集无需登录。
+> - **新部署零成本**：长周期历史数据（期指净空单/宏观资金面/国家队ETF/行业占比）已快照入库，首次启动自动从 `snapshot/` 恢复，无需重抓。
+> - `--loop` 自带单实例锁：已有循环在运行时重复启动会被拒绝（避免双进程争抢浏览器登录态导致崩溃）。重启请 `kill $(cat data/weibo_monitor.pid)` 后再启动。
+
+## 重新拉取部署（全新环境）
+
+```bash
+git clone <repo> && cd weibo-monitor
+python3 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt                    # pandas/numpy 版本已固定，勿升级
+python -m playwright install chromium chromium-headless-shell
+python snapshot.py --restore                       # 可选：启动时也会自动执行
+python serve.py &                                  # 前端
+python weibo_monitor.py --loop &                   # 后台循环（首次微博需扫码）
+```
 
 ## 配置说明（`weibo_config.json`）
 
@@ -139,7 +157,7 @@ python serve.py                    # http://localhost:8766/weibo.html
 
 ## 依赖说明
 
-- **必需**：`playwright`（浏览器采集大V/行业）、`akshare`/`requests`（宏观数据）。
+- **必需**：`playwright`（浏览器采集大V/行业）、`akshare`/`requests`（宏观/ETF/行业数据）、`pandas==1.5.3`/`numpy==1.24.3`（版本已固定，勿升级，详见 requirements.txt 注释）。
 - **股指期货**：默认 `source=public` 走中金所公开数据直连，**仅用标准库 urllib+csv，无任何额外依赖、不需要 Tesseract、不需要浏览器**。仅当 `source=ocr` 时才需要 `Pillow` + `pytesseract` + 系统 `tesseract`（见上文），未安装则跳过。
 - **可选**：大模型研判（`weibo_summary.py` / `weibo_filter.py`）在设置环境变量 `DASHSCOPE_API_KEY` 后即可启用——代码内置 `urllib` 直连 DashScope（默认模型 `qwen-plus`，可用 `DASHSCOPE_MODEL` 覆盖），**无需任何第三方依赖、也无需 `utils/` 模块**。未设置该变量时自动降级为纯关键词 / 启发式模式，不影响主流程与数据采集。
 - 雪球采集无需登录；微博需要扫码登录一次（真实账号登录态，注意控制采集频率）。
@@ -151,8 +169,8 @@ python serve.py                    # http://localhost:8766/weibo.html
 
 ## 历史数据快照（重新部署免重抓）
 
-长周期历史数据（股指期货 360 天净空单 / 宏观资金面 365 天 / 国家队ETF）不可变，
-以快照形式入库（`snapshot/`，共约 400 KB）；`data/` 与 `frontend/data/` 仍不入库。
+长周期历史数据（股指期货 360 天净空单 / 宏观资金面 365 天 / 国家队ETF约2年 / 申万行业占比 360 交易日）不可变，
+以快照形式入库（`snapshot/`，共约 1.3 MB）；`data/` 与 `frontend/data/` 仍不入库。
 
 - **新部署自动恢复**：`serve.py` / `weibo_monitor.py` 启动时检测运行数据缺失则从快照补齐，无需调用外部接口
 - **更新快照**：数据回补范围扩大或长周期修正后，提交前跑一次 `python snapshot.py --save`

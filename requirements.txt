@@ -3,3 +3,10 @@ akshare>=1.15.0
 requests>=2.31.0
 Pillow>=10.0
 pytesseract>=0.3.10
+
+# pandas/numpy 必须固定版本（Python 3.9 兼容性）：
+# 安装更高版本（numpy>=2 / pandas>=2）会触发 numpy C 扩展崩溃（CCompiler/ctypes 段错误），
+# 且 pandas 2.x 要求 Python>=3.10。以下组合已在生产环境验证。
+numpy==1.24.3
+pandas==1.5.3
+openpyxl>=3.1
