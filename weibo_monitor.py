@@ -530,6 +530,24 @@ def main():
         return
 
     if args.loop:
+        # 单实例锁：两个循环进程会争抢同一 Chromium 登录态目录导致双双 SEGV 崩溃
+        pid_file = os.path.join(DATA_DIR, "weibo_monitor.pid")
+        if os.path.exists(pid_file):
+            try:
+                old_pid = int(open(pid_file).read().strip())
+                os.kill(old_pid, 0)  # 不发信号，仅检查进程存活
+                print(f"❌ 已有监控循环在运行(pid={old_pid})，拒绝重复启动。"
+                      f"如需重启请先 kill {old_pid}")
+                sys.exit(1)
+            except (ProcessLookupError, ValueError):
+                pass  # 旧进程已不存在，可接管
+            except PermissionError:
+                print(f"⚠️ 无法确认旧进程(pid={old_pid})状态，谨慎起见拒绝启动")
+                sys.exit(1)
+        os.makedirs(DATA_DIR, exist_ok=True)
+        with open(pid_file, "w") as f:
+            f.write(str(os.getpid()))
+
         if args.interval:
             print(f"🔄 循环监控模式：固定每 {args.interval} 秒检测一次（Ctrl+C 退出）")
         else:
