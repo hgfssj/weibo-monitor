@@ -37,7 +37,10 @@ FRONTEND_DATA_DIR = os.path.join(BASE_DIR, "frontend", "data")
 
 CFFEX_URL_TMPL = "http://www.cffex.com.cn/sj/ccpm/{ym}/{dd}/{var}_1.csv"
 PRODUCTS = ["IF", "IC", "IM", "IH"]
-INSTITUTIONS = ["中信期货", "其他大机构"]
+INSTITUTIONS = ["中信期货", "其他大机构", "头部机构"]
+
+# 头部机构 = 中信期货 + 其他大机构（前20会员合计）
+HEAD_INST = "头部机构"
 
 # 中信期货在「会员简称」列可能出现的写法（官方多为「中信期货」）
 ZHONGXIN_MATCH = ("中信期货",)
@@ -232,6 +235,7 @@ def collect_range(end_date=None, backfill_days=60):
         change = {
             "中信期货": (zx - prev["zhongxin_net"]) if prev else None,
             "其他大机构": (ot - prev["others_net"]) if prev else None,
+            HEAD_INST: ((zx + ot) - (prev["zhongxin_net"] + prev["others_net"])) if prev else None,
         }
         iso = f"{ymd[:4]}-{ymd[4:6]}-{ymd[6:8]}"
         records.append(
@@ -239,7 +243,7 @@ def collect_range(end_date=None, backfill_days=60):
                 "date": iso,
                 "positions": {},
                 "net_short_change": change,
-                "net_short_cumulative": {"中信期货": zx, "其他大机构": ot},
+                "net_short_cumulative": {"中信期货": zx, "其他大机构": ot, HEAD_INST: zx + ot},
                 "sh_index": _load_sh_index(ymd),
                 "source": "cffex",
                 "note": "",
@@ -271,6 +275,18 @@ def write_positions(records, positions_path=None, frontend_path=None):
     return data
 
 
+def ensure_head_institution(records):
+    """为缺「头部机构」维度的历史记录补齐（= 中信期货 + 其他大机构）。"""
+    for r in records:
+        cum = r.get("net_short_cumulative") or {}
+        chg = r.get("net_short_change") or {}
+        if HEAD_INST not in cum and cum.get("中信期货") is not None and cum.get("其他大机构") is not None:
+            cum[HEAD_INST] = cum["中信期货"] + cum["其他大机构"]
+        if HEAD_INST not in chg and chg.get("中信期货") is not None and chg.get("其他大机构") is not None:
+            chg[HEAD_INST] = chg["中信期货"] + chg["其他大机构"]
+    return records
+
+
 def update_index_futures_positions(cfg=None, backfill_days=60, end_date=None):
     """主入口：回补并写入股指期货净空单数据。返回写入的 data dict。
 
@@ -299,6 +315,7 @@ def update_index_futures_positions(cfg=None, backfill_days=60, end_date=None):
         except Exception:
             pass
     all_records = sorted(merged.values(), key=lambda r: r["date"])
+    ensure_head_institution(all_records)
     data = write_positions(all_records)
     print(
         f"[if_public] 已写入 {len(all_records)} 条（{all_records[0]['date']} ~ {all_records[-1]['date']}，"

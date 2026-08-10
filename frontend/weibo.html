@@ -1266,7 +1266,7 @@ function renderIfutures() {
 
   let html = `<div class="if-wrap">`;
   html += `<div class="if-intro">
-    本页跟踪 <b>股指期货机构净空单</b>（中信期货、其他大机构），数据来自
+    本页跟踪 <b>股指期货机构净空单</b>（中信期货、其他大机构，及两者合计的头部机构），数据来自
     <b>中国金融期货交易所(CFFEX)每日发布的「前20会员成交持仓排名」</b>（公开渠道直连，监控服务自动抓取，
     跨 IF/IC/IM/IH 全部合约汇总：中信净空单 = Σ(持卖单量 − 持买单量)）。
     监控服务每轮自动更新，存于本地 <code>data/index_futures_positions.json</code>。
