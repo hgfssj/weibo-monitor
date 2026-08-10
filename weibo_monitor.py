@@ -44,6 +44,7 @@ from a_share_collector import collect_macro_data
 from if_ocr import update_index_futures_positions as update_if_ocr
 from index_futures_public import update_index_futures_positions as update_if_public
 from national_team_etf import collect as collect_national_team_etf
+from industry_turnover import collect as collect_industry_turnover
 
 DATA_DIR = os.path.join(BASE_DIR, "data")
 FRONTEND_DATA_DIR = os.path.join(BASE_DIR, "frontend", "data")
@@ -352,6 +353,14 @@ def run_once(cfg) -> dict:
         print("    ✅ 国家队ETF数据已更新")
     except Exception as e:
         print(f"  ⚠️ 国家队ETF采集失败(不影响主流程): {e}")
+
+    # 行业成交额占比（申万行业日历史，无浏览器依赖）
+    try:
+        print("\n  🏭 行业成交占比: 更新申万行业成交额占比趋势...")
+        collect_industry_turnover()
+        print("    ✅ 行业成交占比数据已更新")
+    except Exception as e:
+        print(f"  ⚠️ 行业成交占比采集失败(不影响主流程): {e}")
 
     print(f"\n  ✅ 本轮完成: 新增 {len(new_posts_total)} 条 | "
           f"历史共 {len(all_posts['posts'])} 条")

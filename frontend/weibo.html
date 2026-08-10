@@ -376,6 +376,10 @@ const PLATFORMS = {
 let MODE = "bigv";                 // 顶层：bigv | industry | config | macro
 let ntfData = null;                // 国家队ETF数据（A股资金面板块）
 let ntfMode = "net";               // 国家队ETF视图：net(每日净申购金额) | level(持仓金额)
+let turnoverData = null;           // 行业成交额占比数据（A股资金面板块）
+let itRange = 90;                  // 行业占比图显示范围（交易日）
+let itSelected = new Set();        // 行业占比图选中的行业 key
+let itInited = false;
 let activePlatform = "weibo";      // 大V：一级 Tab
 let activeUid = {};                // 大V：每个平台各自记住选中的大V
 let activeIndustry = null;         // 行业：选中的方向
@@ -1500,6 +1504,80 @@ function renderNtfSection() {
 }
 function setNtfMode(m) { ntfMode = m; if (lastMacro) renderMacro(lastMacro); }
 
+// ---------------------------- 行业成交额占比 ----------------------------
+const IT_COLORS = ["#f0413e", "#1e8fff", "#00a854", "#ff7c1e", "#7b61ff", "#13c2c2", "#e83e8c", "#8a6d3b", "#5b6ee1", "#2ca02c", "#d62728", "#9467bd", "#17becf", "#bcbd22", "#e377c2", "#7f7f7f"];
+function itSetRange(r) { itRange = r; if (lastMacro) renderMacro(lastMacro); }
+function itToggle(key) { if (itSelected.has(key)) itSelected.delete(key); else itSelected.add(key); if (lastMacro) renderMacro(lastMacro); }
+
+function renderIndustryShareSection() {
+  if (!turnoverData || !turnoverData.dates || !turnoverData.dates.length) return "";
+  if (!itInited) { turnoverData.industries.filter(e => e.focus).forEach(e => itSelected.add(e.key)); itInited = true; }
+  const dates = turnoverData.dates, inds = turnoverData.industries;
+  const rangeBtn = r => `<button class="mini-btn ${itRange === r ? "active" : ""}" onclick="itSetRange(${r})">${r}天</button>`;
+  const focus = inds.filter(e => e.focus), others = inds.filter(e => !e.focus);
+  const chip = e => `<button class="mini-btn ${itSelected.has(e.key) ? "active" : ""}" onclick="itToggle('${e.key}')">${esc(e.name)}</button>`;
+  let h = `<div class="section-label">🏭 行业成交额占比趋势（申万行业 · 占两市总成交）
+    <span style="float:right">${[90, 180, 360].map(rangeBtn).join("")}</span></div>`;
+  h += `<div class="if-chart-card"><div style="margin-bottom:8px;line-height:2.2">${focus.map(chip).join(" ")} <span style="color:#c8cdd4;margin:0 6px">|</span> ${others.map(chip).join(" ")}</div>
+    ${renderShareChart(dates, inds)}
+    <div class="if-legend">${inds.filter(e => itSelected.has(e.key)).map((e, i) => `<span><i style="background:${IT_COLORS[i % IT_COLORS.length]}"></i>${esc(e.name)}(${e.level})</span>`).join("")}</div></div>`;
+  h += renderShareTable(dates, inds);
+  return h;
+}
+
+function renderShareChart(dates, inds) {
+  const W = 900, H = 300, padL = 50, padR = 40, padT = 14, padB = 28;
+  const n = Math.min(itRange, dates.length);
+  const ds = dates.slice(-n);
+  const sel = inds.filter(e => itSelected.has(e.key) && e.share);
+  if (!sel.length) return `<div class="empty">点击上方行业按钮选择要展示的行业</div>`;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  let lo = Infinity, hi = -Infinity;
+  sel.forEach(e => (e.share.slice(-n) || []).forEach(v => { if (v != null) { if (v < lo) lo = v; if (v > hi) hi = v; } }));
+  if (lo === Infinity) return `<div class="empty">所选行业暂无数据</div>`;
+  const padv = (hi - lo) * 0.1 || 1; lo = Math.max(0, lo - padv); hi += padv;
+  const X = i => padL + (ds.length <= 1 ? plotW / 2 : i * plotW / (ds.length - 1));
+  const Y = v => padT + plotH - (v - lo) / (hi - lo) * plotH;
+  let s = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img">`;
+  for (let g = 0; g <= 4; g++) {
+    const v = lo + (hi - lo) * g / 4, y = Y(v);
+    s += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#ebedf0"/>`;
+    s += `<text x="${padL - 6}" y="${y + 4}" text-anchor="end" font-size="10" fill="#8a94a6">${v.toFixed(1)}%</text>`;
+  }
+  const step = Math.max(1, Math.ceil(ds.length / 8));
+  ds.forEach((d, i) => { if (i % step === 0 || i === ds.length - 1) s += `<text x="${X(i)}" y="${H - padB + 14}" text-anchor="middle" font-size="9" fill="#8a94a6">${d.slice(5)}</text>`; });
+  sel.forEach((e, k) => {
+    const vals = e.share.slice(-n), color = IT_COLORS[k % IT_COLORS.length];
+    let path = "", started = false, lastI = -1, lastV = null;
+    vals.forEach((v, i) => {
+      if (v == null) { started = false; return; }
+      path += (started ? " L" : " M") + X(i).toFixed(1) + " " + Y(v).toFixed(1);
+      started = true; lastI = i; lastV = v;
+    });
+    s += `<path d="${path}" fill="none" stroke="${color}" stroke-width="1.7"/>`;
+    if (lastI >= 0) s += `<text x="${Math.min(X(lastI) + 4, W - 36)}" y="${Y(lastV) + 3}" font-size="9" fill="${color}">${lastV.toFixed(1)}</text>`;
+  });
+  s += `</svg>`;
+  return s;
+}
+
+function renderShareTable(dates, inds) {
+  const n = dates.length;
+  if (!n) return "";
+  const prevIdx = Math.max(0, n - 21);
+  const rows = inds.slice().sort((a, b) => (b.share[n - 1] || 0) - (a.share[n - 1] || 0));
+  let h = `<div class="section-label">📊 行业成交占比排行（${dates[n - 1]}，对比 ${dates[prevIdx]}）</div>`;
+  h += `<div class="if-wrap"><table class="if-table"><thead><tr><th>行业</th><th>分类</th><th>最新占比</th><th>成交额(亿)</th><th>20日占比变化</th></tr></thead><tbody>`;
+  rows.forEach(e => {
+    const cur = e.share[n - 1], prev = e.share[prevIdx];
+    const d = (cur != null && prev != null) ? cur - prev : null;
+    const dHtml = d == null ? "—" : `<span style="color:${d >= 0 ? "#f0413e" : "#00a854"};font-weight:600">${d >= 0 ? "+" : ""}${d.toFixed(2)}pp</span>`;
+    h += `<tr><td>${e.focus ? "★ " : ""}${esc(e.name)}</td><td>${esc(e.level)}</td><td>${cur == null ? "—" : cur.toFixed(2) + "%"}</td><td>${e.amount[n - 1] == null ? "—" : Math.round(e.amount[n - 1]).toLocaleString()}</td><td>${dHtml}</td></tr>`;
+  });
+  h += `</tbody></table></div>`;
+  return h;
+}
+
 function renderMacro(data) {
   const root = document.getElementById("content");
   if (!data || !data.series) {
@@ -1523,6 +1601,8 @@ function renderMacro(data) {
     本页展示 A 股市场资金面与宏观利率/汇率高频数据。数据来源：东方财富融资融券账户统计、akshare 国债收益率、中国外汇交易中心人民币中间价。
     每日由 <code>a_share_collector.py</code> 自动更新并写入 <code>frontend/data/macro_data.json</code>。
   </div>`;
+
+  html += renderIndustryShareSection();
 
   const has = s => s && s.values && s.values.length;
   html += `<div class="macro-grid">`;
@@ -1630,6 +1710,10 @@ async function load() {
         const ntfResp = await fetch("data/national_team_etf.json?t=" + Date.now(), { cache: "no-store" });
         ntfData = ntfResp.ok ? await ntfResp.json() : null;
       } catch (e) { ntfData = null; }
+      try {
+        const itResp = await fetch("data/industry_turnover.json?t=" + Date.now(), { cache: "no-store" });
+        turnoverData = itResp.ok ? await itResp.json() : null;
+      } catch (e) { turnoverData = null; }
       render();
     } else {
       const resp = await fetch("data/industry_data.json?t=" + Date.now(), { cache: "no-store" });

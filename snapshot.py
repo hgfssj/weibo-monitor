@@ -27,6 +27,7 @@ DATASETS = [
     "index_futures_positions.json",  # 股指期货机构净空单（CFFEX 公开数据，360 天）
     "macro_data.json",               # A股资金面宏观序列（融资融券/投资者/利率/汇率，365 天）
     "national_team_etf.json",        # 国家队宽基ETF份额与持仓金额序列
+    "industry_turnover.json",        # 申万行业成交额占比趋势（360 交易日）
 ]
 
 
