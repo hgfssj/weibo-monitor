@@ -26,6 +26,7 @@ import io
 import json
 import os
 import sys
+import time
 import urllib.request
 from collections import defaultdict
 from datetime import date, timedelta
@@ -128,6 +129,7 @@ def compute_net_short_for_date(date_ymd):
         text = fetch_cffex_csv_text(date_ymd, product)
         rows = parse_cffex_csv(text)
         all_rows.extend(rows)
+        time.sleep(0.15)  # 对中金所公开接口的礼貌间隔
 
     if not all_rows:
         return None
@@ -164,7 +166,15 @@ def _load_sh_index(date_ymd):
     try:
         with open(macro_path, "r", encoding="utf-8") as f:
             macro = json.load(f)
-        sh = macro.get("sh_close") or {}
+        # macro_data.json 结构为 {series: [{key: sh_close, values: [{date, value}]}]}
+        sh = {}
+        for s in macro.get("series", []):
+            if s.get("key") == "sh_close":
+                sh = {v["date"]: v["value"] for v in s.get("values", [])}
+                break
+        # 兼容旧版顶层 dict 格式
+        if not sh and isinstance(macro.get("sh_close"), dict):
+            sh = macro["sh_close"]
         # sh_close 的 key 可能是 "YYYY-MM-DD" 或 "YYYYMMDD"
         return sh.get(date_ymd) or sh.get(
             f"{date_ymd[:4]}-{date_ymd[4:6]}-{date_ymd[6:8]}"
@@ -262,7 +272,11 @@ def write_positions(records, positions_path=None, frontend_path=None):
 
 
 def update_index_futures_positions(cfg=None, backfill_days=60, end_date=None):
-    """主入口：回补并写入股指期货净空单数据。返回写入的 data dict。"""
+    """主入口：回补并写入股指期货净空单数据。返回写入的 data dict。
+
+    与本地已有记录做增量合并：新窗口数据覆盖同日期旧值，
+    窗口之外的历史保留（支持一次性长周期回补后，每轮只刷新近期）。
+    """
     if cfg:
         if_cfg = cfg.get("index_futures") or {}
         try:
@@ -273,9 +287,22 @@ def update_index_futures_positions(cfg=None, backfill_days=60, end_date=None):
     if not records:
         print("[if_public] 未获取到任何交易日数据（可能网络不可达或非交易日）", file=sys.stderr)
         return None
-    data = write_positions(records)
+
+    existing_path = os.path.join(DATA_DIR, "index_futures_positions.json")
+    merged = {r["date"]: r for r in records}
+    if os.path.exists(existing_path):
+        try:
+            with open(existing_path, "r", encoding="utf-8") as f:
+                old = json.load(f)
+            for r in old.get("records", []):
+                merged.setdefault(r["date"], r)
+        except Exception:
+            pass
+    all_records = sorted(merged.values(), key=lambda r: r["date"])
+    data = write_positions(all_records)
     print(
-        f"[if_public] 已写入 {len(records)} 条（{records[0]['date']} ~ {records[-1]['date']}）",
+        f"[if_public] 已写入 {len(all_records)} 条（{all_records[0]['date']} ~ {all_records[-1]['date']}，"
+        f"本轮刷新 {len(records)} 条）",
         file=sys.stderr,
     )
     return data

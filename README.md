@@ -148,3 +148,12 @@ python serve.py                    # http://localhost:8766/weibo.html
 
 - 开发/临时：`python serve.py` + `python weibo_monitor.py --loop`（或 `./start.sh`）。
 - 常驻（macOS）：用 `launchd` plist（`KeepAlive` + `RunAtLoad`）让两个进程开机自启、崩溃自愈；注意 plist 内的路径需改为实际部署路径，且**不要**把含本机绝对路径的 plist 提交到仓库。
+
+## 历史数据快照（重新部署免重抓）
+
+长周期历史数据（股指期货 360 天净空单 / 宏观资金面 365 天 / 国家队ETF）不可变，
+以快照形式入库（`snapshot/`，共约 400 KB）；`data/` 与 `frontend/data/` 仍不入库。
+
+- **新部署自动恢复**：`serve.py` / `weibo_monitor.py` 启动时检测运行数据缺失则从快照补齐，无需调用外部接口
+- **更新快照**：数据回补范围扩大或长周期修正后，提交前跑一次 `python snapshot.py --save`
+- 其他命令：`--restore`（仅补缺失）/ `--force`（快照覆盖运行数据）/ `--status`（对比）

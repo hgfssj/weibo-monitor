@@ -339,7 +339,7 @@
   ],
   "index_futures": {
     "source": "public",
-    "backfill_days": 60,
+    "backfill_days": 14,
     "monitor_uid": "2411215032",
     "monitor_name": "股指期货机构持仓复盘",
     "contracts": [

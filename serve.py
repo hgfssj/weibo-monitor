@@ -276,6 +276,13 @@ def main():
     parser.add_argument("--port", type=int, default=8766)
     args = parser.parse_args()
 
+    # 新部署时从 snapshot/ 恢复长周期历史数据（仅补缺失，不覆盖）
+    try:
+        import snapshot
+        snapshot.restore()
+    except Exception as e:
+        print(f"⚠️ 快照恢复跳过: {e}")
+
     os.chdir(FRONTEND_DIR)
     with ReusableTCPServer(("", args.port), Handler) as httpd:
         print(f"📡 微博监控页面: http://localhost:{args.port}/weibo.html")

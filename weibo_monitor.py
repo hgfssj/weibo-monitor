@@ -23,6 +23,16 @@ from datetime import datetime
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE_DIR)
 
+# 加载本地 .env（不入库）：DASHSCOPE_API_KEY 等，供子模块启用大模型研判
+_env_path = os.path.join(BASE_DIR, ".env")
+if os.path.exists(_env_path):
+    with open(_env_path, encoding="utf-8") as f:
+        for _line in f:
+            _line = _line.strip()
+            if _line and not _line.startswith("#") and "=" in _line:
+                _k, _v = _line.split("=", 1)
+                os.environ.setdefault(_k.strip(), _v.strip())
+
 from weibo_collector import collect_users, load_config, save_config
 from xueqiu_collector import collect_users as collect_xueqiu_users
 from weibo_filter import is_stock_related
@@ -495,6 +505,13 @@ def main():
     if not cfg.get("users"):
         print("❌ weibo_config.json 中没有配置监控账号")
         sys.exit(1)
+
+    # 新部署时从 snapshot/ 恢复长周期历史数据（仅补缺失，不覆盖）
+    try:
+        import snapshot
+        snapshot.restore()
+    except Exception as e:
+        print(f"  ⚠️ 快照恢复跳过: {e}")
 
     if args.industries_only:
         if not cfg.get("industries"):

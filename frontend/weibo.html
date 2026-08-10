@@ -867,6 +867,7 @@ function ifExtractPics(post) {
   return out;
 }
 let ifChartMode = "cumulative"; // "cumulative" | "change"
+let ifRange = 90;               // 图表/表格展示的时间范围（天）
 function ymd(d) {
   const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, "0"), day = String(d.getDate()).padStart(2, "0");
   return `${y}-${m}-${day}`;
@@ -1054,13 +1055,16 @@ function renderIfForm(insts) {
 }
 
 function ifTableHtml(recs, insts) {
-  // 预计算每个机构每日的净空单水平与日变化
-  const nets = {}, changes = {};
+  // 先按时间升序预计算每个机构每日的净空单水平与日变化，再倒序展示
+  const asc = recs.slice().sort((a, b) => a.date < b.date ? -1 : 1);
+  const netsAsc = {}, changesAsc = {};
   insts.forEach(n => {
-    nets[n] = recs.map(r => ifInstNet(r, n));
-    changes[n] = recs.map((r, idx) => ifInstChange(r, n, idx > 0 ? nets[n][idx - 1] : null));
+    netsAsc[n] = asc.map(r => ifInstNet(r, n));
+    changesAsc[n] = asc.map((r, idx) => ifInstChange(r, n, idx > 0 ? netsAsc[n][idx - 1] : null));
   });
-  const hasPositions = recs.some(r => {
+  const dateIdx = {}; asc.forEach((r, i) => dateIdx[r.date] = i);
+  const desc = asc.slice().reverse();
+  const hasPositions = asc.some(r => {
     const pos = r.positions || {};
     return insts.some(n => { const p = pos[n] || {}; return p.long != null || p.short != null; });
   });
@@ -1072,12 +1076,13 @@ function ifTableHtml(recs, insts) {
     if (hasPositions) h += `<th>多单</th><th>空单</th>`;
   }
   h += `</tr></thead><tbody>`;
-  recs.forEach((r, idx) => {
+  desc.forEach(r => {
+    const idx = dateIdx[r.date];
     h += `<tr><td>${r.date}${r.note ? ` <span class="b-gray" style="font-size:11px">${esc(r.note)}</span>` : ""}</td>`;
     insts.forEach(n => {
       const p = (r.positions || {})[n] || {};
-      const net = nets[n][idx];
-      const delta = changes[n][idx];
+      const net = netsAsc[n][idx];
+      const delta = changesAsc[n][idx];
       const dCls = delta == null ? "" : (delta >= 0 ? "if-delta-pos" : "if-delta-neg");
       const netCls = net == null ? "" : (net >= 0 ? "if-net-pos" : "if-net-neg");
       h += `<td class="${netCls}">${net != null ? net.toLocaleString() : "—"}</td>`;
@@ -1087,9 +1092,7 @@ function ifTableHtml(recs, insts) {
       }
     });
     h += `<td>${r.sh_index != null ? r.sh_index.toFixed(2) : "—"}</td>`;
-    h += `<td><a class="if-tbl-link" href="${esc(r.source_url || "#")}" target="_blank" ${r.source_url ? "" : "style='visibility:hidden'"}>原文</a> `
-       + `<button class="mini-btn" onclick="ifEditRecord('${r.date}')">编辑</button> `
-       + `<button class="mini-btn del" onclick="ifDeleteRecord('${r.date}')">✕</button></td></tr>`;
+    h += `<td><a class="if-tbl-link" href="${esc(r.source_url || "#")}" target="_blank" ${r.source_url ? "" : "style='visibility:hidden'"}>原文</a></td></tr>`;
   });
   h += `</tbody></table></div>`;
   return h;
@@ -1138,6 +1141,11 @@ function ifRenderChart(recs, insts, mode) {
   }
   s += `<text x="${padL - 8}" y="${padT - 8}" text-anchor="end" font-size="11" fill="#5a6b85">${leftLabel}</text>`;
   if (shVals.length) s += `<text x="${W - padR + 8}" y="${padT - 8}" text-anchor="start" font-size="11" fill="#f5a623">上证指数</text>`;
+  // 每日增减视图：横向 0 轴参考线
+  if (isChange && lLo <= 0 && 0 <= lHi) {
+    const y0 = YL(0);
+    s += `<line x1="${padL}" y1="${y0}" x2="${W - padR}" y2="${y0}" stroke="#8a94a6" stroke-width="1" stroke-dasharray="4 3"/>`;
+  }
   // x 轴标签
   const step = Math.max(1, Math.ceil(xs.length / 7));
   xs.forEach((d, i) => {
@@ -1262,23 +1270,13 @@ function renderIfutures() {
     下方「大V原文复盘」为可选的雪球大V(@股指期货机构持仓复盘 u/2411215032)观点参考，不参与数据计算。</span>
   </div>`;
 
-  html += renderIfForm(insts);
+  html += renderIfChartBlock(recs, insts);
 
-  html += `<div class="section-label">📋 多空单记录（共 ${recs.length} 条，展示最近 30 天）</div>`;
+  html += `<div class="section-label">📋 多空单记录（共 ${recs.length} 条，展示最近 ${ifRange} 天）</div>`;
   if (!recs.length) {
-    html += `<div class="empty">暂无记录 — 等待监控服务从中金所抓取，或点「🤖 自动填充近30日」快速预览</div>`;
+    html += `<div class="empty">暂无记录 — 等待监控服务从中金所自动抓取</div>`;
   } else {
-    html += ifTableHtml(recs.slice(-30), insts);
-  }
-
-  if (recs.length) {
-    const modeBtn = (mode, label) => `<button class="mini-btn ${ifChartMode === mode ? "active" : ""}" onclick="ifSetChartMode('${mode}')">${label}</button>`;
-    const title = ifChartMode === "change" ? "净空单每日增减 & 上证指数（近 30 天 · 双轴）" : "净空单水平 & 上证指数（近 30 天 · 双轴）";
-    html += `<div class="section-label">📈 ${title}
-      <span style="float:right">${modeBtn("cumulative", "净空单水平")} ${modeBtn("change", "每日增减")}</span></div>`;
-    html += `<div class="if-chart-card">${ifRenderChart(recs.slice(-30), insts)}
-      <div class="if-legend">${insts.map((n, i) => `<span><i style="background:${IF_COLORS[i % IF_COLORS.length]}"></i>${esc(n)} ${ifChartMode === "change" ? "日增减" : "水平"}</span>`).join("")}
-        <span><i style="background:#f5a623"></i>上证指数（右轴）</span></div></div>`;
+    html += ifTableHtml(recs.slice(-ifRange), insts);
   }
 
   if (recs.length) {
@@ -1293,15 +1291,23 @@ function renderIfutures() {
 
   html += `</div>`;
   root.innerHTML = html;
-  if (ifFormEditing) {
-    const r = recs.find(x => x.date === ifFormEditing);
-    if (r) {
-      const d = document.getElementById("if-date"); if (d) d.value = r.date;
-      const s = document.getElementById("if-src"); if (s) s.value = r.source_url || "";
-      const n = document.getElementById("if-note"); if (n) n.value = r.note || "";
-    }
-  }
 }
+
+// 净空单 & 上证指数图表区块（置顶展示）
+function renderIfChartBlock(recs, insts) {
+  if (!recs.length) return "";
+  const modeBtn = (mode, label) => `<button class="mini-btn ${ifChartMode === mode ? "active" : ""}" onclick="ifSetChartMode('${mode}')">${label}</button>`;
+  const rangeBtn = r => `<button class="mini-btn ${ifRange === r ? "active" : ""}" onclick="ifSetRange(${r})">${r}天</button>`;
+  const title = ifChartMode === "change" ? "净空单每日增减 & 上证指数（双轴）" : "净空单水平 & 上证指数（双轴）";
+  let h = `<div class="section-label">📈 ${title}
+    <span style="float:right">${modeBtn("cumulative", "净空单水平")} ${modeBtn("change", "每日增减")}
+    <span style="display:inline-block;margin-left:12px">${[30, 90, 180, 360].map(rangeBtn).join("")}</span></span></div>`;
+  h += `<div class="if-chart-card">${ifRenderChart(recs.slice(-ifRange), insts)}
+    <div class="if-legend">${insts.map((n, i) => `<span><i style="background:${IF_COLORS[i % IF_COLORS.length]}"></i>${esc(n)} ${ifChartMode === "change" ? "日增减" : "水平"}</span>`).join("")}
+      <span><i style="background:#f5a623"></i>上证指数（右轴）</span></div></div>`;
+  return h;
+}
+function ifSetRange(r) { ifRange = r; renderIfutures(); }
 
 // ============================ A股资金面 ============================
 function renderLineChart(series, opts) {
@@ -1518,29 +1524,33 @@ function renderMacro(data) {
     每日由 <code>a_share_collector.py</code> 自动更新并写入 <code>frontend/data/macro_data.json</code>。
   </div>`;
 
+  const has = s => s && s.values && s.values.length;
   html += `<div class="macro-grid">`;
   const rz = byKey["fin_balance"], rq = byKey["loan_balance"];
-  html += card(rz.label, latest(rz), rz.unit, renderLineChart(rz, { color: "#f0413e" }));
-  html += card(rq.label, latest(rq), rq.unit, renderLineChart(rq, { color: "#00a854" }));
+  if (has(rz)) html += card(rz.label, latest(rz), rz.unit, renderLineChart(rz, { color: "#f0413e" }));
+  if (has(rq)) html += card(rq.label, latest(rq), rq.unit, renderLineChart(rq, { color: "#00a854" }));
   const rzb = byKey["fin_buy"], rqs = byKey["loan_sell"];
-  html += card(rzb.label, latest(rzb), rzb.unit, renderLineChart(rzb, { color: "#f0413e" }));
-  html += card(rqs.label, latest(rqs), rqs.unit, renderLineChart(rqs, { color: "#00a854" }));
+  if (has(rzb)) html += card(rzb.label, latest(rzb), rzb.unit, renderLineChart(rzb, { color: "#f0413e" }));
+  if (has(rqs)) html += card(rqs.label, latest(rqs), rqs.unit, renderLineChart(rqs, { color: "#00a854" }));
   html += `</div>`;
 
   html += `<div style="height:16px"></div><div class="macro-grid">`;
   const inv = byKey["investor_num"], avg = byKey["avg_guarantee_ratio"];
-  html += card(inv.label, latest(inv), inv.unit, renderLineChart(inv, { color: "#ff7c1e", yFormat: "int" }));
-  html += card(avg.label, latest(avg), avg.unit, renderLineChart(avg, { color: "#7b61ff", yFormat: "pct" }));
+  if (has(inv)) html += card(inv.label, latest(inv), inv.unit, renderLineChart(inv, { color: "#ff7c1e", yFormat: "int" }));
+  if (has(avg)) html += card(avg.label, latest(avg), avg.unit, renderLineChart(avg, { color: "#7b61ff", yFormat: "pct" }));
   const cn = byKey["cn_bond_10y"], us = byKey["us_bond_10y"];
-  const bondTitle = "中美国债收益率对比（10年期）";
-  html += `<div class="macro-card">
-    <div class="macro-card-head"><span class="macro-card-title">${esc(bondTitle)}</span>
-      <span class="macro-card-latest">中:<b>${latest(cn)}%</b><span style="margin:0 8px"></span>美:<b>${latest(us)}%</b></span></div>
-    <div class="macro-chart">${renderLineChart([cn, us], { colors: ["#f0413e", "#1e8fff"], yFormat: "pct" })}</div>
-    <div class="macro-legend"><span><i style="background:#f0413e"></i>${esc(cn.label)}</span><span><i style="background:#1e8fff"></i>${esc(us.label)}</span></div>
-  </div>`;
+  if (has(cn) || has(us)) {
+    const bondTitle = "中美国债收益率对比（10年期）";
+    const bondSeries = [cn, us].filter(has);
+    html += `<div class="macro-card">
+      <div class="macro-card-head"><span class="macro-card-title">${esc(bondTitle)}</span>
+        <span class="macro-card-latest">中:<b>${latest(cn) != null ? latest(cn) + "%" : "—"}</b><span style="margin:0 8px"></span>美:<b>${latest(us) != null ? latest(us) + "%" : "—"}</b></span></div>
+      <div class="macro-chart">${renderLineChart(bondSeries, { colors: ["#f0413e", "#1e8fff"], yFormat: "pct" })}</div>
+      <div class="macro-legend">${bondSeries.map((s, i) => `<span><i style="background:${["#f0413e", "#1e8fff"][i]}"></i>${esc(s.label)}</span>`).join("")}</div>
+    </div>`;
+  }
   const fx = byKey["usdcny"];
-  html += card(fx.label, latest(fx), fx.unit, renderLineChart(fx, { color: "#1e8fff", yFormat: "rate" }));
+  if (has(fx)) html += card(fx.label, latest(fx), fx.unit, renderLineChart(fx, { color: "#1e8fff", yFormat: "rate" }));
   html += `</div>`;
 
   html += renderNtfSection();
