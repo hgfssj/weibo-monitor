@@ -28,6 +28,7 @@ import argparse
 import json
 import os
 import datetime
+import time
 
 import requests
 
@@ -182,24 +183,29 @@ def load_existing():
 
 
 def fetch_sh_index(dates):
-    """取上证指数(000001)每日收盘，对齐到 dates。失败返回 {}。"""
+    """取上证指数(000001)每日收盘，对齐到 dates。东财优先，新浪兜底；失败返回 {}。"""
     if not dates:
         return {}
+    start = min(dates).replace("-", "")
+    end = max(dates).replace("-", "")
     try:
         import akshare as ak
-        start = min(dates).replace("-", "")
-        end = max(dates).replace("-", "")
-        df = ak.index_zh_a_hist(symbol="000001", period="daily", start_date=start, end_date=end)
-        col_date = df.columns[0]
-        col_close = "收盘" if "收盘" in df.columns else df.columns[2]
+        try:
+            df = ak.index_zh_a_hist(symbol="000001", period="daily", start_date=start, end_date=end)
+            col_date, col_close = df.columns[0], "收盘"
+        except Exception as e:
+            print(f"  ⚠️ 上证指数东财源失败，改用新浪: {e}")
+            df = ak.stock_zh_index_daily(symbol="sh000001")
+            col_date, col_close = "date", "close"
         out = {}
         for _, row in df.iterrows():
             try:
-                out[str(row[col_date])] = float(row[col_close])
+                out[str(row[col_date])[:10]] = float(row[col_close])
             except Exception:
                 pass
         return out
-    except Exception:
+    except Exception as e:
+        print(f"  ⚠️ 上证指数抓取失败: {e}")
         return {}
 
 
@@ -239,6 +245,14 @@ def collect(backfill_days=90, end_date=None, force_full=False):
                 if v is not None:
                     sz_hist[e["code"]][dt] = v
 
+    # 既有单位净值（历史净值不可变，不重抓）：code -> {date: 净值}
+    nav_hist = {code: {} for code in list(CORE_SH) + list(CORE_SZ)}
+    for e in existing.get("etfs", []):
+        if e.get("nav"):
+            for dt, v in zip(existing_dates, e["nav"]):
+                if v is not None:
+                    nav_hist.setdefault(e["code"], {})[dt] = v
+
     last_date = existing_dates[-1] if existing_dates else None
     dates_to_fetch = needed_dates(None if force_full else last_date, end_date, backfill_days) if (not last_date or force_full) \
         else needed_dates(last_date, end_date, backfill_days)
@@ -251,6 +265,7 @@ def collect(backfill_days=90, end_date=None, force_full=False):
                 new_shares[iso(d)] = res
         except Exception as e:
             print(f"  ⚠️ SSE {iso(d)} 抓取失败: {e}")
+        time.sleep(0.1)  # 对上交所公开接口的礼貌间隔
 
     # 合并历史
     for dt, m in new_shares.items():
@@ -279,31 +294,32 @@ def collect(backfill_days=90, end_date=None, force_full=False):
         print("  ℹ️ 无可用交易日数据（可能网络不可达或非交易时段）")
         return existing
 
-    # 深市历史份额（akshare 深交所每日 ETF 份额），仅补缺失窗口
-    sz_last = max((max(sz_hist[c].keys()) for c in CORE_SZ if sz_hist[c]), default=None)
-    sz_start = (datetime.date.fromisoformat(sz_last) + datetime.timedelta(days=1)).strftime("%Y%m%d") if sz_last else all_dates[0].replace("-", "")
-    sz_end = all_dates[-1].replace("-", "")
-    if sz_start <= sz_end:
-        try:
-            fetched = fetch_sz_shares_history(sz_start, sz_end)
-            for code, m in fetched.items():
-                for dt, v in m.items():
-                    sz_hist[code][dt] = v
-        except Exception as e:
-            print(f"  ⚠️ 深市份额抓取失败: {e}")
+    # 深市历史份额（akshare 深交所每日 ETF 份额）：仅补缺失窗口，分块避免单次请求过大
+    sz_missing = [dt for dt in all_dates if any(dt not in sz_hist[c] for c in CORE_SZ)]
+    if sz_missing:
+        cur = datetime.date.fromisoformat(min(sz_missing))
+        end_d = datetime.date.fromisoformat(max(sz_missing))
+        while cur <= end_d:
+            chunk_end = min(cur + datetime.timedelta(days=119), end_d)
+            try:
+                fetched = fetch_sz_shares_history(ymd(cur), ymd(chunk_end))
+                for code, m in fetched.items():
+                    for dt, v in m.items():
+                        sz_hist[code][dt] = v
+            except Exception as e:
+                print(f"  ⚠️ 深市份额抓取失败 {iso(cur)}~{iso(chunk_end)}: {e}")
+            cur = chunk_end + datetime.timedelta(days=1)
 
-    win_start = all_dates[0].replace("-", "")
-    win_end = all_dates[-1].replace("-", "")
-
-    # 每只 ETF 历史单位净值
-    nav_hist = {}
+    # 每只 ETF 历史单位净值：仅补缺失区间（历史净值不可变）
     for code in list(CORE_SH) + list(CORE_SZ):
+        missing = [dt for dt in all_dates if dt not in nav_hist.get(code, {})]
+        if not missing:
+            continue
         try:
-            nav_hist[code] = fetch_nav_history(code, win_start, win_end)
+            got = fetch_nav_history(code, min(missing).replace("-", ""), max(missing).replace("-", ""))
+            nav_hist.setdefault(code, {}).update(got)
         except Exception as e:
             print(f"  ⚠️ NAV {code} 抓取失败: {e}")
-            nav_hist[code] = {}
-
     # 构建每只 ETF 的 金额(亿元) / 净申购金额(亿元) 序列
     etfs = []
     for code, (name, cat) in CORE_SH.items():
@@ -447,12 +463,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--backfill", type=int, default=90, help="回补交易日天数")
     ap.add_argument("--end-date", type=str, default=None, help="截止日期 YYYY-MM-DD")
+    ap.add_argument("--force-full", action="store_true",
+                    help="无视已有数据，按 backfill 全窗口回补（用于向前追溯更长历史）")
     ap.add_argument("--test", action="store_true", help="运行解析/聚合单测（不联网）")
     args = ap.parse_args()
     if args.test:
         main_test()
         return
-    data = collect(backfill_days=args.backfill, end_date=args.end_date)
+    data = collect(backfill_days=args.backfill, end_date=args.end_date, force_full=args.force_full)
     n = len(data.get("dates", []))
     sh = sum(1 for e in data.get("etfs", []) if e.get("market") == "SH")
     sz = sum(1 for e in data.get("etfs", []) if e.get("market") == "SZ")
