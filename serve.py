@@ -13,6 +13,7 @@ import argparse
 import http.server
 import json
 import os
+import random
 import re
 import shutil
 import socketserver
@@ -27,20 +28,29 @@ INDEX_FUTURES_BAK = os.path.join(BASE_DIR, "data", "index_futures_positions.json
 # ---------------- 盘中实时（腾讯分时 + 新浪行业实时，15秒服务端缓存） ----------------
 _INTRADAY_CACHE = {"ts": 0.0, "data": None}
 
-# 申万行业分时可选池（与日线图申万口径一致，含重点关注的二级行业）
-SW_INDUSTRIES = [
-    ("801081", "半导体"), ("801790", "非银金融"), ("801104", "软件开发"),
-    ("801150", "医药生物"), ("801078", "自动化设备"), ("801780", "银行"),
-    ("801120", "食品饮料"), ("801080", "电子"), ("801750", "计算机"),
-    ("801730", "电力设备"), ("801880", "汽车"), ("801050", "有色金属"),
-    ("801740", "国防军工"), ("801770", "通信"), ("801110", "家用电器"),
+# 申万二级热门行业（与日线图重点关注行业一致，另加高热度赛道）
+SW_SECOND_FOCUS = [
+    ("801081", "半导体"), ("801104", "软件开发"), ("801078", "自动化设备"),
+    ("801193", "证券"), ("801194", "保险"), ("801125", "白酒"),
+    ("801737", "电池"), ("801085", "消费电子"), ("801151", "化学制药"), ("801735", "光伏设备"),
 ]
 
 
 def _fetch_sw_min(code, name):
     import akshare as ak
+    import time as _t
 
-    df = ak.index_min_sw(symbol=code)
+    df = None
+    for attempt in range(3):  # 含重试防限流
+        try:
+            df = ak.index_min_sw(symbol=code)
+            if df is not None and len(df):
+                break
+        except Exception:
+            df = None
+        _t.sleep(1.0 + attempt)
+    if df is None or not len(df):
+        return {"key": "sw" + code, "name": name, "points": []}
     pts = []
     for i in range(0, len(df), 6):  # 10秒粒度降采样到约 1 分钟
         row = df.iloc[i]
@@ -54,7 +64,7 @@ def load_intraday():
     import urllib.request
 
     now = _time.time()
-    if _INTRADAY_CACHE["data"] is not None and now - _INTRADAY_CACHE["ts"] < 15:
+    if _INTRADAY_CACHE["data"] is not None and now - _INTRADAY_CACHE["ts"] < 30:
         return _INTRADAY_CACHE["data"]
 
     try:
@@ -101,25 +111,42 @@ def load_intraday():
     except Exception:
         industries = []
 
-    # 申万行业指数分时（并行抓取，单个失败不影响其他）
+    # 申万行业指数分时（一级全覆盖 + 二级热门，并行抓取，单个失败不影响其他）
     from concurrent.futures import ThreadPoolExecutor
 
-    sw_industries = []
     try:
-        with ThreadPoolExecutor(max_workers=5) as ex:
-            futs = {ex.submit(_fetch_sw_min, c, n): n for c, n in SW_INDUSTRIES}
-            for fut, n in futs.items():
+        from industry_turnover import FIRST_LEVEL
+    except Exception:
+        FIRST_LEVEL = {}
+
+    def _fetch_group(pairs):
+        out = []
+        # 并发降到 4，每个请求前随机间隔，避免申万接口限流
+        def _worker(c, n):
+            _time.sleep(random.random() * 0.5)
+            return _fetch_sw_min(c, n)
+
+        with ThreadPoolExecutor(max_workers=4) as ex:
+            futs = {ex.submit(_worker, c, n): (c, n) for c, n in pairs}
+            for fut, (c, n) in futs.items():
                 try:
-                    sw_industries.append(fut.result(timeout=20))
+                    out.append(fut.result(timeout=45))
                 except Exception:
-                    sw_industries.append({"key": "sw_" + n, "name": n, "points": []})
+                    out.append({"key": "sw" + c, "name": n, "points": []})
+        return out
+
+    sw_second, sw_first = [], []
+    try:
+        sw_second = _fetch_group(SW_SECOND_FOCUS)
+        sw_first = _fetch_group([(c, n) for c, n in FIRST_LEVEL.items()])
     except Exception:
         pass
 
     data = {
         "time": _time.strftime("%Y-%m-%d %H:%M:%S"),
         "indexes": indexes,
-        "sw_industries": sw_industries,
+        "sw_first": sw_first,
+        "sw_second": sw_second,
         "industries": industries,
         "total_amount": round(total, 1),
     }

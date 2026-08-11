@@ -1547,13 +1547,19 @@ function renderIntradayBlock() {
   h += `<div class="if-chart-card"><div style="margin-bottom:8px;line-height:2.2">${idxs.map(chip).join(" ")}</div>
     ${renderIntraChart(idxs, intraSelected)}
     <div class="if-legend">${idxs.filter(e => intraSelected.has(e.key)).map((e, i) => `<span><i style="background:${IT_COLORS[i % IT_COLORS.length]}"></i>${esc(e.name)}</span>`).join("")}</div></div>`;
-  // 申万行业指数分时（与日线图同口径）
-  const sws = (d.sw_industries || []).filter(e => e.points && e.points.length);
+  // 申万行业指数分时（与日线图同口径；二级热门 + 一级行业分组选择）
+  const swSecond = (d.sw_second || []).filter(e => e.points && e.points.length);
+  const swFirst = (d.sw_first || []).filter(e => e.points && e.points.length);
+  const sws = swSecond.concat(swFirst);
   if (sws.length) {
     const swChip = e => `<button class="mini-btn ${intraSwSelected.has(e.key) ? "active" : ""}" onclick="intraSwToggle('${e.key}')">${esc(e.name)}</button>`;
+    const secondRow = swSecond.map(swChip).join(" ");
+    const firstRow = swFirst.map(swChip).join(" ");
     h += `<div class="section-label">⚡ 盘中实时·行业指数分时（申万行业 · 当日首点归一 = 0%）</div>`;
-    h += `<div class="if-chart-card"><div style="margin-bottom:8px;line-height:2.2">${sws.map(swChip).join(" ")}</div>
-      ${renderIntraChart(sws, intraSwSelected)}
+    h += `<div class="if-chart-card">`
+      + (secondRow ? `<div style="margin-bottom:2px;font-size:11px;color:#8a94a6">二级热门</div><div style="margin-bottom:6px;line-height:2.2">${secondRow}</div>` : "")
+      + `<div style="margin-bottom:2px;font-size:11px;color:#8a94a6">一级行业</div><div style="margin-bottom:8px;line-height:2.2">${firstRow}</div>`
+      + `${renderIntraChart(sws, intraSwSelected)}
       <div class="if-legend">${sws.filter(e => intraSwSelected.has(e.key)).map((e, i) => `<span><i style="background:${IT_COLORS[i % IT_COLORS.length]}"></i>${esc(e.name)}</span>`).join("")}</div></div>`;
   }
   h += renderIntraIndustryTable(d);
