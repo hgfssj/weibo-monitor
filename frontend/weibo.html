@@ -1520,7 +1520,7 @@ function idxToggle(key) { if (idxSelected.has(key)) idxSelected.delete(key); els
 
 function renderIndexTrendSection() {
   if (!idxTrendData || !idxTrendData.indexes || !idxTrendData.indexes.length) return "";
-  if (!idxInited) { ["csi300", "csi500", "chinext"].forEach(k => idxSelected.add(k)); idxInited = true; }
+  if (!idxInited) { ["sh_index", "csi300", "csi500", "chinext"].forEach(k => idxSelected.add(k)); idxInited = true; }
   const idxs = idxTrendData.indexes;
   const rangeBtn = r => `<button class="mini-btn ${idxRange === r ? "active" : ""}" onclick="idxSetRange(${r})">${IDX_RANGE_LABEL[r]}</button>`;
   const chip = e => `<button class="mini-btn ${idxSelected.has(e.key) ? "active" : ""}" onclick="idxToggle('${e.key}')">${esc(e.name)}</button>`;
