@@ -17,6 +17,7 @@ import random
 import re
 import shutil
 import socketserver
+import threading
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FRONTEND_DIR = os.path.join(BASE_DIR, "frontend")
@@ -24,9 +25,11 @@ CONFIG_PATH = os.path.join(BASE_DIR, "weibo_config.json")
 CONFIG_BAK = os.path.join(BASE_DIR, "weibo_config.json.bak")
 INDEX_FUTURES_PATH = os.path.join(BASE_DIR, "data", "index_futures_positions.json")
 INDEX_FUTURES_BAK = os.path.join(BASE_DIR, "data", "index_futures_positions.json.bak")
+INTRADAY_SNAP_PATH = os.path.join(BASE_DIR, "data", "intraday_daily_snapshot.json")
 
-# ---------------- 盘中实时（腾讯分时 + 新浪行业实时，15秒服务端缓存） ----------------
+# ---------------- 盘中实时（腾讯分时 + 新浪行业实时，30秒服务端缓存） ----------------
 _INTRADAY_CACHE = {"ts": 0.0, "data": None}
+_INTRADAY_LOCK = threading.Lock()  # 多线程服务器下防重复抓取
 
 # 申万二级热门行业（与日线图重点关注行业一致，另加高热度赛道）
 SW_SECOND_FOCUS = [
@@ -61,12 +64,22 @@ def _fetch_sw_min(code, name):
 
 def load_intraday():
     import time as _time
-    import urllib.request
 
     now = _time.time()
     if _INTRADAY_CACHE["data"] is not None and now - _INTRADAY_CACHE["ts"] < 30:
         return _INTRADAY_CACHE["data"]
+    with _INTRADAY_LOCK:
+        # 拿到锁后再检查一次：可能已有其他线程完成抓取
+        if _INTRADAY_CACHE["data"] is not None and _time.time() - _INTRADAY_CACHE["ts"] < 30:
+            return _INTRADAY_CACHE["data"]
+        return _build_intraday()
 
+
+def _build_intraday():
+    import time as _time
+    import urllib.request
+
+    now = _time.time()
     try:
         from index_trend import INDEXES
     except Exception:
@@ -150,6 +163,35 @@ def load_intraday():
         "industries": industries,
         "total_amount": round(total, 1),
     }
+
+    # 每日行业快照：盘中持续覆盖，收盘后留存即为当日全天累计，供次交易日“前一日”对比
+    today_key = _time.strftime("%Y%m%d")
+    prev_day = None
+    try:
+        if os.path.exists(INTRADAY_SNAP_PATH):
+            with open(INTRADAY_SNAP_PATH, "r", encoding="utf-8") as f:
+                prev = json.load(f)
+            if prev.get("date") != today_key:
+                prev_day = prev
+        if industries:
+            snap = {
+                "date": today_key,
+                "time": data["time"],
+                "total_amount": data["total_amount"],
+                "industries": [
+                    {"name": e["name"], "amount": e["amount"], "share": e["share"],
+                     "change_pct": e.get("change_pct")}
+                    for e in industries
+                ],
+            }
+            tmp = INTRADAY_SNAP_PATH + ".tmp"
+            with open(tmp, "w", encoding="utf-8") as f:
+                json.dump(snap, f, ensure_ascii=False)
+            os.replace(tmp, INTRADAY_SNAP_PATH)
+    except Exception:
+        pass
+    data["prev_day"] = prev_day
+
     _INTRADAY_CACHE["ts"] = now
     _INTRADAY_CACHE["data"] = data
     return data
@@ -256,9 +298,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
 
-class ReusableTCPServer(socketserver.TCPServer):
+class ReusableTCPServer(socketserver.ThreadingTCPServer):
     # 必须在构造(bind)前设置，否则端口处于 TIME_WAIT 时重启会报 Address already in use
     allow_reuse_address = True
+    daemon_threads = True  # 请求各自一线程，避免长抓取阻塞其他请求
 
 
 def validate_config(data):

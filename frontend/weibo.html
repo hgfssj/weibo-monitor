@@ -1620,17 +1620,31 @@ function renderIntraChart(idxs, selected) {
 function renderIntraIndustryTable(d) {
   if (!d.industries || !d.industries.length) return "";
   const top = d.industries.slice(0, 20);
+  const prev = d.prev_day;
+  const prevMap = {};
+  if (prev && prev.industries) prev.industries.forEach(e => prevMap[e.name] = e);
+  const prevLabel = prev ? `${parseInt(prev.date.slice(4, 6))}/${parseInt(prev.date.slice(6, 8))}` : "";
   let h = `<div class="section-label">🏭 当前行业成交额占比（新浪行业实时口径 · 合计 ${Math.round(d.total_amount).toLocaleString()} 亿元）</div>`;
-  h += `<div class="if-wrap"><table class="if-table"><thead><tr><th>#</th><th>行业</th><th>成交额(亿)</th><th>占比</th><th>涨跌幅</th><th style="width:30%">占比条</th></tr></thead><tbody>`;
-  const maxShare = top[0].share || 1;
+  h += `<div class="if-wrap"><table class="if-table"><thead><tr><th>#</th><th>行业</th><th>成交额(亿)</th><th>占比</th><th>涨跌幅</th><th style="width:30%">占比条${prev ? `（蓝条今日 · 橙线前日${prevLabel}）` : ""}</th></tr></thead><tbody>`;
+  let maxShare = top[0].share || 1;
+  top.forEach(e => { const p = prevMap[e.name]; if (p && p.share > maxShare) maxShare = p.share; });
   top.forEach((e, i) => {
     const c = e.change_pct >= 0 ? "#f0413e" : "#00a854";
-    h += `<tr><td>${i + 1}</td><td>${esc(e.name)}</td><td>${e.amount.toLocaleString()}</td><td><b>${e.share.toFixed(2)}%</b></td>
+    const p = prevMap[e.name];
+    const shareCell = p
+      ? `<b>${e.share.toFixed(2)}%</b> <span style="color:#8a94a6;font-size:11px">前日 ${p.share.toFixed(2)}%</span>`
+      : `<b>${e.share.toFixed(2)}%</b>`;
+    let mark = "";
+    if (p && p.share > 0) {
+      const pos = Math.min(p.share / maxShare * 100, 100).toFixed(1);
+      mark = `<div style="position:absolute;top:-1px;bottom:-1px;left:${pos}%;width:2px;background:#f5a623;border-radius:1px" title="前日${prevLabel}占比 ${p.share.toFixed(2)}%"></div>`;
+    }
+    h += `<tr><td>${i + 1}</td><td>${esc(e.name)}</td><td>${e.amount.toLocaleString()}</td><td>${shareCell}</td>
       <td style="color:${c};font-weight:600">${e.change_pct >= 0 ? "+" : ""}${e.change_pct.toFixed(2)}%</td>
-      <td><div style="height:8px;border-radius:2px;background:#e8ebf0;overflow:hidden"><div style="height:100%;width:${(e.share / maxShare * 100).toFixed(1)}%;background:#1e8fff"></div></div></td></tr>`;
+      <td><div style="position:relative;height:8px;border-radius:2px;background:#e8ebf0;overflow:hidden"><div style="height:100%;width:${(e.share / maxShare * 100).toFixed(1)}%;background:#1e8fff"></div>${mark}</div></td></tr>`;
   });
   h += `</tbody></table>
-    <div style="font-size:11px;color:#8a94a6;margin-top:6px">注：实时口径为新浪行业分类（当日累计成交），与上方日线图的申万行业口径不同，占比不可直接对比。</div></div>`;
+    <div style="font-size:11px;color:#8a94a6;margin-top:6px">注：实时口径为新浪行业分类（当日累计成交），与上方日线图的申万行业口径不同，占比不可直接对比。${prev ? `橙线为前交易日 ${prevLabel} 收盘快照（全天累计）。` : "前一日对比数据自明日生效（需累积收盘快照）。"}</div></div>`;
   return h;
 }
 
