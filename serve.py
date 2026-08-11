@@ -27,6 +27,27 @@ INDEX_FUTURES_BAK = os.path.join(BASE_DIR, "data", "index_futures_positions.json
 # ---------------- 盘中实时（腾讯分时 + 新浪行业实时，15秒服务端缓存） ----------------
 _INTRADAY_CACHE = {"ts": 0.0, "data": None}
 
+# 申万行业分时可选池（与日线图申万口径一致，含重点关注的二级行业）
+SW_INDUSTRIES = [
+    ("801081", "半导体"), ("801790", "非银金融"), ("801104", "软件开发"),
+    ("801150", "医药生物"), ("801078", "自动化设备"), ("801780", "银行"),
+    ("801120", "食品饮料"), ("801080", "电子"), ("801750", "计算机"),
+    ("801730", "电力设备"), ("801880", "汽车"), ("801050", "有色金属"),
+    ("801740", "国防军工"), ("801770", "通信"), ("801110", "家用电器"),
+]
+
+
+def _fetch_sw_min(code, name):
+    import akshare as ak
+
+    df = ak.index_min_sw(symbol=code)
+    pts = []
+    for i in range(0, len(df), 6):  # 10秒粒度降采样到约 1 分钟
+        row = df.iloc[i]
+        t = str(row["时间"])[:5].replace(":", "")
+        pts.append([t, float(row["价格"])])
+    return {"key": "sw" + code, "name": name, "points": pts}
+
 
 def load_intraday():
     import time as _time
@@ -80,9 +101,25 @@ def load_intraday():
     except Exception:
         industries = []
 
+    # 申万行业指数分时（并行抓取，单个失败不影响其他）
+    from concurrent.futures import ThreadPoolExecutor
+
+    sw_industries = []
+    try:
+        with ThreadPoolExecutor(max_workers=5) as ex:
+            futs = {ex.submit(_fetch_sw_min, c, n): n for c, n in SW_INDUSTRIES}
+            for fut, n in futs.items():
+                try:
+                    sw_industries.append(fut.result(timeout=20))
+                except Exception:
+                    sw_industries.append({"key": "sw_" + n, "name": n, "points": []})
+    except Exception:
+        pass
+
     data = {
         "time": _time.strftime("%Y-%m-%d %H:%M:%S"),
         "indexes": indexes,
+        "sw_industries": sw_industries,
         "industries": industries,
         "total_amount": round(total, 1),
     }

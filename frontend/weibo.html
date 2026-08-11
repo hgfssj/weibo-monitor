@@ -387,6 +387,8 @@ let idxInited = false;
 let intradayData = null;           // 盘中实时数据（/api/intraday）
 let intraSelected = new Set();
 let intraInited = false;
+let intraSwSelected = new Set();   // 申万行业分时选中项
+let intraSwInited = false;
 let intradayTimer = null;
 let activePlatform = "weibo";      // 大V：一级 Tab
 let activeUid = {};                // 大V：每个平台各自记住选中的大V
@@ -1519,6 +1521,7 @@ function itToggle(key) { if (itSelected.has(key)) itSelected.delete(key); else i
 
 // ============================ 盘中实时（指数分时 + 行业实时成交占比） ============================
 function intraToggle(key) { if (intraSelected.has(key)) intraSelected.delete(key); else intraSelected.add(key); renderIntradayBlock(); }
+function intraSwToggle(key) { if (intraSwSelected.has(key)) intraSwSelected.delete(key); else intraSwSelected.add(key); renderIntradayBlock(); }
 
 function updateIntraday() {
   const root = document.getElementById("intraday-root");
@@ -1535,20 +1538,30 @@ function renderIntradayBlock() {
   const d = intradayData;
   if (!d || !d.indexes) { root.innerHTML = ""; return; }
   if (!intraInited) { ["sh_index", "csi300", "chinext"].forEach(k => intraSelected.add(k)); intraInited = true; }
+  if (!intraSwInited) { ["sw801081", "sw801790", "sw801104"].forEach(k => intraSwSelected.add(k)); intraSwInited = true; }
   const idxs = d.indexes.filter(e => e.points && e.points.length);
   const dateStr = idxs.length && idxs[0].date ? `${idxs[0].date.slice(0, 4)}-${idxs[0].date.slice(4, 6)}-${idxs[0].date.slice(6, 8)}` : "";
   const chip = e => `<button class="mini-btn ${intraSelected.has(e.key) ? "active" : ""}" onclick="intraToggle('${e.key}')">${esc(e.name)}</button>`;
   let h = `<div class="section-label">⚡ 盘中实时·指数分时（当日首点归一 = 0%）
     <span style="float:right;color:#8a94a6;font-weight:400">数据 ${dateStr} · 更新于 ${esc((d.time || "").slice(11, 19))}</span></div>`;
   h += `<div class="if-chart-card"><div style="margin-bottom:8px;line-height:2.2">${idxs.map(chip).join(" ")}</div>
-    ${renderIntraChart(idxs)}
+    ${renderIntraChart(idxs, intraSelected)}
     <div class="if-legend">${idxs.filter(e => intraSelected.has(e.key)).map((e, i) => `<span><i style="background:${IT_COLORS[i % IT_COLORS.length]}"></i>${esc(e.name)}</span>`).join("")}</div></div>`;
+  // 申万行业指数分时（与日线图同口径）
+  const sws = (d.sw_industries || []).filter(e => e.points && e.points.length);
+  if (sws.length) {
+    const swChip = e => `<button class="mini-btn ${intraSwSelected.has(e.key) ? "active" : ""}" onclick="intraSwToggle('${e.key}')">${esc(e.name)}</button>`;
+    h += `<div class="section-label">⚡ 盘中实时·行业指数分时（申万行业 · 当日首点归一 = 0%）</div>`;
+    h += `<div class="if-chart-card"><div style="margin-bottom:8px;line-height:2.2">${sws.map(swChip).join(" ")}</div>
+      ${renderIntraChart(sws, intraSwSelected)}
+      <div class="if-legend">${sws.filter(e => intraSwSelected.has(e.key)).map((e, i) => `<span><i style="background:${IT_COLORS[i % IT_COLORS.length]}"></i>${esc(e.name)}</span>`).join("")}</div></div>`;
+  }
   h += renderIntraIndustryTable(d);
   root.innerHTML = h;
 }
 
-function renderIntraChart(idxs) {
-  const sel = idxs.filter(e => intraSelected.has(e.key));
+function renderIntraChart(idxs, selected) {
+  const sel = idxs.filter(e => selected.has(e.key));
   if (!sel.length) return `<div class="empty">点击上方指数按钮选择要展示的指数</div>`;
   const tset = new Set();
   sel.forEach(e => e.points.forEach(p => tset.add(p[0])));
