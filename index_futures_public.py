@@ -179,9 +179,17 @@ def _load_sh_index(date_ymd):
         if not sh and isinstance(macro.get("sh_close"), dict):
             sh = macro["sh_close"]
         # sh_close 的 key 可能是 "YYYY-MM-DD" 或 "YYYYMMDD"
-        return sh.get(date_ymd) or sh.get(
+        val = sh.get(date_ymd) or sh.get(
             f"{date_ymd[:4]}-{date_ymd[4:6]}-{date_ymd[6:8]}"
         )
+        if val is None and date_ymd == time.strftime("%Y%m%d"):
+            # macro 尚未更新到当日（统计源 T+1）时，降级取腾讯分时末点当日收盘（仅限当日，避免污染历史缺口）
+            try:
+                from a_share_collector import fetch_today_sh_close
+                val = fetch_today_sh_close()
+            except Exception:
+                val = None
+        return val
     except Exception:
         return None
 

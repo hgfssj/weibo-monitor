@@ -150,11 +150,53 @@ def fetch_fx(limit_days=365):
     ]
 
 
+def fetch_today_sh_close():
+    """新浪/乐咕日线通常当夜或次日才更新；收盘后用腾讯分时末点作为上证指数当日收盘。
+
+    返回 float 或 None（未到收盘/非当日/接口异常）。
+    """
+    now = datetime.now()
+    if now.hour < 15:  # 收盘前不补，避免把盘中价当收盘
+        return None
+    try:
+        import urllib.request
+        url = "https://web.ifzq.gtimg.cn/appstock/app/minute/query?code=sh000001"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        d = json.loads(urllib.request.urlopen(req, timeout=8).read())
+        inner = d["data"]["sh000001"]["data"]
+        if inner.get("date") != now.strftime("%Y%m%d"):
+            return None
+        lines = inner.get("data", [])
+        if len(lines) < 240:  # 未收盘（点数不足全天 242 点）
+            return None
+        return round(float(lines[-1].split()[1]), 4)
+    except Exception as e:
+        print(f"[a_share_collector] 上证当日收盘补齐失败: {e}", file=sys.stderr)
+        return None
+
+
+def append_today_sh_close(series):
+    """sh_close 统计源 T+1，收盘后用腾讯分时末点补当日值。"""
+    today = datetime.now().strftime("%Y-%m-%d")
+    for s in series:
+        if s.get("key") != "sh_close":
+            continue
+        vals = s.get("values", [])
+        if vals and vals[-1]["date"] >= today:
+            return series
+        close = fetch_today_sh_close()
+        if close is not None:
+            vals.append({"date": today, "value": close})
+            print(f"[a_share_collector] sh_close 补当日收盘 {today} = {close}（腾讯分时末点）")
+    return series
+
+
 def collect_macro_data(days=365):
     series = []
     series.extend(fetch_margin_daily(limit_days=days + 30))
     series.extend(fetch_bond_rates(limit_days=days))
     series.extend(fetch_fx(limit_days=days))
+    series = append_today_sh_close(series)
 
     # 统一裁剪到最近 days 个交易日/日历日
     start_dt = (date.today() - timedelta(days=days)).isoformat()
