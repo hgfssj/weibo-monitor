@@ -45,6 +45,7 @@ from if_ocr import update_index_futures_positions as update_if_ocr
 from index_futures_public import update_index_futures_positions as update_if_public
 from national_team_etf import collect as collect_national_team_etf
 from industry_turnover import collect as collect_industry_turnover
+from index_trend import collect as collect_index_trend
 
 DATA_DIR = os.path.join(BASE_DIR, "data")
 FRONTEND_DATA_DIR = os.path.join(BASE_DIR, "frontend", "data")
@@ -361,6 +362,14 @@ def run_once(cfg) -> dict:
         print("    ✅ 行业成交占比数据已更新")
     except Exception as e:
         print(f"  ⚠️ 行业成交占比采集失败(不影响主流程): {e}")
+
+    # 主要指数走势（近一年日线，新浪+中证官网，无浏览器依赖）
+    try:
+        print("\n  📈 指数走势: 更新主要指数近一年日线...")
+        collect_index_trend()
+        print("    ✅ 指数走势数据已更新")
+    except Exception as e:
+        print(f"  ⚠️ 指数走势采集失败(不影响主流程): {e}")
 
     print(f"\n  ✅ 本轮完成: 新增 {len(new_posts_total)} 条 | "
           f"历史共 {len(all_posts['posts'])} 条")

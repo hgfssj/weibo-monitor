@@ -58,6 +58,7 @@ weibo-monitor/
 ├── a_share_collector.py   # A股资金面数据采集（融资融券/投资者/利率/汇率）
 ├── national_team_etf.py   # 国家队宽基ETF增减持（沪深交易所官方份额，可回补2年）
 ├── industry_turnover.py   # 申万行业成交额占比趋势（360交易日，31一级+3二级+大消费聚合）
+├── index_trend.py         # 主要指数走势（7个可选指数近一年日线，新浪+中证官网）
 ├── index_futures_public.py # 股指期货净空单（中金所直连：中信/其他大机构/头部机构合计）
 ├── if_ocr.py              # 股指期货图片 OCR 旧路径（source=ocr 时启用，需 Tesseract）
 ├── weibo_monitor.py       # 主编排：采集→增量→过滤→页面数据（含 --loop / --industries-only，单实例锁）
@@ -169,7 +170,7 @@ python weibo_monitor.py --loop &                   # 后台循环（首次微博
 
 ## 历史数据快照（重新部署免重抓）
 
-长周期历史数据（股指期货 360 天净空单 / 宏观资金面 365 天 / 国家队ETF约2年 / 申万行业占比 360 交易日）不可变，
+长周期历史数据（股指期货 360 天净空单 / 宏观资金面 365 天 / 国家队ETF约2年 / 申万行业占比 360 交易日 / 主要指数近一年日线）不可变，
 以快照形式入库（`snapshot/`，共约 1.3 MB）；`data/` 与 `frontend/data/` 仍不入库。
 
 - **新部署自动恢复**：`serve.py` / `weibo_monitor.py` 启动时检测运行数据缺失则从快照补齐，无需调用外部接口

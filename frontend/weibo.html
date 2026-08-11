@@ -380,6 +380,10 @@ let turnoverData = null;           // 行业成交额占比数据（A股资金�
 let itRange = 90;                  // 行业占比图显示范围（交易日）
 let itSelected = new Set();        // 行业占比图选中的行业 key
 let itInited = false;
+let idxTrendData = null;           // 主要指数走势数据（A股资金面板块）
+let idxRange = 63;                 // 指数走势图显示范围（交易日：63/126/250）
+let idxSelected = new Set();       // 指数走势图选中的指数 key
+let idxInited = false;
 let activePlatform = "weibo";      // 大V：一级 Tab
 let activeUid = {};                // 大V：每个平台各自记住选中的大V
 let activeIndustry = null;         // 行业：选中的方向
@@ -1509,6 +1513,87 @@ const IT_COLORS = ["#f0413e", "#1e8fff", "#00a854", "#ff7c1e", "#7b61ff", "#13c2
 function itSetRange(r) { itRange = r; if (lastMacro) renderMacro(lastMacro); }
 function itToggle(key) { if (itSelected.has(key)) itSelected.delete(key); else itSelected.add(key); if (lastMacro) renderMacro(lastMacro); }
 
+// ============================ 主要指数走势（A股资金面顶部） ============================
+const IDX_RANGE_LABEL = { 63: "近3月", 126: "近半年", 250: "近一年" };
+function idxSetRange(r) { idxRange = r; if (lastMacro) renderMacro(lastMacro); }
+function idxToggle(key) { if (idxSelected.has(key)) idxSelected.delete(key); else idxSelected.add(key); if (lastMacro) renderMacro(lastMacro); }
+
+function renderIndexTrendSection() {
+  if (!idxTrendData || !idxTrendData.indexes || !idxTrendData.indexes.length) return "";
+  if (!idxInited) { ["csi300", "csi500", "chinext"].forEach(k => idxSelected.add(k)); idxInited = true; }
+  const idxs = idxTrendData.indexes;
+  const rangeBtn = r => `<button class="mini-btn ${idxRange === r ? "active" : ""}" onclick="idxSetRange(${r})">${IDX_RANGE_LABEL[r]}</button>`;
+  const chip = e => `<button class="mini-btn ${idxSelected.has(e.key) ? "active" : ""}" onclick="idxToggle('${e.key}')">${esc(e.name)}</button>`;
+  let h = `<div class="section-label">📈 主要指数走势（期初归一 = 100，对比区间涨跌幅）
+    <span style="float:right">${[63, 126, 250].map(rangeBtn).join("")}</span></div>`;
+  h += `<div class="if-chart-card"><div style="margin-bottom:8px;line-height:2.2">${idxs.map(chip).join(" ")}</div>
+    ${renderIndexTrendChart(idxs)}
+    <div class="if-legend">${idxs.filter(e => idxSelected.has(e.key)).map((e, i) => `<span><i style="background:${IT_COLORS[i % IT_COLORS.length]}"></i>${esc(e.name)}</span>`).join("")}</div></div>`;
+  return h;
+}
+
+// 各指数日期轴不完全一致，按日期对齐后各自归一（窗口首值=100）
+function indexTrendSeries(idxs) {
+  const sel = idxs.filter(e => idxSelected.has(e.key) && e.dates && e.dates.length);
+  if (!sel.length) return null;
+  const dateSet = new Set();
+  sel.forEach(e => e.dates.forEach(d => dateSet.add(d)));
+  const ds = [...dateSet].sort().slice(-idxRange);
+  const startD = ds[0];
+  const series = sel.map(e => {
+    const m = {};
+    e.dates.forEach((d, i) => m[d] = e.closes[i]);
+    let base = null;
+    for (let i = 0; i < e.dates.length; i++) { if (e.dates[i] >= startD) { base = e.closes[i]; break; } }
+    if (base == null) base = e.closes[e.dates.length - 1];
+    return { name: e.name, vals: ds.map(d => m[d] != null ? m[d] / base * 100 : null) };
+  });
+  return { ds, series };
+}
+
+function renderIndexTrendChart(idxs) {
+  const t = indexTrendSeries(idxs);
+  if (!t) return `<div class="empty">点击上方指数按钮选择要展示的指数</div>`;
+  const { ds, series } = t;
+  const W = 900, H = 300, padL = 50, padR = 64, padT = 14, padB = 28;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  let lo = Infinity, hi = -Infinity;
+  series.forEach(s => s.vals.forEach(v => { if (v != null) { if (v < lo) lo = v; if (v > hi) hi = v; } }));
+  if (lo === Infinity) return `<div class="empty">所选指数暂无数据</div>`;
+  const padv = (hi - lo) * 0.1 || 1; lo -= padv; hi += padv;
+  const X = i => padL + (ds.length <= 1 ? plotW / 2 : i * plotW / (ds.length - 1));
+  const Y = v => padT + plotH - (v - lo) / (hi - lo) * plotH;
+  let s = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img">`;
+  for (let g = 0; g <= 4; g++) {
+    const v = lo + (hi - lo) * g / 4, y = Y(v);
+    s += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#ebedf0"/>`;
+    s += `<text x="${padL - 6}" y="${y + 4}" text-anchor="end" font-size="10" fill="#8a94a6">${v.toFixed(1)}</text>`;
+  }
+  if (100 >= lo && 100 <= hi) s += `<line x1="${padL}" y1="${Y(100)}" x2="${W - padR}" y2="${Y(100)}" stroke="#f5a623" stroke-width="1" stroke-dasharray="6 3"/>`;
+  const step = Math.max(1, Math.ceil(ds.length / 8));
+  ds.forEach((d, i) => { if (i % step === 0 || i === ds.length - 1) s += `<text x="${X(i)}" y="${H - padB + 14}" text-anchor="middle" font-size="9" fill="#8a94a6">${d.slice(5)}</text>`; });
+  const ends = [];
+  series.forEach((sr, k) => {
+    const color = IT_COLORS[k % IT_COLORS.length];
+    let path = "", started = false, lastI = -1, lastV = null;
+    sr.vals.forEach((v, i) => {
+      if (v == null) { started = false; return; }
+      path += (started ? " L" : " M") + X(i).toFixed(1) + " " + Y(v).toFixed(1);
+      started = true; lastI = i; lastV = v;
+    });
+    if (!path) return;
+    s += `<path d="${path}" fill="none" stroke="${color}" stroke-width="1.7"/>`;
+    if (lastI >= 0) ends.push({ y: Y(lastV), label: `${sr.name} ${lastV >= 100 ? "+" : ""}${(lastV - 100).toFixed(1)}%`, color });
+  });
+  ends.sort((a, b) => a.y - b.y);
+  ends.forEach((e, i) => {
+    if (i > 0 && e.y - ends[i - 1].y < 11) e.y = ends[i - 1].y + 11;
+    s += `<text x="${W - padR + 6}" y="${e.y + 3}" font-size="9" fill="${e.color}">${e.label}</text>`;
+  });
+  s += `</svg>`;
+  return s;
+}
+
 function renderIndustryShareSection() {
   if (!turnoverData || !turnoverData.dates || !turnoverData.dates.length) return "";
   if (!itInited) { turnoverData.industries.filter(e => e.focus).forEach(e => itSelected.add(e.key)); itInited = true; }
@@ -1602,6 +1687,7 @@ function renderMacro(data) {
     每日由 <code>a_share_collector.py</code> 自动更新并写入 <code>frontend/data/macro_data.json</code>。
   </div>`;
 
+  html += renderIndexTrendSection();
   html += renderIndustryShareSection();
 
   const has = s => s && s.values && s.values.length;
@@ -1714,6 +1800,10 @@ async function load() {
         const itResp = await fetch("data/industry_turnover.json?t=" + Date.now(), { cache: "no-store" });
         turnoverData = itResp.ok ? await itResp.json() : null;
       } catch (e) { turnoverData = null; }
+      try {
+        const idxResp = await fetch("data/index_trend.json?t=" + Date.now(), { cache: "no-store" });
+        idxTrendData = idxResp.ok ? await idxResp.json() : null;
+      } catch (e) { idxTrendData = null; }
       render();
     } else {
       const resp = await fetch("data/industry_data.json?t=" + Date.now(), { cache: "no-store" });
