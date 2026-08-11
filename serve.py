@@ -24,6 +24,72 @@ CONFIG_BAK = os.path.join(BASE_DIR, "weibo_config.json.bak")
 INDEX_FUTURES_PATH = os.path.join(BASE_DIR, "data", "index_futures_positions.json")
 INDEX_FUTURES_BAK = os.path.join(BASE_DIR, "data", "index_futures_positions.json.bak")
 
+# ---------------- 盘中实时（腾讯分时 + 新浪行业实时，15秒服务端缓存） ----------------
+_INTRADAY_CACHE = {"ts": 0.0, "data": None}
+
+
+def load_intraday():
+    import time as _time
+    import urllib.request
+
+    now = _time.time()
+    if _INTRADAY_CACHE["data"] is not None and now - _INTRADAY_CACHE["ts"] < 15:
+        return _INTRADAY_CACHE["data"]
+
+    try:
+        from index_trend import INDEXES
+    except Exception:
+        INDEXES = []
+
+    indexes = []
+    for key, name, symbol, src in INDEXES:
+        if src != "sina":
+            continue  # 中证2000 无分时源
+        try:
+            url = f"https://web.ifzq.gtimg.cn/appstock/app/minute/query?code={symbol}"
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+            d = json.loads(urllib.request.urlopen(req, timeout=8).read())
+            inner = d["data"][symbol]["data"]
+            pts = []
+            for line in inner.get("data", []):
+                p = line.split()
+                if len(p) >= 2:
+                    pts.append([p[0], float(p[1])])
+            indexes.append({"key": key, "name": name, "date": inner.get("date", ""), "points": pts})
+        except Exception as e:
+            indexes.append({"key": key, "name": name, "points": [], "error": str(e)[:80]})
+
+    industries, total = [], 0.0
+    try:
+        url = "https://vip.stock.finance.sina.com.cn/q/view/newSinaHy.php"
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Referer": "https://finance.sina.com.cn"})
+        txt = urllib.request.urlopen(req, timeout=8).read().decode("gbk", errors="ignore")
+        obj = json.loads(txt[txt.index("{"): txt.rindex("}") + 1])
+        for v in obj.values():
+            f = v.split(",")
+            try:
+                amount = float(f[7]) / 1e8  # 成交额(亿元)
+                pct = float(f[5])           # 涨跌幅(%)
+            except Exception:
+                continue
+            industries.append({"name": f[1], "amount": round(amount, 1), "change_pct": round(pct, 2)})
+            total += amount
+        for e in industries:
+            e["share"] = round(e["amount"] / total * 100, 2) if total else 0
+        industries.sort(key=lambda x: -x["amount"])
+    except Exception:
+        industries = []
+
+    data = {
+        "time": _time.strftime("%Y-%m-%d %H:%M:%S"),
+        "indexes": indexes,
+        "industries": industries,
+        "total_amount": round(total, 1),
+    }
+    _INTRADAY_CACHE["ts"] = now
+    _INTRADAY_CACHE["data"] = data
+    return data
+
 
 class Handler(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
@@ -56,6 +122,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/index-futures":
             try:
                 self._send_json(load_index_futures())
+            except Exception as e:
+                self._send_json({"error": str(e)}, status=500)
+            return
+        if path == "/api/intraday":
+            try:
+                self._send_json(load_intraday())
             except Exception as e:
                 self._send_json({"error": str(e)}, status=500)
             return

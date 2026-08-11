@@ -384,6 +384,10 @@ let idxTrendData = null;           // 主要指数走势数据（A股资金面�
 let idxRange = 63;                 // 指数走势图显示范围（交易日：63/126/250）
 let idxSelected = new Set();       // 指数走势图选中的指数 key
 let idxInited = false;
+let intradayData = null;           // 盘中实时数据（/api/intraday）
+let intraSelected = new Set();
+let intraInited = false;
+let intradayTimer = null;
 let activePlatform = "weibo";      // 大V：一级 Tab
 let activeUid = {};                // 大V：每个平台各自记住选中的大V
 let activeIndustry = null;         // 行业：选中的方向
@@ -1513,6 +1517,104 @@ const IT_COLORS = ["#f0413e", "#1e8fff", "#00a854", "#ff7c1e", "#7b61ff", "#13c2
 function itSetRange(r) { itRange = r; if (lastMacro) renderMacro(lastMacro); }
 function itToggle(key) { if (itSelected.has(key)) itSelected.delete(key); else itSelected.add(key); if (lastMacro) renderMacro(lastMacro); }
 
+// ============================ 盘中实时（指数分时 + 行业实时成交占比） ============================
+function intraToggle(key) { if (intraSelected.has(key)) intraSelected.delete(key); else intraSelected.add(key); renderIntradayBlock(); }
+
+function updateIntraday() {
+  const root = document.getElementById("intraday-root");
+  if (!root) { if (intradayTimer) { clearInterval(intradayTimer); intradayTimer = null; } return; }
+  fetch("/api/intraday", { cache: "no-store" })
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(d => { intradayData = d; renderIntradayBlock(); })
+    .catch(() => { if (!intradayData) root.innerHTML = ""; });
+}
+
+function renderIntradayBlock() {
+  const root = document.getElementById("intraday-root");
+  if (!root) return;
+  const d = intradayData;
+  if (!d || !d.indexes) { root.innerHTML = ""; return; }
+  if (!intraInited) { ["sh_index", "csi300", "chinext"].forEach(k => intraSelected.add(k)); intraInited = true; }
+  const idxs = d.indexes.filter(e => e.points && e.points.length);
+  const dateStr = idxs.length && idxs[0].date ? `${idxs[0].date.slice(0, 4)}-${idxs[0].date.slice(4, 6)}-${idxs[0].date.slice(6, 8)}` : "";
+  const chip = e => `<button class="mini-btn ${intraSelected.has(e.key) ? "active" : ""}" onclick="intraToggle('${e.key}')">${esc(e.name)}</button>`;
+  let h = `<div class="section-label">⚡ 盘中实时·指数分时（当日首点归一 = 0%）
+    <span style="float:right;color:#8a94a6;font-weight:400">数据 ${dateStr} · 更新于 ${esc((d.time || "").slice(11, 19))}</span></div>`;
+  h += `<div class="if-chart-card"><div style="margin-bottom:8px;line-height:2.2">${idxs.map(chip).join(" ")}</div>
+    ${renderIntraChart(idxs)}
+    <div class="if-legend">${idxs.filter(e => intraSelected.has(e.key)).map((e, i) => `<span><i style="background:${IT_COLORS[i % IT_COLORS.length]}"></i>${esc(e.name)}</span>`).join("")}</div></div>`;
+  h += renderIntraIndustryTable(d);
+  root.innerHTML = h;
+}
+
+function renderIntraChart(idxs) {
+  const sel = idxs.filter(e => intraSelected.has(e.key));
+  if (!sel.length) return `<div class="empty">点击上方指数按钮选择要展示的指数</div>`;
+  const tset = new Set();
+  sel.forEach(e => e.points.forEach(p => tset.add(p[0])));
+  const ts = [...tset].sort();
+  const W = 900, H = 280, padL = 50, padR = 64, padT = 14, padB = 28;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  let lo = Infinity, hi = -Infinity;
+  const series = sel.map(e => {
+    const base = e.points[0][1];
+    const m = {};
+    e.points.forEach(p => { const v = (p[1] / base - 1) * 100; m[p[0]] = v; });
+    return { name: e.name, vals: ts.map(t => m[t] != null ? m[t] : null), last: null };
+  });
+  series.forEach(s => s.vals.forEach(v => { if (v != null) { if (v < lo) lo = v; if (v > hi) hi = v; } }));
+  if (lo === Infinity) return `<div class="empty">暂无分时数据（非交易时段或接口异常）</div>`;
+  const padv = (hi - lo) * 0.1 || 0.2; lo -= padv; hi += padv;
+  const X = i => padL + (ts.length <= 1 ? plotW / 2 : i * plotW / (ts.length - 1));
+  const Y = v => padT + plotH - (v - lo) / (hi - lo) * plotH;
+  let s = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img">`;
+  for (let g = 0; g <= 4; g++) {
+    const v = lo + (hi - lo) * g / 4, y = Y(v);
+    s += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#ebedf0"/>`;
+    s += `<text x="${padL - 6}" y="${y + 4}" text-anchor="end" font-size="10" fill="#8a94a6">${v.toFixed(2)}%</text>`;
+  }
+  if (0 >= lo && 0 <= hi) s += `<line x1="${padL}" y1="${Y(0)}" x2="${W - padR}" y2="${Y(0)}" stroke="#f5a623" stroke-width="1" stroke-dasharray="6 3"/>`;
+  const ticks = ["0930", "1000", "1030", "1100", "1130", "1300", "1330", "1400", "1430", "1500"];
+  ts.forEach((t, i) => { if (ticks.includes(t)) s += `<text x="${X(i)}" y="${H - padB + 14}" text-anchor="middle" font-size="9" fill="#8a94a6">${t.slice(0, 2)}:${t.slice(2)}</text>`; });
+  const ends = [];
+  series.forEach((sr, k) => {
+    const color = IT_COLORS[k % IT_COLORS.length];
+    let path = "", started = false, lastI = -1, lastV = null;
+    sr.vals.forEach((v, i) => {
+      if (v == null) { started = false; return; }
+      path += (started ? " L" : " M") + X(i).toFixed(1) + " " + Y(v).toFixed(1);
+      started = true; lastI = i; lastV = v;
+    });
+    if (!path) return;
+    s += `<path d="${path}" fill="none" stroke="${color}" stroke-width="1.5"/>`;
+    if (lastI >= 0) ends.push({ y: Y(lastV), label: `${sr.name} ${lastV >= 0 ? "+" : ""}${lastV.toFixed(2)}%`, color });
+  });
+  ends.sort((a, b) => a.y - b.y);
+  ends.forEach((e, i) => {
+    if (i > 0 && e.y - ends[i - 1].y < 11) e.y = ends[i - 1].y + 11;
+    s += `<text x="${W - padR + 6}" y="${e.y + 3}" font-size="9" fill="${e.color}">${e.label}</text>`;
+  });
+  s += `</svg>`;
+  return s;
+}
+
+function renderIntraIndustryTable(d) {
+  if (!d.industries || !d.industries.length) return "";
+  const top = d.industries.slice(0, 20);
+  let h = `<div class="section-label">🏭 当前行业成交额占比（新浪行业实时口径 · 合计 ${Math.round(d.total_amount).toLocaleString()} 亿元）</div>`;
+  h += `<div class="if-wrap"><table class="if-table"><thead><tr><th>#</th><th>行业</th><th>成交额(亿)</th><th>占比</th><th>涨跌幅</th><th style="width:30%">占比条</th></tr></thead><tbody>`;
+  const maxShare = top[0].share || 1;
+  top.forEach((e, i) => {
+    const c = e.change_pct >= 0 ? "#f0413e" : "#00a854";
+    h += `<tr><td>${i + 1}</td><td>${esc(e.name)}</td><td>${e.amount.toLocaleString()}</td><td><b>${e.share.toFixed(2)}%</b></td>
+      <td style="color:${c};font-weight:600">${e.change_pct >= 0 ? "+" : ""}${e.change_pct.toFixed(2)}%</td>
+      <td><div style="height:8px;border-radius:2px;background:#e8ebf0;overflow:hidden"><div style="height:100%;width:${(e.share / maxShare * 100).toFixed(1)}%;background:#1e8fff"></div></div></td></tr>`;
+  });
+  h += `</tbody></table>
+    <div style="font-size:11px;color:#8a94a6;margin-top:6px">注：实时口径为新浪行业分类（当日累计成交），与上方日线图的申万行业口径不同，占比不可直接对比。</div></div>`;
+  return h;
+}
+
 // ============================ 主要指数走势（A股资金面顶部） ============================
 const IDX_RANGE_LABEL = { 63: "近3月", 126: "近半年", 250: "近一年" };
 function idxSetRange(r) { idxRange = r; if (lastMacro) renderMacro(lastMacro); }
@@ -1665,6 +1767,7 @@ function renderShareTable(dates, inds) {
 
 function renderMacro(data) {
   const root = document.getElementById("content");
+  if (intradayTimer) { clearInterval(intradayTimer); intradayTimer = null; }
   if (!data || !data.series) {
     root.innerHTML = `<div class="empty">暂无资金面数据，请先运行 <code>python a_share_collector.py</code></div>`;
     return;
@@ -1687,6 +1790,7 @@ function renderMacro(data) {
     每日由 <code>a_share_collector.py</code> 自动更新并写入 <code>frontend/data/macro_data.json</code>。
   </div>`;
 
+  html += `<div id="intraday-root"></div>`;
   html += renderIndexTrendSection();
   html += renderIndustryShareSection();
 
@@ -1722,6 +1826,10 @@ function renderMacro(data) {
   html += renderNtfSection();
 
   root.innerHTML = html;
+
+  // 盘中实时：立即拉一次，之后每 20 秒轮询（仅重绘 intraday-root）
+  updateIntraday();
+  intradayTimer = setInterval(updateIntraday, 20000);
 }
 
 // ============================ 顶层 Tab 与调度 ============================

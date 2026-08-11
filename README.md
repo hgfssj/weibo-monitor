@@ -62,7 +62,7 @@ weibo-monitor/
 ├── index_futures_public.py # 股指期货净空单（中金所直连：中信/其他大机构/头部机构合计）
 ├── if_ocr.py              # 股指期货图片 OCR 旧路径（source=ocr 时启用，需 Tesseract）
 ├── weibo_monitor.py       # 主编排：采集→增量→过滤→页面数据（含 --loop / --industries-only，单实例锁）
-├── serve.py               # 前端服务（默认 8766）+ 配置读写 API
+├── serve.py               # 前端服务（默认 8766）+ 配置读写 API + 盘中实时 API（/api/intraday）
 ├── snapshot.py            # 长周期数据快照管理（--save / --restore / --status）
 ├── snapshot/              # 历史数据快照（入库，新部署自动恢复，免重抓）
 ├── weibo_config.json      # 监控账号、行业股票池、刷新间隔（可在线编辑）
@@ -162,6 +162,7 @@ python weibo_monitor.py --loop &                   # 后台循环（首次微博
 - **股指期货**：默认 `source=public` 走中金所公开数据直连，**仅用标准库 urllib+csv，无任何额外依赖、不需要 Tesseract、不需要浏览器**。仅当 `source=ocr` 时才需要 `Pillow` + `pytesseract` + 系统 `tesseract`（见上文），未安装则跳过。
 - **可选**：大模型研判（`weibo_summary.py` / `weibo_filter.py`）在设置环境变量 `DASHSCOPE_API_KEY` 后即可启用——代码内置 `urllib` 直连 DashScope（默认模型 `qwen-plus`，可用 `DASHSCOPE_MODEL` 覆盖），**无需任何第三方依赖、也无需 `utils/` 模块**。未设置该变量时自动降级为纯关键词 / 启发式模式，不影响主流程与数据采集。
 - 雪球采集无需登录；微博需要扫码登录一次（真实账号登录态，注意控制采集频率）。
+- **盘中实时**（A股资金面页顶部）：`serve.py` 的 `/api/intraday` 实时代理腾讯指数分时（7 指数当日分钟线，中证2000无分时源）与新浪行业实时成交（49 个行业成交额/占比），服务端 15 秒缓存，前端 20 秒轮询；仅交易时段数据会变化，收盘后展示当日全天分时。
 
 ## 部署建议
 
