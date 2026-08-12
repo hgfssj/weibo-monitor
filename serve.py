@@ -164,17 +164,26 @@ def _build_intraday():
         "total_amount": round(total, 1),
     }
 
-    # 每日行业快照：盘中持续覆盖，收盘后留存即为当日全天累计，供次交易日“前一日”对比
+    # 每日行业快照（双槽 prev/today）：today 盘中持续覆盖（收盘后即为全天累计）；
+    # 跨日时旧 today 自动转入 prev，保证次交易日全天都能对比“前一日”
     today_key = _time.strftime("%Y%m%d")
     prev_day = None
     try:
+        store = {"prev": None, "today": None}
         if os.path.exists(INTRADAY_SNAP_PATH):
             with open(INTRADAY_SNAP_PATH, "r", encoding="utf-8") as f:
-                prev = json.load(f)
-            if prev.get("date") != today_key:
-                prev_day = prev
+                old = json.load(f)
+            if isinstance(old, dict) and ("today" in old or "prev" in old):
+                store = {"prev": old.get("prev"), "today": old.get("today")}
+            else:  # 旧版单快照格式兼容
+                store["today"] = old
+        # 跨日：旧 today 不是今天 → 它就是“前一日”数据，转入 prev
+        if store["today"] and store["today"].get("date") != today_key:
+            store["prev"] = store["today"]
+        if store["prev"] and store["prev"].get("date") != today_key:
+            prev_day = store["prev"]
         if industries:
-            snap = {
+            store["today"] = {
                 "date": today_key,
                 "time": data["time"],
                 "total_amount": data["total_amount"],
@@ -186,7 +195,7 @@ def _build_intraday():
             }
             tmp = INTRADAY_SNAP_PATH + ".tmp"
             with open(tmp, "w", encoding="utf-8") as f:
-                json.dump(snap, f, ensure_ascii=False)
+                json.dump(store, f, ensure_ascii=False)
             os.replace(tmp, INTRADAY_SNAP_PATH)
     except Exception:
         pass
