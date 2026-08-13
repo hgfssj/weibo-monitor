@@ -41,6 +41,14 @@
       "filter": false,
       "display_limit": 30,
       "fetch_pages": 2
+    },
+    {
+      "platform": "xueqiu",
+      "uid": "2722746418",
+      "filter": false,
+      "display_limit": 30,
+      "fetch_pages": 2,
+      "name": "最爱番茄炒蛋"
     }
   ],
   "peak_interval_sec": 1800,
