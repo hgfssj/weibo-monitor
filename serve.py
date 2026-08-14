@@ -31,6 +31,12 @@ INTRADAY_SNAP_PATH = os.path.join(BASE_DIR, "data", "intraday_daily_snapshot.jso
 _INTRADAY_CACHE = {"ts": 0.0, "data": None}
 _INTRADAY_LOCK = threading.Lock()  # 多线程服务器下防重复抓取
 
+# 盘中分时专用补充指数（不进日线趋势图）：300成长/300红利
+INTRA_EXTRA_INDEXES = [
+    ("csi300_growth", "300成长", "sh000918"),
+    ("csi300_div", "300红利", "sh000821"),
+]
+
 # 申万二级热门行业（与日线图重点关注行业一致，另加高热度赛道）
 SW_SECOND_FOCUS = [
     ("801081", "半导体"), ("801104", "软件开发"), ("801078", "自动化设备"),
@@ -86,9 +92,9 @@ def _build_intraday():
         INDEXES = []
 
     indexes = []
-    for key, name, symbol, src in INDEXES:
-        if src != "sina":
-            continue  # 中证2000 无分时源
+    targets = [(key, name, symbol) for key, name, symbol, src in INDEXES if src == "sina"]
+    targets += list(INTRA_EXTRA_INDEXES)  # 分时专用补充指数（300成长/300红利）
+    for key, name, symbol in targets:
         try:
             url = f"https://web.ifzq.gtimg.cn/appstock/app/minute/query?code={symbol}"
             req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})

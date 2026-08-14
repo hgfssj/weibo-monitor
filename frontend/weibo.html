@@ -1537,7 +1537,7 @@ function renderIntradayBlock() {
   if (!root) return;
   const d = intradayData;
   if (!d || !d.indexes) { root.innerHTML = ""; return; }
-  if (!intraInited) { ["sh_index", "csi300", "chinext"].forEach(k => intraSelected.add(k)); intraInited = true; }
+  if (!intraInited) { ["sh_index", "csi300", "chinext", "csi300_growth", "csi300_div"].forEach(k => intraSelected.add(k)); intraInited = true; }
   if (!intraSwInited) { ["sw801081", "sw801790", "sw801104"].forEach(k => intraSwSelected.add(k)); intraSwInited = true; }
   const idxs = d.indexes.filter(e => e.points && e.points.length);
   const dateStr = idxs.length && idxs[0].date ? `${idxs[0].date.slice(0, 4)}-${idxs[0].date.slice(4, 6)}-${idxs[0].date.slice(6, 8)}` : "";
