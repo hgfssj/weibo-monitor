@@ -390,6 +390,14 @@ let intraInited = false;
 let intraSwSelected = new Set();   // 申万行业分时选中项
 let intraSwInited = false;
 let intradayTimer = null;
+let klineData = null;              // 日K线数据（/api/daily-kline）
+let klineIdxSelected = new Set();  // 日K主要指数选中
+let klineIdxInited = false;
+let klineIndSelected = new Set();  // 日K行业指数选中
+let klineIndInited = false;
+let klineRange = 90;               // 日K显示范围（交易日）
+let chanlunData = null;              // 缠论标注数据（/api/chanlun）
+let chanlunEnabled = false;          // 是否显示缠论标注
 let activePlatform = "weibo";      // 大V：一级 Tab
 let activeUid = {};                // 大V：每个平台各自记住选中的大V
 let activeIndustry = null;         // 行业：选中的方向
@@ -1648,6 +1656,143 @@ function renderIntraIndustryTable(d) {
   return h;
 }
 
+// ============================ 日K线图（主要指数 + 行业指数） ============================
+function klineIdxToggle(key) { if (klineIdxSelected.has(key)) klineIdxSelected.delete(key); else klineIdxSelected.add(key); renderKlineSections(); }
+function klineIndToggle(key) { if (klineIndSelected.has(key)) klineIndSelected.delete(key); else klineIndSelected.add(key); renderKlineSections(); }
+function klineSetRange(r) { klineRange = r; renderKlineSections(); }
+function klineToggleChanlun() { chanlunEnabled = !chanlunEnabled; renderKlineSections(); }
+
+function renderKlineSections() {
+  const root = document.getElementById("kline-root");
+  if (!root) return;
+  if (!klineData || (!klineData.index_kline && !klineData.industry_kline)) { root.innerHTML = ""; return; }
+  if (!klineIdxInited) { ["sh_index", "csi300", "sse50", "csi300_growth", "csi300_div", "chinext", "star50"].forEach(k => klineIdxSelected.add(k)); klineIdxInited = true; }
+  if (!klineIndInited) { ["801081", "801790", "801750", "801080", "801730"].forEach(k => klineIndSelected.add(k)); klineIndInited = true; }
+
+  let h = "";
+  const rangeBtn = r => `<button class="mini-btn ${klineRange === r ? "active" : ""}" onclick="klineSetRange(${r})">${r}天</button>`;
+  const clBtn = `<button class="mini-btn ${chanlunEnabled ? "active" : ""}" onclick="klineToggleChanlun()" title="缠论标注：笔/中枢/买卖点">📐缠论</button>`;
+  // 日K主要指数
+  const idxs = klineData.index_kline || [];
+  if (idxs.length) {
+    const chip = e => `<button class="mini-btn ${klineIdxSelected.has(e.key) ? "active" : ""}" onclick="klineIdxToggle('${e.key}')">${esc(e.name)}</button>`;
+    h += `<div class="section-label">📊 日K主要指数（近${klineRange}个交易日）
+      <span style="float:right">${clBtn} ${[90, 180, 360].map(rangeBtn).join("")}</span></div>`;
+    h += `<div class="if-chart-card"><div style="margin-bottom:8px;line-height:2.2">${idxs.map(chip).join(" ")}</div>
+      ${renderKlineChart(idxs, klineIdxSelected, klineRange)}
+      <div class="if-legend">${idxs.filter(e => klineIdxSelected.has(e.key)).map((e, i) => `<span><i style="background:${IT_COLORS[i % IT_COLORS.length]}"></i>${esc(e.name)}</span>`).join("")}</div></div>`;
+  }
+
+  // 日K行业指数
+  const inds = klineData.industry_kline || [];
+  if (inds.length) {
+    const SW_SECOND = ["801081","801104","801078","801193","801194","801125","801737","801085","801151","801735"];
+    const chip = e => `<button class="mini-btn ${klineIndSelected.has(e.key) ? "active" : ""}" onclick="klineIndToggle('${e.key}')">${esc(e.name)}</button>`;
+    h += `<div class="section-label">📊 日K行业指数（申万行业 · 近${klineRange}个交易日）
+      <span style="float:right">${clBtn} ${[90, 180, 360].map(rangeBtn).join("")}</span></div>`;
+    h += `<div class="if-chart-card">
+      <div style="margin-bottom:2px;font-size:11px;color:#8a94a6">二级热门</div>
+      <div style="margin-bottom:6px;line-height:2.2">${inds.filter(e => SW_SECOND.includes(e.key)).map(chip).join(" ")}</div>
+      <div style="margin-bottom:2px;font-size:11px;color:#8a94a6">一级行业</div>
+      <div style="margin-bottom:8px;line-height:2.2">${inds.filter(e => !SW_SECOND.includes(e.key)).map(chip).join(" ")}</div>
+      ${renderKlineChart(inds, klineIndSelected, klineRange)}
+      <div class="if-legend">${inds.filter(e => klineIndSelected.has(e.key)).map((e, i) => `<span><i style="background:${IT_COLORS[i % IT_COLORS.length]}"></i>${esc(e.name)}</span>`).join("")}</div></div>`;
+  }
+
+  root.innerHTML = h;
+}
+
+function renderKlineChart(items, selected, range) {
+  const sel = items.filter(e => selected.has(e.key) && e.dates && e.dates.length);
+  if (!sel.length) return `<div class="empty">点击上方按钮选择要展示的指数</div>`;
+
+  // 每个指数独立归一化（首值=100），便于对比涨跌幅
+  const ds = sel[0].dates.slice(-range);
+  const W = 900, H = 300, padL = 50, padR = 64, padT = 14, padB = 28;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+
+  let lo = Infinity, hi = -Infinity;
+  const series = sel.map(e => {
+    const m = {};
+    e.dates.forEach((d, i) => { m[d] = e.close[i]; });
+    const base = m[ds[0]] || e.close[e.dates.indexOf(ds[0])] || e.close[0];
+    const vals = ds.map(d => m[d] != null ? m[d] / base * 100 : null);
+    vals.forEach(v => { if (v != null) { if (v < lo) lo = v; if (v > hi) hi = v; } });
+    return { name: e.name, vals, last: null };
+  });
+  if (lo === Infinity) return `<div class="empty">暂无数据</div>`;
+  const padv = (hi - lo) * 0.1 || 1; lo -= padv; hi += padv;
+  const X = i => padL + (ds.length <= 1 ? plotW / 2 : i * plotW / (ds.length - 1));
+  const Y = v => padT + plotH - (v - lo) / (hi - lo) * plotH;
+
+  let s = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img">`;
+  for (let g = 0; g <= 4; g++) {
+    const v = lo + (hi - lo) * g / 4, y = Y(v);
+    s += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#ebedf0"/>`;
+    s += `<text x="${padL - 6}" y="${y + 4}" text-anchor="end" font-size="10" fill="#8a94a6">${v.toFixed(1)}</text>`;
+  }
+  if (100 >= lo && 100 <= hi) s += `<line x1="${padL}" y1="${Y(100)}" x2="${W - padR}" y2="${Y(100)}" stroke="#f5a623" stroke-width="1" stroke-dasharray="6 3"/>`;
+  const step = Math.max(1, Math.ceil(ds.length / 8));
+  ds.forEach((d, i) => { if (i % step === 0 || i === ds.length - 1) s += `<text x="${X(i)}" y="${H - padB + 14}" text-anchor="middle" font-size="9" fill="#8a94a6">${d.slice(5)}</text>`; });
+
+  const ends = [];
+  series.forEach((sr, k) => {
+    const color = IT_COLORS[k % IT_COLORS.length];
+    let path = "", started = false, lastI = -1, lastV = null;
+    sr.vals.forEach((v, i) => {
+      if (v == null) { started = false; return; }
+      path += (started ? " L" : " M") + X(i).toFixed(1) + " " + Y(v).toFixed(1);
+      started = true; lastI = i; lastV = v;
+    });
+    if (!path) return;
+    s += `<path d="${path}" fill="none" stroke="${color}" stroke-width="1.7"/>`;
+    if (lastI >= 0) ends.push({ y: Y(lastV), label: `${sr.name} ${lastV >= 100 ? "+" : ""}${(lastV - 100).toFixed(1)}%`, color });
+  });
+  ends.sort((a, b) => a.y - b.y);
+  ends.forEach((e, i) => {
+    if (i > 0 && e.y - ends[i - 1].y < 11) e.y = ends[i - 1].y + 11;
+    s += `<text x="${W - padR + 6}" y="${e.y + 3}" font-size="9" fill="${e.color}">${e.label}</text>`;
+  });
+
+  // 缠论标注叠加
+  if (chanlunEnabled && chanlunData && chanlunData.annotations) {
+    const fullLen = sel[0].dates.length;
+    const offset = fullLen - ds.length;
+    sel.forEach((e, k) => {
+      const ann = chanlunData.annotations[e.key];
+      if (!ann) return;
+      const color = IT_COLORS[k % IT_COLORS.length];
+
+      // 中枢半透明区间
+      (ann.pivots || []).forEach(p => {
+        const sIdx = p.start_idx - offset, eIdx = p.end_idx - offset;
+        if (eIdx < 0 || sIdx >= ds.length) return;
+        const x1 = X(Math.max(0, sIdx)), x2 = X(Math.min(ds.length - 1, eIdx));
+        const yZg = Y((p.zg * 100) / (sel[0].close[sel[0].dates.indexOf(ds[0])] || sel[0].close[0]));
+        const yZd = Y((p.zd * 100) / (sel[0].close[sel[0].dates.indexOf(ds[0])] || sel[0].close[0]));
+        s += `<rect x="${x1}" y="${Math.min(yZg, yZd)}" width="${Math.max(2, x2 - x1)}" height="${Math.max(1, Math.abs(yZd - yZg))}" fill="${color}" opacity="0.08" stroke="${color}" stroke-width="0.5" stroke-dasharray="3 2"/>`;
+      });
+
+      // 买卖点标记
+      [...(ann.buy_points || []), ...(ann.sell_points || [])].forEach(sig => {
+        const vi = sig.idx - offset;
+        if (vi < 0 || vi >= ds.length) return;
+        const isBuy = sig.type.startsWith("B");
+        const sigColor = isBuy ? "#2ecc71" : "#e74c3c";
+        const sigY = Y((sig.price * 100) / (sel[0].close[sel[0].dates.indexOf(ds[0])] || sel[0].close[0]));
+        const sigX = X(vi);
+        const r = isBuy ? 8 : 7;
+        const labelY = sig.type === "B1" || sig.type === "S1" ? sigY - r - 4 : sigY + r + 4;
+        s += `<circle cx="${sigX.toFixed(1)}" cy="${sigY}" r="${r}" fill="${sigColor}" fill-opacity="0.9" stroke="#fff" stroke-width="1.5"/>`;
+        s += `<text x="${sigX.toFixed(1)}" y="${labelY}" text-anchor="middle" font-size="${isBuy ? 10 : 9}" font-weight="bold" fill="${sigColor}">${sig.type}</text>`;
+      });
+    });
+  }
+
+  s += `</svg>`;
+  return s;
+}
+
 // ============================ 主要指数走势（A股资金面顶部） ============================
 const IDX_RANGE_LABEL = { 63: "近3月", 126: "近半年", 250: "近一年" };
 function idxSetRange(r) { idxRange = r; if (lastMacro) renderMacro(lastMacro); }
@@ -1823,6 +1968,7 @@ function renderMacro(data) {
     每日由 <code>a_share_collector.py</code> 自动更新并写入 <code>frontend/data/macro_data.json</code>。
   </div>`;
 
+  html += `<div id="kline-root"></div>`;
   html += `<div id="intraday-root"></div>`;
   html += renderIndexTrendSection();
   html += renderIndustryShareSection();
@@ -1863,6 +2009,16 @@ function renderMacro(data) {
   // 盘中实时：立即拉一次，之后每 20 秒轮询（仅重绘 intraday-root）
   updateIntraday();
   intradayTimer = setInterval(updateIntraday, 20000);
+  // 日K线：加载一次（日线数据当天不变，无需轮询）
+  fetch("/api/daily-kline", { cache: "no-store" })
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(d => { klineData = d; renderKlineSections(); })
+    .catch(() => {});
+  // 缠论标注：加载一次
+  fetch("/api/chanlun", { cache: "no-store" })
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(d => { chanlunData = d; })
+    .catch(() => {});
 }
 
 // ============================ 顶层 Tab 与调度 ============================

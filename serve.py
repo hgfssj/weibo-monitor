@@ -26,6 +26,8 @@ CONFIG_BAK = os.path.join(BASE_DIR, "weibo_config.json.bak")
 INDEX_FUTURES_PATH = os.path.join(BASE_DIR, "data", "index_futures_positions.json")
 INDEX_FUTURES_BAK = os.path.join(BASE_DIR, "data", "index_futures_positions.json.bak")
 INTRADAY_SNAP_PATH = os.path.join(BASE_DIR, "data", "intraday_daily_snapshot.json")
+DAILY_KLINE_PATH = os.path.join(BASE_DIR, "data", "daily_kline.json")
+CHANLUN_PATH = os.path.join(BASE_DIR, "data", "chanlun.json")
 
 # ---------------- 盘中实时（腾讯分时 + 新浪行业实时，30秒服务端缓存） ----------------
 _INTRADAY_CACHE = {"ts": 0.0, "data": None}
@@ -252,6 +254,18 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             except Exception as e:
                 self._send_json({"error": str(e)}, status=500)
             return
+        if path == "/api/daily-kline":
+            try:
+                self._send_json(load_daily_kline())
+            except Exception as e:
+                self._send_json({"error": str(e)}, status=500)
+            return
+        if path == "/api/chanlun":
+            try:
+                self._send_json(load_chanlun())
+            except Exception as e:
+                self._send_json({"error": str(e)}, status=500)
+            return
         super().do_GET()
 
     def do_POST(self):
@@ -378,6 +392,28 @@ def normalize_config(data):
         for s in (ind.get("stocks") or []):
             s.setdefault("note", "")
     return data
+
+
+def load_daily_kline():
+    """读取日K线数据；文件缺失时返回空结构。"""
+    if os.path.exists(DAILY_KLINE_PATH):
+        try:
+            with open(DAILY_KLINE_PATH, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"index_kline": [], "industry_kline": []}
+
+
+def load_chanlun():
+    """读取缠论标注数据；文件缺失时返回空结构。"""
+    if os.path.exists(CHANLUN_PATH):
+        try:
+            with open(CHANLUN_PATH, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"annotations": {}}
 
 
 def load_index_futures():

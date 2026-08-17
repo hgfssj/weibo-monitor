@@ -19,3 +19,6 @@ weibo_config.json.bak
 
 # 本地密钥（大模型研判可选）
 .env
+
+# 虚拟环境
+venv/

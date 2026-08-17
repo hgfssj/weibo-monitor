@@ -46,6 +46,8 @@ from index_futures_public import update_index_futures_positions as update_if_pub
 from national_team_etf import collect as collect_national_team_etf
 from industry_turnover import collect as collect_industry_turnover
 from index_trend import collect as collect_index_trend
+from daily_kline import collect as collect_daily_kline
+from chanlun import collect as collect_chanlun
 
 DATA_DIR = os.path.join(BASE_DIR, "data")
 FRONTEND_DATA_DIR = os.path.join(BASE_DIR, "frontend", "data")
@@ -370,6 +372,22 @@ def run_once(cfg) -> dict:
         print("    ✅ 指数走势数据已更新")
     except Exception as e:
         print(f"  ⚠️ 指数走势采集失败(不影响主流程): {e}")
+
+    # 日K线（主要指数 + 申万行业日线 OHLC，无浏览器依赖）
+    try:
+        print("\n  📊 日K线: 更新主要指数与行业日K...")
+        collect_daily_kline()
+        print("    ✅ 日K线数据已更新")
+    except Exception as e:
+        print(f"  ⚠️ 日K线采集失败(不影响主流程): {e}")
+
+    # 缠论标注（基于日K线计算买卖点，无浏览器依赖）
+    try:
+        print("\n  📐 缠论标注: 计算买卖点...")
+        collect_chanlun()
+        print("    ✅ 缠论标注已更新")
+    except Exception as e:
+        print(f"  ⚠️ 缠论标注失败(不影响主流程): {e}")
 
     print(f"\n  ✅ 本轮完成: 新增 {len(new_posts_total)} 条 | "
           f"历史共 {len(all_posts['posts'])} 条")
