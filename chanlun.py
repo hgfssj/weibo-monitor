@@ -35,8 +35,8 @@ KLine = namedtuple("KLine", ["idx", "date", "o", "h", "l", "c"])
 Fractal = namedtuple("Fractal", ["idx", "type", "price"])  # type: "top" / "bottom"
 Stroke = namedtuple("Stroke", ["start", "end", "direction"])  # direction: 1=up, -1=down
 Segment = namedtuple("Segment", ["start", "end", "direction"])
-Pivot = namedtuple("Pivot", ["start_idx", "end_idx", "zg", "zd"])
-Signal = namedtuple("Signal", ["idx", "type", "price", "date"])
+Pivot = namedtuple("Pivot", ["start_idx", "end_idx", "zg", "zd", "level"])  # level: stroke/segment
+Signal = namedtuple("Signal", ["idx", "type", "price", "date", "div"])  # div: 背驰连线信息或None
 
 
 def ema(series, n):
@@ -184,206 +184,238 @@ def find_strokes(klines_merged, fractals, prices):
 
 
 # ---------------------------------------------------------------
-#  4. 线段识别
+#  4. 线段识别（特征序列分型法）
 # ---------------------------------------------------------------
+
+def _stroke_range(u):
+    """笔/线段作为特征序列元素的高低价。"""
+    return max(u.start.price, u.end.price), min(u.start.price, u.end.price)
+
+
+def _merge_chars(chars, direction):
+    """特征序列包含处理：反向笔视作 K 线，向上取高高高低、向下取低低低高。"""
+    merged = []
+    for c in chars:
+        h, l = _stroke_range(c)
+        if merged:
+            ph, pl, _ = merged[-1]
+            if (h <= ph and l >= pl) or (h >= ph and l <= pl):
+                if direction == 1:
+                    merged[-1] = (max(ph, h), max(pl, l), merged[-1][2])
+                else:
+                    merged[-1] = (min(ph, h), min(pl, l), merged[-1][2])
+                continue
+        merged.append((h, l, c))
+    return merged
+
 
 def find_segments(strokes):
     """
-    由至少 3 笔构成线段。
-    第一笔的方向决定线段方向。
-    简化实现：遍历笔序列，同向笔合并为线段。
+    线段识别（标准特征序列分型法）：
+    - 向上线段：特征序列 = 段内向下笔；出现顶分型 → 线段终结于中元素起点
+    - 向下线段：对称（特征序列 = 向上笔，底分型终结）
+    线段至少 3 笔；最后未终结段取极值点收尾。
     """
     if len(strokes) < 3:
         return []
 
     segments = []
-    start = strokes[0].start
-    direction = strokes[0].direction
-    prev_end = strokes[0].end
+    seg_start = strokes[0].start
+    seg_dir = strokes[0].direction
+    cur = [strokes[0]]
+    i = 1
+    while i < len(strokes):
+        cur.append(strokes[i])
+        i += 1
+        chars = [st for st in cur if st.direction == -seg_dir]
+        if len(chars) < 3:
+            continue
+        m = _merge_chars(chars, seg_dir)
+        broken_end, mid_stroke = None, None
+        for j in range(1, len(m) - 1):
+            h1, l1, _ = m[j - 1]
+            h2, l2, mid = m[j]
+            h3, l3, _ = m[j + 1]
+            if seg_dir == 1 and h2 > h1 and h2 > h3:
+                broken_end, mid_stroke = mid.start, mid
+                break
+            if seg_dir == -1 and l2 < l1 and l2 < l3:
+                broken_end, mid_stroke = mid.start, mid
+                break
+        if broken_end is not None:
+            segments.append(Segment(seg_start, broken_end, seg_dir))
+            seg_start = broken_end
+            seg_dir = -seg_dir
+            cur = cur[cur.index(mid_stroke):]
 
-    for i in range(1, len(strokes)):
-        s = strokes[i]
-        if s.direction == direction:
-            # 同向：延伸线段
-            prev_end = s.end
-        else:
-            # 反向：可能结束当前线段
-            # 至少需要 3 笔才构成线段
-            stroke_count = sum(1 for st in strokes[:i + 1] if st.direction == direction)
-            if stroke_count >= 2:
-                # 有足够的同向笔，可以结束线段
-                segments.append(Segment(start, prev_end, direction))
-                start = prev_end
-                direction = s.direction
-                prev_end = s.end
-            else:
-                prev_end = s.end
-
-    # 最后一段
-    if start != prev_end:
-        segments.append(Segment(start, prev_end, direction))
-
+    # 最后未终结段：取同向笔极值点收尾
+    same = [st for st in cur if st.direction == seg_dir]
+    if same:
+        end_st = max(same, key=lambda st: st.end.price) if seg_dir == 1 \
+            else min(same, key=lambda st: st.end.price)
+        if end_st.end != seg_start:
+            segments.append(Segment(seg_start, end_st.end, seg_dir))
     return segments
 
 
 # ---------------------------------------------------------------
-#  5. 中枢识别
+#  5. 中枢识别（笔级 + 线段级，含延伸）
 # ---------------------------------------------------------------
 
-def find_pivots(segments, prices):
-    """
-    三段连续线段的重叠区间构成中枢。
-    ZG = 三段区间高点的最小值
-    ZD = 三段区间低点的最大值
-    若 ZG > ZD，视为有效中枢。
-    """
-    if len(segments) < 3:
-        return []
-
+def _build_pivots(units, level):
+    """三段连续单元（笔或线段）重叠区间构成中枢，后续重叠单元纳入延伸。"""
     pivots = []
-    for i in range(len(segments) - 2):
-        s1, s2, s3 = segments[i], segments[i + 1], segments[i + 2]
-
-        # 三段的高点
-        highs = []
-        lows = []
-        for s in (s1, s2, s3):
-            seg_high = max(prices[s.start.idx:s.end.idx + 1])
-            seg_low = min(prices[s.start.idx:s.end.idx + 1])
-            highs.append(seg_high)
-            lows.append(seg_low)
-
-        zg = min(highs)
-        zd = max(lows)
-
+    i, n = 0, len(units)
+    while i < n - 2:
+        s1, s2, s3 = units[i], units[i + 1], units[i + 2]
+        highs = [max(u.start.price, u.end.price) for u in (s1, s2, s3)]
+        lows = [min(u.start.price, u.end.price) for u in (s1, s2, s3)]
+        zg, zd = min(highs), max(lows)
         if zg > zd:
-            pivots.append(Pivot(s1.start.idx, s3.end.idx, zg, zd))
-
-    # 合并重叠的中枢
-    merged = []
-    for p in pivots:
-        if not merged:
-            merged.append(p)
-            continue
-        prev = merged[-1]
-        # 如果重叠，合并
-        if p.start_idx <= prev.end_idx and p.zg > prev.zd and prev.zg > p.zd:
-            merged[-1] = Pivot(prev.start_idx, max(p.end_idx, prev.end_idx),
-                               min(p.zg, prev.zg), max(p.zd, prev.zd))
+            end_idx = s3.end.idx
+            j = i + 3
+            while j < n:  # 延伸
+                uh, ul = _stroke_range(units[j])
+                if ul < zg and uh > zd:
+                    end_idx = units[j].end.idx
+                    j += 1
+                else:
+                    break
+            pivots.append(Pivot(s1.start.idx, end_idx, zg, zd, level))
+            i = j
         else:
-            merged.append(p)
-
-    return merged
+            i += 1
+    return pivots
 
 
 # ---------------------------------------------------------------
-#  6. 背驰检测（MACD 辅助）
+#  6. 背驰检测（MACD 面积法：同向两笔/两线段对比）
 # ---------------------------------------------------------------
 
-def detect_divergence(prices, dif, dea, start_idx, end_idx, direction):
-    """
-    检测背驰。
-    direction=1: 上涨背驰（价格新高，但 DIF 未新高）
-    direction=-1: 下跌背驰（价格新低，但 DIF 未新低）
-    返回是否有背驰。
-    """
-    length = end_idx - start_idx
-    if length < 10:
-        return False
+def _macd_area(bar, i1, i2):
+    return sum(abs(v) for v in bar[max(0, i1):i2 + 1])
 
-    half = length // 2
-    mid = start_idx + half
 
-    if direction == 1:
-        # 上涨背驰：后半段价格创新高，但 DIF 未创新高
-        price_first = max(prices[start_idx:mid])
-        price_second = max(prices[mid:end_idx])
-        dif_first = max(dif[start_idx:mid])
-        dif_second = max(dif[mid:end_idx])
-        return price_second > price_first and dif_second < dif_first
-    else:
-        # 下跌背驰：后半段价格创新低，但 DIF 未创新低
-        price_first = min(prices[start_idx:mid])
-        price_second = min(prices[mid:end_idx])
-        dif_first = min(dif[start_idx:mid])
-        dif_second = min(dif[mid:end_idx])
-        return price_second < price_first and dif_second > dif_first
+def _unit_divergence(units, i, bar, dif):
+    """units[i] 相对前一同向单元 units[i-2] 是否背驰。
+    底背驰：价格新低 + MACD 柱面积缩小或 DIF 不新低；顶背驰对称。
+    返回 (是否背驰, 前一单元)。"""
+    if i < 2:
+        return False, None
+    cur, prev = units[i], units[i - 2]
+    if cur.direction != prev.direction:
+        return False, None
+    ca = _macd_area(bar, cur.start.idx, cur.end.idx)
+    pa = _macd_area(bar, prev.start.idx, prev.end.idx)
+    if cur.direction == -1:
+        if cur.end.price >= prev.end.price:
+            return False, None
+        dif_shallow = min(dif[cur.start.idx:cur.end.idx + 1]) > min(dif[prev.start.idx:prev.end.idx + 1])
+        return (ca < pa or dif_shallow), prev
+    if cur.end.price <= prev.end.price:
+        return False, None
+    dif_shallow = max(dif[cur.start.idx:cur.end.idx + 1]) < max(dif[prev.start.idx:prev.end.idx + 1])
+    return (ca < pa or dif_shallow), prev
 
 
 # ---------------------------------------------------------------
 #  7. 买卖点判定
 # ---------------------------------------------------------------
 
-def find_buy_sell_points(strokes, segments, pivots, prices, dif, dea, closes):
+def find_buy_sell_points(strokes, segments, pivots, bar, dif):
     """
-    基于缠论规则判定一/二/三买卖点。
+    完整三类买卖点判定：
+    - 一买/一卖：笔级或线段级背驰 + 之前存在中枢（趋势背驰）
+    - 二买/二卖：一买/一卖后首次回踩不破前低/前高
+    - 三买/三卖：突破中枢后回抽不回中枢区间
     """
-    buy_points = []
-    sell_points = []
+    buys, sells = [], []
+    pivots_stroke = [p for p in pivots if p.level == "stroke"]
 
-    if not strokes or len(strokes) < 3:
-        return buy_points, sell_points
+    def has_pivot_before(idx):
+        return any(p.start_idx < idx for p in pivots_stroke)
 
-    # 找到最近的笔的端点作为候选
-    for i in range(1, len(strokes) - 1):
-        prev_s = strokes[i - 1]
-        cur_s = strokes[i]
-        next_s = strokes[i + 1]
+    def div_info(prev, cur):
+        return {"a_idx": prev.end.idx, "a_price": prev.end.price,
+                "b_idx": cur.end.idx, "b_price": cur.end.price}
 
-        # 一买：下降笔结束 + 底分型 + 背驰
-        if cur_s.direction == -1 and cur_s.end.type == "bottom":
-            start_i = cur_s.start.idx
-            end_i = cur_s.end.idx
-            if detect_divergence(prices, dif, dea, start_i, end_i, -1):
-                pt = cur_s.end
-                buy_points.append(Signal(pt.idx, "B1", pt.price, None))
+    # 一买/一卖：笔级背驰
+    for i in range(2, len(strokes)):
+        ok, prev = _unit_divergence(strokes, i, bar, dif)
+        if not ok:
+            continue
+        cur = strokes[i]
+        if not has_pivot_before(cur.start.idx):
+            continue
+        if cur.direction == -1:
+            buys.append(Signal(cur.end.idx, "B1", cur.end.price, None, div_info(prev, cur)))
+        else:
+            sells.append(Signal(cur.end.idx, "S1", cur.end.price, None, div_info(prev, cur)))
 
-        # 一卖：上升笔结束 + 顶分型 + 背驰
-        if cur_s.direction == 1 and cur_s.end.type == "top":
-            start_i = cur_s.start.idx
-            end_i = cur_s.end.idx
-            if detect_divergence(prices, dif, dea, start_i, end_i, 1):
-                pt = cur_s.end
-                sell_points.append(Signal(pt.idx, "S1", pt.price, None))
+    # 一买/一卖：线段级背驰（级别更高，优先展示）
+    for i in range(2, len(segments)):
+        ok, prev = _unit_divergence(segments, i, bar, dif)
+        if not ok:
+            continue
+        cur = segments[i]
+        if cur.direction == -1:
+            buys.append(Signal(cur.end.idx, "B1", cur.end.price, None,
+                               dict(div_info(prev, cur), level="segment")))
+        else:
+            sells.append(Signal(cur.end.idx, "S1", cur.end.price, None,
+                                dict(div_info(prev, cur), level="segment")))
 
-    # 二买：一买之后回踩不破前低
-    for bp in buy_points:
+    # 二买：一买之后首个下降笔终点不破前低
+    for sig in [s for s in buys if s.type == "B1"]:
         for s in strokes:
-            if s.start.idx > bp.idx and s.direction == -1 and s.end.type == "bottom":
-                if s.end.price > bp.price:
-                    buy_points.append(Signal(s.end.idx, "B2", s.end.price, None))
-                    break
+            if s.end.idx <= sig.idx:
+                continue
+            if s.direction == -1:
+                if s.end.price > sig.price:
+                    buys.append(Signal(s.end.idx, "B2", s.end.price, None, None))
                 break
 
-    # 二卖：一卖之后反弹不破前高
-    for sp in sell_points:
+    # 二卖：一卖之后首个上升笔终点不破前高
+    for sig in [s for s in sells if s.type == "S1"]:
         for s in strokes:
-            if s.start.idx > sp.idx and s.direction == 1 and s.end.type == "top":
-                if s.end.price < sp.price:
-                    sell_points.append(Signal(s.end.idx, "S2", s.end.price, None))
-                    break
+            if s.end.idx <= sig.idx:
+                continue
+            if s.direction == 1:
+                if s.end.price < sig.price:
+                    sells.append(Signal(s.end.idx, "S2", s.end.price, None, None))
                 break
 
-    # 三买：向上突破中枢后回踩不破中枢上沿
-    for p in pivots:
+    # 三买：向上突破中枢 ZG 后，首个回踩笔低点不回落入中枢
+    for p in pivots_stroke:
+        broke = False
         for s in strokes:
-            if s.start.idx > p.end_idx and s.direction == -1 and s.end.type == "bottom":
+            if s.end.idx <= p.end_idx:
+                continue
+            if not broke:
+                if s.direction == 1 and s.end.price > p.zg:
+                    broke = True
+            elif s.direction == -1:
                 if s.end.price > p.zg:
-                    buy_points.append(Signal(s.end.idx, "B3", s.end.price, None))
-                    break
+                    buys.append(Signal(s.end.idx, "B3", s.end.price, None, None))
                 break
 
-    # 三卖：向下跌破中枢后反弹不破中枢下沿
-    for p in pivots:
+    # 三卖：向下跌破中枢 ZD 后，首个反弹笔高点不回升入中枢
+    for p in pivots_stroke:
+        broke = False
         for s in strokes:
-            if s.start.idx > p.end_idx and s.direction == 1 and s.end.type == "top":
+            if s.end.idx <= p.end_idx:
+                continue
+            if not broke:
+                if s.direction == -1 and s.end.price < p.zd:
+                    broke = True
+            elif s.direction == 1:
                 if s.end.price < p.zd:
-                    sell_points.append(Signal(s.end.idx, "S3", s.end.price, None))
-                    break
+                    sells.append(Signal(s.end.idx, "S3", s.end.price, None, None))
                 break
 
-    # 去重（按 idx 去重，保留每组第一个）
+    # 去重（同 idx+type 保留首个；线段级一买优先于笔级）
     def dedup(signals):
+        signals = sorted(signals, key=lambda s: (s.idx, 0 if (s.div or {}).get("level") == "segment" else 1))
         seen = set()
         out = []
         for s in signals:
@@ -391,9 +423,9 @@ def find_buy_sell_points(strokes, segments, pivots, prices, dif, dea, closes):
             if key not in seen:
                 seen.add(key)
                 out.append(s)
-        return out
+        return sorted(out, key=lambda s: s.idx)
 
-    return dedup(buy_points), dedup(sell_points)
+    return dedup(buys), dedup(sells)
 
 
 # ---------------------------------------------------------------
@@ -407,7 +439,7 @@ def analyze_chanlun(dates, opens, highs, lows, closes, name=""):
     """
     n = len(dates)
     if n < 30:
-        return {"strokes": [], "pivots": [], "buy_points": [], "sell_points": []}
+        return {"strokes": [], "segments": [], "pivots": [], "buy_points": [], "sell_points": []}
 
     # 构建 K 线列表
     klines = [KLine(i, dates[i], opens[i], highs[i], lows[i], closes[i]) for i in range(n)]
@@ -424,35 +456,36 @@ def analyze_chanlun(dates, opens, highs, lows, closes, name=""):
     # 3. 笔
     strokes = find_strokes(merged, fractals, prices)
 
-    # 4. 线段
+    # 4. 线段（特征序列分型法）
     segments = find_segments(strokes)
 
-    # 5. 中枢
-    pivots = find_pivots(segments, prices)
+    # 5. 中枢（笔级 + 线段级）
+    pivots = _build_pivots(strokes, "stroke") + _build_pivots(segments, "segment")
 
     # 6. MACD
     dif, dea, bar = macd(closes)
 
     # 7. 买卖点
-    buy_pts, sell_pts = find_buy_sell_points(strokes, segments, pivots, prices, dif, dea, closes)
+    buy_pts, sell_pts = find_buy_sell_points(strokes, segments, pivots, bar, dif)
 
     # 格式化输出
-    def fmt_stroke(s):
+    def fmt_unit(s):
         return {"start_idx": s.start.idx, "end_idx": s.end.idx,
                 "start_price": s.start.price, "end_price": s.end.price,
-                "start_type": s.start.type, "end_type": s.end.type,
                 "direction": s.direction}
 
     def fmt_pivot(p):
         return {"start_idx": p.start_idx, "end_idx": p.end_idx,
-                "zg": round(p.zg, 2), "zd": round(p.zd, 2)}
+                "zg": round(p.zg, 2), "zd": round(p.zd, 2), "level": p.level}
 
-    def fmt_signal(s):
-        return {"idx": s.idx, "type": s.type, "price": s.price,
-                "date": dates[s.idx] if s.idx < len(dates) else ""}
+    def fmt_signal(sg):
+        return {"idx": sg.idx, "type": sg.type, "price": sg.price,
+                "date": dates[sg.idx] if sg.idx < len(dates) else "",
+                "div": sg.div}
 
     return {
-        "strokes": [fmt_stroke(s) for s in strokes],
+        "strokes": [fmt_unit(s) for s in strokes],
+        "segments": [fmt_unit(s) for s in segments],
         "pivots": [fmt_pivot(p) for p in pivots],
         "buy_points": [fmt_signal(b) for b in buy_pts],
         "sell_points": [fmt_signal(s) for s in sell_pts],
@@ -486,7 +519,7 @@ def collect(target_symbol=None):
         closes = series.get("close", [])
 
         if len(dates) < 30:
-            results[key] = {"strokes": [], "pivots": [], "buy_points": [], "sell_points": []}
+            results[key] = {"strokes": [], "segments": [], "pivots": [], "buy_points": [], "sell_points": []}
             continue
 
         try:
@@ -495,10 +528,11 @@ def collect(target_symbol=None):
             results[key] = result
             b = len(result["buy_points"])
             s = len(result["sell_points"])
-            print(f"  📐 {name}({key}): {len(result['strokes'])}笔 {len(result['pivots'])}中枢 B×{b} S×{s}")
+            print(f"  📐 {name}({key}): {len(result['strokes'])}笔 {len(result['segments'])}线段 "
+                  f"{len(result['pivots'])}中枢 B×{b} S×{s}")
         except Exception as e:
             print(f"  ⚠️ {name}({key}) 计算失败: {e}")
-            results[key] = {"strokes": [], "pivots": [], "buy_points": [], "sell_points": [], "error": str(e)[:80]}
+            results[key] = {"strokes": [], "segments": [], "pivots": [], "buy_points": [], "sell_points": [], "error": str(e)[:80]}
 
     output = {
         "updated_at": time.strftime("%Y-%m-%d %H:%M:%S"),

@@ -1662,6 +1662,110 @@ function klineIndToggle(key) { if (klineIndSelected.has(key)) klineIndSelected.d
 function klineSetRange(r) { klineRange = r; renderKlineSections(); }
 function klineToggleChanlun() { chanlunEnabled = !chanlunEnabled; renderKlineSections(); }
 
+// ---------------- 缠论详视图（单标的蜡烛图 + 笔/线段/中枢/BS点/背驰线） ----------------
+let klDetailKey = "sh_index";
+let klDetailRange = 120;
+function klDetailSet(key) { klDetailKey = key; renderKlineSections(); }
+function klDetailSetRange(r) { klDetailRange = r; renderKlineSections(); }
+
+function renderChanlunDetail() {
+  if (!klineData || !chanlunData) return "";
+  const all = (klineData.index_kline || []).concat(klineData.industry_kline || []);
+  let series = all.find(e => e.key === klDetailKey) || all[0];
+  if (!series || !series.dates || series.dates.length < 30) return "";
+  klDetailKey = series.key;
+  const ann = (chanlunData.annotations || {})[series.key] || {};
+
+  const n = series.dates.length;
+  const ds = series.dates.slice(-klDetailRange);
+  const off = n - ds.length;
+  const O = series.open.slice(off), H = series.high.slice(off), L = series.low.slice(off), C = series.close.slice(off);
+
+  const W = 980, HH = 430, padL = 58, padR = 14, padT = 20, padB = 30;
+  const plotW = W - padL - padR, plotH = HH - padT - padB;
+  let lo = Math.min(...L), hi = Math.max(...H);
+  const padv = (hi - lo) * 0.09 || 1; lo -= padv; hi += padv;
+  const X = i => padL + (ds.length <= 1 ? plotW / 2 : i * plotW / (ds.length - 1));
+  const Y = v => padT + plotH - (v - lo) / (hi - lo) * plotH;
+  const cw = Math.max(1.5, plotW / ds.length * 0.62);
+  const inView = i => i >= 0 && i < ds.length;
+
+  let s = `<svg viewBox="0 0 ${W} ${HH}" preserveAspectRatio="xMidYMid meet" role="img">`;
+  for (let g = 0; g <= 4; g++) {
+    const v = lo + (hi - lo) * g / 4, y = Y(v);
+    s += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#ebedf0"/>`;
+    s += `<text x="${padL - 6}" y="${y + 4}" text-anchor="end" font-size="10" fill="#8a94a6">${v.toFixed(0)}</text>`;
+  }
+  const step = Math.max(1, Math.ceil(ds.length / 8));
+  ds.forEach((d, i) => { if (i % step === 0 || i === ds.length - 1) s += `<text x="${X(i)}" y="${HH - padB + 16}" text-anchor="middle" font-size="9" fill="#8a94a6">${d.slice(5)}</text>`; });
+
+  // 中枢：笔级灰色 / 线段级棕色
+  (ann.pivots || []).forEach(p => {
+    const sIdx = p.start_idx - off, eIdx = p.end_idx - off;
+    if (eIdx < 0 || sIdx >= ds.length) return;
+    const x1 = X(Math.max(0, sIdx)), x2 = X(Math.min(ds.length - 1, eIdx));
+    const y1 = Y(p.zg), y2 = Y(p.zd);
+    const isSeg = p.level === "segment";
+    const col = isSeg ? "#b8860b" : "#95a5a6";
+    s += `<rect x="${x1}" y="${y1}" width="${Math.max(2, x2 - x1)}" height="${Math.max(1, y2 - y1)}" fill="${col}" opacity="${isSeg ? 0.16 : 0.12}" stroke="${col}" stroke-width="0.7" stroke-dasharray="4 2"/>`;
+  });
+
+  // 蜡烛图（红涨绿跌）
+  for (let i = 0; i < ds.length; i++) {
+    const up = C[i] >= O[i];
+    const col = up ? "#e74c3c" : "#27ae60";
+    const yO = Y(O[i]), yC = Y(C[i]);
+    s += `<line x1="${X(i)}" y1="${Y(H[i])}" x2="${X(i)}" y2="${Y(L[i])}" stroke="${col}" stroke-width="0.8"/>`;
+    s += `<rect x="${(X(i) - cw / 2).toFixed(1)}" y="${Math.min(yO, yC)}" width="${cw.toFixed(1)}" height="${Math.max(1, Math.abs(yC - yO))}" fill="${col}"/>`;
+  }
+
+  // 笔：黄色细线
+  (ann.strokes || []).forEach(st => {
+    const a = st.start_idx - off, b = st.end_idx - off;
+    if (b < 0 || a >= ds.length) return;
+    s += `<line x1="${X(Math.max(0, a))}" y1="${Y(st.start_price)}" x2="${X(Math.min(ds.length - 1, b))}" y2="${Y(st.end_price)}" stroke="#f1c40f" stroke-width="1" opacity="0.9"/>`;
+  });
+  // 线段：紫色粗线
+  (ann.segments || []).forEach(sg => {
+    const a = sg.start_idx - off, b = sg.end_idx - off;
+    if (b < 0 || a >= ds.length) return;
+    s += `<line x1="${X(Math.max(0, a))}" y1="${Y(sg.start_price)}" x2="${X(Math.min(ds.length - 1, b))}" y2="${Y(sg.end_price)}" stroke="#9b59b6" stroke-width="2.4" opacity="0.95"/>`;
+  });
+
+  // 背驰连线（紫色虚线）+ 买卖点标签（类型 + 日期 + 价格）
+  const sigs = [...(ann.buy_points || []), ...(ann.sell_points || [])].sort((a, b) => a.idx - b.idx);
+  sigs.forEach(sig => {
+    if (sig.div) {
+      const a = sig.div.a_idx - off, b = sig.div.b_idx - off;
+      if (inView(a) && inView(b)) {
+        s += `<line x1="${X(a)}" y1="${Y(sig.div.a_price)}" x2="${X(b)}" y2="${Y(sig.div.b_price)}" stroke="#8e44ad" stroke-width="1.2" stroke-dasharray="5 3" opacity="0.85"/>`;
+        s += `<text x="${(X(a) + X(b)) / 2}" y="${(Y(sig.div.a_price) + Y(sig.div.b_price)) / 2 + 12}" text-anchor="middle" font-size="8" fill="#8e44ad">背驰</text>`;
+      }
+    }
+    const vi = sig.idx - off;
+    if (!inView(vi)) return;
+    const isBuy = sig.type.startsWith("B");
+    const col = isBuy ? "#16a085" : "#c0392b";
+    const x = X(vi), y = Y(sig.price);
+    const segTag = (sig.div || {}).level === "segment" ? "·段" : "";
+    s += `<circle cx="${x}" cy="${y}" r="3" fill="${col}" stroke="#fff" stroke-width="1"/>`;
+    if (isBuy) {
+      s += `<text x="${x}" y="${y + 13}" text-anchor="middle" font-size="10" font-weight="bold" fill="${col}">${sig.type}${segTag}</text>`;
+      s += `<text x="${x}" y="${y + 23}" text-anchor="middle" font-size="8" fill="${col}">${ds[vi].slice(5)} ${sig.price.toFixed(0)}</text>`;
+    } else {
+      s += `<text x="${x}" y="${y - 14}" text-anchor="middle" font-size="10" font-weight="bold" fill="${col}">${sig.type}${segTag}</text>`;
+      s += `<text x="${x}" y="${y - 5}" text-anchor="middle" font-size="8" fill="${col}">${ds[vi].slice(5)} ${sig.price.toFixed(0)}</text>`;
+    }
+  });
+  s += `</svg>`;
+
+  const opts = all.map(e => `<option value="${e.key}" ${e.key === klDetailKey ? "selected" : ""}>${esc(e.name)}</option>`).join("");
+  return `<div class="section-label">📐 缠论详视图（K线 · 笔/线段 · 中枢 · 买卖点 · 背驰）
+    <span style="float:right"><select onchange="klDetailSet(this.value)" style="font-size:12px;padding:2px 6px;border:1px solid #d5d9e0;border-radius:6px;margin-right:6px">${opts}</select>${[60, 120, 240].map(r => `<button class="mini-btn ${klDetailRange === r ? "active" : ""}" onclick="klDetailSetRange(${r})">${r}天</button>`).join("")}</span></div>
+    <div class="if-chart-card">${s}
+    <div class="if-legend"><span><i style="background:#f1c40f"></i>笔</span><span><i style="background:#9b59b6"></i>线段</span><span><i style="background:#95a5a6"></i>笔级中枢</span><span><i style="background:#b8860b"></i>线段级中枢</span><span><i style="background:#16a085"></i>买点 B1/2/3</span><span><i style="background:#c0392b"></i>卖点 S1/2/3</span><span><i style="background:#8e44ad"></i>背驰连线</span></div></div>`;
+}
+
 function renderKlineSections() {
   const root = document.getElementById("kline-root");
   if (!root) return;
@@ -1682,6 +1786,9 @@ function renderKlineSections() {
       ${renderKlineChart(idxs, klineIdxSelected, klineRange)}
       <div class="if-legend">${idxs.filter(e => klineIdxSelected.has(e.key)).map((e, i) => `<span><i style="background:${IT_COLORS[i % IT_COLORS.length]}"></i>${esc(e.name)}</span>`).join("")}</div></div>`;
   }
+
+  // 缠论详视图（单标的蜡烛图深度标注）
+  h += renderChanlunDetail();
 
   // 日K行业指数
   const inds = klineData.industry_kline || [];
