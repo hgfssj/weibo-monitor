@@ -156,7 +156,7 @@ def analyze_bigv(name: str, platform: str, posts: list) -> dict or None:
         return None
     if not posts:
         return None
-    platform_label = "雪球" if platform == "xueqiu" else "微博"
+    platform_label = {"xueqiu": "雪球", "xhs": "小红书"}.get(platform, "微博")
     prompt = PROMPT_TEMPLATE.format(
         platform_label=platform_label, name=name or "",
         posts_block=_build_posts_block(posts))

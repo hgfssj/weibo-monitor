@@ -370,6 +370,7 @@ function fmtNum(n) {
 const PLATFORMS = {
   weibo:  { label: "微博", icon: "🔴" },
   xueqiu: { label: "雪球", icon: "🔵" },
+  xhs:    { label: "小红书", icon: "📕" },
 };
 
 // ============================ 全局状态 ============================
@@ -754,6 +755,7 @@ function renderConfig() {
       <select onchange="cfgEdit.users[${i}].platform=this.value">
         <option value="weibo" ${u.platform === "weibo" ? "selected" : ""}>微博</option>
         <option value="xueqiu" ${u.platform === "xueqiu" ? "selected" : ""}>雪球</option>
+        <option value="xhs" ${u.platform === "xhs" ? "selected" : ""}>小红书</option>
       </select>
       <input placeholder="uid" value="${esc(u.uid || "")}" oninput="cfgEdit.users[${i}].uid=this.value">
       <input placeholder="名称" value="${esc(u.name || "")}" oninput="cfgEdit.users[${i}].name=this.value">
@@ -800,7 +802,7 @@ function renderConfig() {
       </div>
 
       <div class="cfg-section">
-        <div class="section-label">📡 大V监控账号（微博 / 雪球）</div>
+        <div class="section-label">📡 大V监控账号（微博 / 雪球 / 小红书）</div>
         <div class="cfg-row cfg-row-head"><span>平台</span><span>uid</span><span>名称</span><span></span><span></span><span></span></div>
         ${usersHtml}
         <button class="btn-add" onclick="addUser()">+ 添加大V</button>
