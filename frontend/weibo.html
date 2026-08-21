@@ -290,6 +290,8 @@
   .if-tbl-link:hover { text-decoration: underline; }
   .if-chart-card, .if-analysis { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 18px; }
   .if-chart-card svg { width: 100%; height: auto; display: block; }
+  .skeleton { height: 280px; border-radius: 8px; background: linear-gradient(90deg, rgba(140,150,166,.10) 25%, rgba(140,150,166,.20) 50%, rgba(140,150,166,.10) 75%); background-size: 200% 100%; animation: sk-pulse 1.2s ease-in-out infinite; }
+  @keyframes sk-pulse { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
   .if-legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 10px; font-size: 12px; color: var(--muted); }
   .if-legend span i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
   .if-analysis .ana-item { padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; background: #fafbfc; line-height: 1.8; }
@@ -1539,14 +1541,22 @@ function updateIntraday() {
   fetch("/api/intraday", { cache: "no-store" })
     .then(r => r.ok ? r.json() : Promise.reject(r.status))
     .then(d => { intradayData = d; renderIntradayBlock(); })
-    .catch(() => { if (!intradayData) root.innerHTML = ""; });
+    .catch(() => { if (!intradayData) root.innerHTML = intradayPlaceholder(); });
+}
+
+// 盘中实时加载占位：页面一打开就预留两个图表区块位置，避免数据到达前空白/跳动
+function intradayPlaceholder() {
+  const card = `<div class="if-chart-card"><div class="skeleton"></div></div>`;
+  return `<div class="section-label">⚡ 盘中实时·指数分时（当日首点归一 = 0%）
+    <span style="float:right;color:#8a94a6;font-weight:400">加载中…</span></div>${card}
+    <div class="section-label">⚡ 盘中实时·行业指数分时（申万行业 · 当日首点归一 = 0%）</div>${card}`;
 }
 
 function renderIntradayBlock() {
   const root = document.getElementById("intraday-root");
   if (!root) return;
   const d = intradayData;
-  if (!d || !d.indexes) { root.innerHTML = ""; return; }
+  if (!d || !d.indexes) { root.innerHTML = intradayPlaceholder(); return; }
   if (!intraInited) { ["sh_index", "csi300", "chinext", "csi300_growth", "csi300_div"].forEach(k => intraSelected.add(k)); intraInited = true; }
   if (!intraSwInited) { ["sw801081", "sw801790", "sw801104"].forEach(k => intraSwSelected.add(k)); intraSwInited = true; }
   const idxs = d.indexes.filter(e => e.points && e.points.length);
@@ -2078,7 +2088,7 @@ function renderMacro(data) {
   </div>`;
 
   html += `<div id="kline-root"></div>`;
-  html += `<div id="intraday-root"></div>`;
+  html += `<div id="intraday-root">${intradayPlaceholder()}</div>`;
   html += renderIndexTrendSection();
   html += renderIndustryShareSection();
 

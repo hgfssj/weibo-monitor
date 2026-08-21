@@ -69,8 +69,10 @@ LAUNCH_ARGS = [
 # ============================ 数据解析 ============================
 
 def parse_ts(sec) -> str:
-    """user_posted 的 time 为秒级时间戳字符串"""
+    """user_posted 的 time 为秒级时间戳字符串；DOM 兵底无 time 时返回空"""
     try:
+        if not sec or int(sec) <= 0:
+            return ""
         return datetime.fromtimestamp(int(sec)).strftime("%Y-%m-%d %H:%M:%S")
     except Exception:
         return ""
@@ -85,6 +87,15 @@ def _cover_url(note: Dict) -> str:
     if url and url.startswith("//"):
         url = "https:" + url
     return url
+
+
+def _note_url(note: Dict, uid: str) -> str:
+    """优先用 DOM 卡片带 xsec_token 的 href（可直接打开），否则拼标准主页链接"""
+    href = note.get("href") or ""
+    if href.startswith("/"):
+        return "https://www.xiaohongshu.com" + href
+    nid = note.get("note_id") or ""
+    return f"https://www.xiaohongshu.com/user/profile/{uid}/{nid}"
 
 
 def note_to_post(note: Dict, uid: str, author: str) -> Dict:
@@ -107,7 +118,7 @@ def note_to_post(note: Dict, uid: str, author: str) -> Dict:
         "pics": ([_cover_url(note)] if _cover_url(note) else []),
         "is_retweet": False,
         "retweet_text": "",
-        "url": f"https://www.xiaohongshu.com/user/profile/{uid}/{nid}",
+        "url": _note_url(note, uid),
         "note_type": note.get("type") or "",   # normal=图文 / video=视频
         "collected_at": datetime.now().isoformat(),
     }
@@ -134,16 +145,19 @@ JS_USER_INFO = """() => {
 }"""
 
 JS_DOM_NOTES = """() => {
-  // DOM 兵底：SSR 渲染的笔记卡片（无 time 字段）
+  // DOM 兵底：SSR 渲染的笔记卡片（无 time 字段），从 data-note-id/封面/点赞提取
   return [...document.querySelectorAll('section.note-item')].map(el => {
-    const a = el.querySelector('a[href]');
+    const a = el.querySelector('a.cover[href]') || el.querySelector('a[href]');
     const href = a ? a.getAttribute('href') : '';
-    const m = href.match(/([0-9a-f]{24})/);
-    const like = (el.querySelector('.like-wrapper span, .count') || {}).textContent || '0';
+    const m = (el.getAttribute('data-note-id') || '').match(/([0-9a-f]{24})/)
+           || href.match(/([0-9a-f]{24})/);
+    const img = el.querySelector('.cover img, img');
+    const like = (el.querySelector('.like-wrapper .count, .count') || {}).textContent || '0';
     return {
       note_id: m ? m[1] : '',
       title: ((el.querySelector('.title') || {}).textContent || '').trim(),
       likes: like.replace(/[^0-9]/g, '') || '0',
+      cover: img ? {url: img.getAttribute('src') || ''} : null,
       href,
     };
   }).filter(x => x.note_id);
