@@ -16,7 +16,7 @@
 import json
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, BASE_DIR)
@@ -86,11 +86,48 @@ def append_round(industry_data: dict) -> int:
     return total
 
 
+def _check_post(p: dict, today: datetime) -> bool:
+    """单条帖子合法性：日期在窗口内、有内容、互动量在合理范围。
+
+    防他机代码 bug 污染（如时间解析错乱成 1970、字段错位成天文数字）。
+    """
+    d = str(p.get("created_at") or "")[:10]
+    try:
+        dt = datetime.strptime(d, "%Y-%m-%d")
+    except ValueError:
+        return False
+    if not (today - timedelta(days=370)) <= dt <= today + timedelta(days=1):
+        return False  # 时钟错乱 / 超期档案
+    if not (p.get("text") or "").strip():
+        return False  # 无文本且无价值的空帖
+    for k in ("likes", "comments", "reposts"):
+        try:
+            v = int(p.get(k) or 0)  # 容忍字符串型（旧版档案）
+        except (TypeError, ValueError):
+            return False
+        if v < 0 or v > 10_000_000:
+            return False  # 字段错位产生异常值
+    return True
+
+
+# 单文件坏行率超过此阈值 → 整文件丢弃（说明那台机器代码版本有问题）
+FILE_BAD_RATE_LIMIT = 0.5
+
+
 def load_all() -> dict:
-    """读取全部档案（含他机 pull 下来的文件），按帖子 id 去重。"""
+    """读取全部档案（含他机 pull 下来的文件），按帖子 id 去重。
+
+    三层校验：
+      1. 结构归一化（写入端 _norm_post 白名单）；
+      2. 逐条合法性（_check_post：日期窗口/文本/互动量范围）；
+      3. 文件级健康度：坏行率 > 50% 的整文件丢弃并告警（文件名含机器名，
+         可追溯到具体哪台机器的采集代码有问题）。
+    """
     out = {}
     if not os.path.isdir(ARCHIVE_DIR):
         return out
+    today = datetime.now()
+    bad_files = []
     for iid in sorted(os.listdir(ARCHIVE_DIR)):
         d_dir = os.path.join(ARCHIVE_DIR, iid)
         if not os.path.isdir(d_dir):
@@ -99,20 +136,38 @@ def load_all() -> dict:
         for fn in sorted(os.listdir(d_dir)):
             if not fn.endswith(".jsonl"):
                 continue
+            fpath = os.path.join(d_dir, fn)
+            good, bad = [], 0
             try:
-                with open(os.path.join(d_dir, fn), encoding="utf-8") as f:
+                with open(fpath, encoding="utf-8") as f:
                     for line in f:
                         line = line.strip()
                         if not line:
                             continue
-                        p = json.loads(line)
+                        try:
+                            p = json.loads(line)
+                        except json.JSONDecodeError:
+                            bad += 1
+                            continue
                         pid = str(p.get("id") or "")
-                        if pid and pid not in posts:
-                            posts[pid] = p
-            except (json.JSONDecodeError, OSError):
-                continue  # 单文件损坏不影响整体
+                        if pid and pid not in posts and _check_post(p, today):
+                            good.append(p)
+                        elif pid and pid not in posts:
+                            bad += 1
+            except OSError:
+                continue
+            total = len(good) + bad
+            if total and bad / total > FILE_BAD_RATE_LIMIT:
+                bad_files.append(f"{iid}/{fn} ({bad}/{total} 坏行)")
+                continue  # 整文件丢弃
+            for p in good:
+                posts[str(p["id"])] = p
         if posts:
             out[iid] = list(posts.values())
+    if bad_files:
+        print(f"  ⚠️ 以下他机档案坏行率过高已整文件丢弃（疑似该机采集代码异常）:")
+        for b in bad_files:
+            print(f"      · {b}")
     return out
 
 
