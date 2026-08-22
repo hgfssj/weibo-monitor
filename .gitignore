@@ -1,5 +1,7 @@
 # 运行时数据（登录态/采集历史/前端缓存数据）
-data/
+# 注意：data/archive/ 是多机共享的帖子档案，需跟踪（用 data/* + 取反实现）
+data/*
+!data/archive/
 frontend/data/
 
 # 运行日志

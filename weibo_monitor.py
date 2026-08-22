@@ -532,6 +532,22 @@ def run_industries(cfg) -> dict:
     os.makedirs(FRONTEND_DATA_DIR, exist_ok=True)
     shutil.copy2(INDUSTRY_DATA_FILE,
                  os.path.join(FRONTEND_DATA_DIR, "industry_data.json"))
+
+    # 长期跟踪：历史库聚合（按天帖数/情绪/热词 + 作者沉淀）+ 周摘要
+    try:
+        from industry_history import update_history, generate_weekly_summaries
+        update_history(industry_data, cfg)
+        generate_weekly_summaries(industry_data)
+    except Exception as e:
+        print(f"    ⚠️ 行业历史库更新失败(不影响主流程): {e}")
+
+    # 多机同步：帖子档案推送 GitHub + 拉取他机档案 + 历史库合并重建
+    try:
+        import data_sync
+        data_sync.after_collect(industry_data, cfg)
+    except Exception as e:
+        print(f"    ⚠️ GitHub 数据同步跳过(不影响主流程): {e}")
+
     print(f"  ✅ 行业数据已生成: {len(industries_out)} 个方向，"
           f"新增帖子 {total_ind_new} 条")
     return industry_data

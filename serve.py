@@ -28,6 +28,7 @@ INDEX_FUTURES_BAK = os.path.join(BASE_DIR, "data", "index_futures_positions.json
 INTRADAY_SNAP_PATH = os.path.join(BASE_DIR, "data", "intraday_daily_snapshot.json")
 DAILY_KLINE_PATH = os.path.join(BASE_DIR, "data", "daily_kline.json")
 CHANLUN_PATH = os.path.join(BASE_DIR, "data", "chanlun.json")
+INDUSTRY_HISTORY_PATH = os.path.join(BASE_DIR, "data", "industry_history.json")
 
 # ---------------- 盘中实时（腾讯分时 + 新浪行业实时，30秒服务端缓存） ----------------
 _INTRADAY_CACHE = {"ts": 0.0, "data": None}
@@ -266,6 +267,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             except Exception as e:
                 self._send_json({"error": str(e)}, status=500)
             return
+        if path == "/api/industry-history":
+            try:
+                self._send_json(load_industry_history())
+            except Exception as e:
+                self._send_json({"error": str(e)}, status=500)
+            return
         super().do_GET()
 
     def do_POST(self):
@@ -414,6 +421,17 @@ def load_chanlun():
         except Exception:
             pass
     return {"annotations": {}}
+
+
+def load_industry_history():
+    """读取行业讨论历史库；文件缺失时返回空结构。"""
+    if os.path.exists(INDUSTRY_HISTORY_PATH):
+        try:
+            with open(INDUSTRY_HISTORY_PATH, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"updated_at": "", "industries": {}}
 
 
 def load_index_futures():

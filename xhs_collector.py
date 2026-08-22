@@ -68,6 +68,29 @@ LAUNCH_ARGS = [
 
 # ============================ 数据解析 ============================
 
+def parse_int(val) -> int:
+    """安全解析整数，处理 '10+' / '1.2万' 等小红书格式"""
+    if val is None:
+        return 0
+    s = str(val).strip().replace(",", "")
+    if s.endswith("+"):
+        s = s[:-1]
+    if s.endswith("万"):
+        try:
+            return int(float(s[:-1]) * 10000)
+        except Exception:
+            return 0
+    if s.endswith("亿"):
+        try:
+            return int(float(s[:-1]) * 100000000)
+        except Exception:
+            return 0
+    try:
+        return int(float(s))
+    except Exception:
+        return 0
+
+
 def parse_ts(sec) -> str:
     """user_posted 的 time 为秒级时间戳字符串；DOM 兵底无 time 时返回空"""
     try:
@@ -114,7 +137,7 @@ def note_to_post(note: Dict, uid: str, author: str) -> Dict:
         "source": "小红书",
         "reposts": 0,
         "comments": 0,
-        "likes": int(note.get("likes") or note.get("liked_count") or 0),
+        "likes": parse_int(note.get("likes") or note.get("liked_count") or 0),
         "pics": ([_cover_url(note)] if _cover_url(note) else []),
         "is_retweet": False,
         "retweet_text": "",
@@ -400,7 +423,7 @@ async def collect_users(users: List[Dict], pages: int = 2,
                     "uid": uid,
                     "name": (info_raw or {}).get("name") or u.get("name") or uid,
                     "avatar": (info_raw or {}).get("avatar", ""),
-                    "followers": int((info_raw or {}).get("fans") or 0),
+                    "followers": parse_int((info_raw or {}).get("fans") or 0),
                     "description": (info_raw or {}).get("desc", ""),
                     "verified": "",
                     "profile_url": PROFILE_URL.format(uid=real_uid),

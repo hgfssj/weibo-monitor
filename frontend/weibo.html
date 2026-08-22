@@ -130,6 +130,39 @@
   .conf-medium { color: #f5a623; font-weight: 800; }
   .conf-low { color: var(--up); font-weight: 800; }
 
+  /* ===== 行业长期追踪（历史/情绪/词云/作者榜/周摘要） ===== */
+  .hist-toolbar { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+  .hist-range-btn {
+    border: 1px solid var(--border); background: #fff; color: #5a6573; cursor: pointer;
+    font-family: inherit; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 6px;
+  }
+  .hist-range-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .hist-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: #5a6573; margin: 6px 0 12px; }
+  .hist-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 4px; vertical-align: -1px; }
+  .hist-grid { display: grid; grid-template-columns: 200px 1fr 1fr; gap: 14px; margin-top: 6px; }
+  @media (max-width: 860px) { .hist-grid { grid-template-columns: 1fr; } }
+  .hist-box { background: #fafbfc; border: 1px solid #eef1f5; border-radius: 10px; padding: 12px 14px; }
+  .hist-box .label { font-size: 12px; color: var(--muted); margin-bottom: 8px; font-weight: 700; }
+  .bb-bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; margin: 10px 0 8px; background: #edf0f3; }
+  .bb-bar .seg-bull { background: var(--up); }
+  .bb-bar .seg-neutral { background: #c9d1dc; }
+  .bb-bar .seg-bear { background: var(--down); }
+  .bb-legend { display: flex; gap: 14px; font-size: 12px; color: #5a6573; }
+  .kw-cloud { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; min-height: 60px; }
+  .kw-cloud span { color: #356bb0; font-weight: 700; line-height: 1.4; cursor: default; }
+  .hist-authors { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .hist-authors th { text-align: left; color: var(--muted); font-size: 11.5px; padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .hist-authors td { padding: 6px 8px; border-bottom: 1px dashed #f0f2f5; color: #323a47; }
+  .hist-authors .rank { color: var(--muted); font-weight: 700; }
+  .hist-authors .rank-1 { color: #f5a623; } .hist-authors .rank-2 { color: #9aa4b2; } .hist-authors .rank-3 { color: #c88a5e; }
+  .q-score { color: var(--accent); font-weight: 800; }
+  .ws-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 860px) { .ws-grid { grid-template-columns: 1fr; } }
+  .ws-item { background: #fff; border: 1px solid #eef1f5; border-radius: 8px; padding: 10px 12px; }
+  .ws-item .label { font-size: 11.5px; color: var(--muted); font-weight: 700; margin-bottom: 5px; }
+  .ws-item .body { font-size: 13px; line-height: 1.6; color: #323a47; }
+  .hist-empty { color: var(--muted); font-size: 12.5px; padding: 14px 0; text-align: center; }
+
   /* ===== 大V面板 ===== */
   .user-section { margin-bottom: 30px; }
   .user-header {
@@ -619,6 +652,9 @@ function renderIndustry(data) {
     <div class="summary-foot">推断来源：${srcLabel(s.source)} · 置信度：<span class="conf-${s.confidence || 'low'}">${s.confidence || 'low'}</span>${s.generated_at ? " · " + fmtTime(s.generated_at) : ""} · 数据窗口：近 ${days} 天雪球讨论</div>
   </div>`;
 
+  // 长期追踪：讨论热度趋势 + 情绪仪表盘 + 词云 + 作者榜 + 周摘要
+  html += renderHistorySection(ind);
+
   // 股票池（行情）
   const stocks = ind.stocks || [];
   if (stocks.length) {
@@ -690,6 +726,263 @@ function renderIndustry(data) {
     });
   }
   root.innerHTML = html;
+}
+
+// ============================ 行业长期追踪（历史库渲染） ============================
+let indHistData = null;      // /api/industry-history 数据
+let histRange = 90;          // 趋势图显示范围（天）：30 / 90 / 365
+
+function switchHistRange(r) { histRange = r; if (lastInd) renderIndustry(lastInd); }
+
+function renderHistorySection(ind) {
+  if (!indHistData || !indHistData.industries) {
+    return `<div class="industry-card"><div class="hist-empty">📉 历史数据积累中（首轮采集后自动生成趋势/情绪/作者沉淀）</div></div>`;
+  }
+  const h = indHistData.industries[ind.id];
+  if (!h || !h.days || !Object.keys(h.days).length) {
+    return `<div class="industry-card"><div class="hist-empty">📉 ${esc(ind.name)} 历史数据积累中…</div></div>`;
+  }
+  const allDates = Object.keys(h.days).sort();
+  const nDays = allDates.length;
+  const cutoff = new Date(Date.now() - histRange * 86400000).toISOString().slice(0, 10);
+  const dates = allDates.filter(d => d >= cutoff);
+  const showDates = dates.length ? dates : allDates.slice(-30);
+
+  const chart = renderHeatComboChart(h, showDates);
+  let html = `<div class="industry-card">
+    <div class="summary-title">📈 讨论热度与情绪追踪（累计 ${nDays} 天 · 长期积累）</div>
+    <div class="hist-toolbar">
+      <span style="font-size:12px;color:var(--muted);margin-right:4px">范围</span>
+      ${[30, 90, 365].map(r => `<button class="hist-range-btn ${histRange === r ? "active" : ""}" onclick="switchHistRange(${r})">${r >= 365 ? "全部" : r + "天"}</button>`).join("")}
+    </div>
+    ${chart.svg}
+    <div class="hist-legend">
+      <span><i style="background:#8fc0ff"></i>每日帖数</span>
+      <span><i style="background:#f0413e"></i>多空情绪分(-100~100)</span>
+      ${chart.hasIdx ? '<span><i style="background:#9aa4b2"></i>行业指数(归一化)</span>' : ""}
+    </div>
+    <div class="hist-grid">
+      ${renderSentimentGauge(h, dates)}
+      ${renderBullBearBox(h, dates)}
+      ${renderKeywordCloudBox(h, dates)}
+    </div>
+  </div>`;
+
+  html += renderWeeklySummaryCard(h);
+  html += renderAuthorsCard(h);
+  return html;
+}
+
+// 组合图：柱=每日帖数(左轴) + 折线=情绪分(右轴±100) + 虚线=行业指数收盘归一化
+// 返回 {svg, hasIdx}：hasIdx 表示指数叠加线是否画出（交集>=2 天）
+function renderHeatComboChart(h, dates) {
+  const W = 940, H = 230, padL = 44, padR = 44, padT = 14, padB = 26;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  if (!dates.length) return { svg: '<div class="hist-empty">无数据</div>', hasIdx: false };
+  const bw = Math.max(1.5, Math.min(18, plotW / dates.length * 0.55));
+  const X = i => padL + (dates.length <= 1 ? plotW / 2 : i * plotW / (dates.length - 1));
+  const maxPosts = Math.max(1, ...dates.map(d => (h.days[d] || {}).posts || 0));
+  const Yp = v => padT + plotH * (1 - v / (maxPosts * 1.15));
+  const Ys = v => padT + plotH * (1 - (v + 100) / 200);  // 情绪 -100~100
+
+  // 行业指数收盘价（归一化到绘图区）
+  let idxPts = [];
+  const sw = h.sw_index;
+  if (sw && klineData && klineData.industry_kline) {
+    const k = klineData.industry_kline.find(s => s.key === sw);
+    if (k) {
+      const dateSet = new Set(dates);
+      const pairs = [];
+      for (let i = 0; i < k.dates.length; i++) {
+        if (dateSet.has(k.dates[i])) pairs.push([k.dates[i], k.close[i]]);
+      }
+      if (pairs.length >= 2) {
+        const vals = pairs.map(p => p[1]);
+        const mn = Math.min(...vals), mx = Math.max(...vals);
+        idxPts = pairs.map(p => {
+          const i = dates.indexOf(p[0]);
+          const norm = mx > mn ? (p[1] - mn) / (mx - mn) : 0.5;
+          return [X(i), padT + plotH * (1 - norm * 0.9 - 0.05)];
+        });
+      }
+    }
+  }
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img">`;
+  // 网格 + 左轴（帖数）
+  for (let g = 0; g <= 4; g++) {
+    const v = maxPosts * 1.15 * g / 4, y = Yp(v);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#ebedf0"/>`;
+    svg += `<text x="${padL - 6}" y="${y + 4}" text-anchor="end" font-size="10" fill="#8a94a6">${Math.round(v)}</text>`;
+  }
+  // 右轴（情绪分）
+  [-100, -50, 0, 50, 100].forEach(v => {
+    svg += `<text x="${W - padR + 6}" y="${Ys(v) + 4}" font-size="10" fill="#8a94a6">${v > 0 ? "+" + v : v}</text>`;
+  });
+  // 零轴强调
+  svg += `<line x1="${padL}" y1="${Ys(0)}" x2="${W - padR}" y2="${Ys(0)}" stroke="#c9d1dc" stroke-dasharray="2 3"/>`;
+  // X 轴标签
+  const step = Math.max(1, Math.ceil(dates.length / 8));
+  dates.forEach((d, i) => {
+    if (i % step === 0 || i === dates.length - 1)
+      svg += `<text x="${X(i)}" y="${H - padB + 14}" text-anchor="middle" font-size="9" fill="#8a94a6">${d.slice(5)}</text>`;
+  });
+  // 行业指数归一化虚线
+  if (idxPts.length >= 2) {
+    svg += `<path d="M${idxPts.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" L")}" fill="none" stroke="#9aa4b2" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.85"/>`;
+  }
+  // 帖数柱
+  dates.forEach((d, i) => {
+    const v = (h.days[d] || {}).posts || 0;
+    svg += `<rect x="${(X(i) - bw / 2).toFixed(1)}" y="${Yp(v).toFixed(1)}" width="${bw.toFixed(1)}" height="${(padT + plotH - Yp(v)).toFixed(1)}" rx="1.5" fill="#8fc0ff" opacity="0.75"><title>${d}: ${v} 帖</title></rect>`;
+  });
+  // 情绪折线（缺失跳过）
+  let d = "", started = false;
+  dates.forEach((dt, i) => {
+    const s = (h.days[dt] || {}).sentiment;
+    if (s == null) { started = false; return; }
+    d += (started ? " L" : "M") + X(i).toFixed(1) + "," + Ys(s).toFixed(1);
+    started = true;
+  });
+  if (d) svg += `<path d="${d}" fill="none" stroke="#f0413e" stroke-width="2"/>`;
+  dates.forEach((dt, i) => {
+    const s = (h.days[dt] || {}).sentiment;
+    if (s != null) svg += `<circle cx="${X(i).toFixed(1)}" cy="${Ys(s).toFixed(1)}" r="2.2" fill="#f0413e"><title>${dt}: 情绪 ${s > 0 ? "+" : ""}${s}</title></circle>`;
+  });
+  svg += `</svg>`;
+  return { svg: `<div style="overflow-x:auto">${svg}</div>`, hasIdx: idxPts.length >= 2 };
+}
+
+// 情绪仪表盘：近 N 天情绪均值（-100~+100 半圆 gauge）
+function renderSentimentGauge(h, dates) {
+  const recent = dates.slice(-7);
+  const ss = recent.map(d => (h.days[d] || {}).sentiment).filter(v => v != null);
+  const avg = ss.length ? Math.round(ss.reduce((a, b) => a + b, 0) / ss.length) : null;
+  const W = 180, H = 118, cx = 90, cy = 96, r = 70;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img">`;
+  // 半圆弧分段：-100~-20 绿(偏空) / -20~20 灰(中性) / 20~100 红(偏多)
+  const arc = (a1, a2, color) => {
+    const rad = a => (a - 180) * Math.PI / 180;  // 角度→弧度（180°=左端）
+    const x1 = cx + r * Math.cos(rad(a1)), y1 = cy - r * Math.sin(rad(a1));
+    const x2 = cx + r * Math.cos(rad(a2)), y2 = cy - r * Math.sin(rad(a2));
+    return `<path d="M${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r} 0 0 1 ${x2.toFixed(1)},${y2.toFixed(1)}" fill="none" stroke="${color}" stroke-width="13" stroke-linecap="butt"/>`;
+  };
+  svg += arc(0, 61, "#00a85433") + arc(61, 90, "#c9d1dc55") + arc(90, 119, "#c9d1dc55") + arc(119, 180, "#f0413e33");
+  // 指针
+  if (avg != null) {
+    const ang = (avg + 100) / 200 * 180;         // -100→0°, +100→180°
+    const rad = (ang - 180 + 90) * Math.PI / 180; // 转换到标准系
+    const px = cx + (r - 14) * Math.cos(rad - Math.PI / 2);
+    const py = cy - (r - 14) * Math.sin(rad - Math.PI / 2);
+    svg += `<line x1="${cx}" y1="${cy}" x2="${px.toFixed(1)}" y2="${py.toFixed(1)}" stroke="#1d2129" stroke-width="3" stroke-linecap="round"/>`;
+    svg += `<circle cx="${cx}" cy="${cy}" r="5" fill="#1d2129"/>`;
+  }
+  svg += `<text x="${cx - 62}" y="${cy + 16}" font-size="9.5" fill="#00a854">-100 偏空</text>`;
+  svg += `<text x="${cx + 30}" y="${cy + 16}" font-size="9.5" fill="#f0413e">偏多 +100</text>`;
+  svg += `</svg>`;
+  const label = avg == null ? "无样本" : (avg >= 40 ? "明显偏多" : avg >= 20 ? "偏多" : avg > -20 ? "中性" : avg > -40 ? "偏空" : "明显偏空");
+  const col = avg == null ? "var(--muted)" : (avg >= 20 ? "var(--up)" : avg <= -20 ? "var(--down)" : "#5a6573");
+  return `<div class="hist-box"><div class="label">🧭 讨论情绪仪表盘（近 ${recent.length} 天均值）</div>
+    ${svg}
+    <div style="text-align:center;margin-top:-6px">
+      <span style="font-size:26px;font-weight:900;color:${col}">${avg == null ? "—" : (avg > 0 ? "+" : "") + avg}</span>
+      <span style="font-size:12.5px;font-weight:700;color:${col};margin-left:6px">${label}</span>
+    </div></div>`;
+}
+
+// 多空力量对比（近 7 天）
+function renderBullBearBox(h, dates) {
+  const recent = dates.slice(-7);
+  let bull = 0, bear = 0, neu = 0;
+  recent.forEach(d => {
+    const v = h.days[d] || {};
+    bull += v.bull || 0; bear += v.bear || 0; neu += v.neutral || 0;
+  });
+  const total = bull + bear + neu || 1;
+  const pct = v => (v / total * 100).toFixed(0);
+  return `<div class="hist-box"><div class="label">⚖️ 多空力量对比（近 ${recent.length} 天 · ${total} 帖）</div>
+    <div class="bb-bar">
+      <div class="seg-bull" style="width:${pct(bull)}%" title="看多 ${bull} 帖"></div>
+      <div class="seg-neutral" style="width:${pct(neu)}%" title="中性 ${neu} 帖"></div>
+      <div class="seg-bear" style="width:${pct(bear)}%" title="看空 ${bear} 帖"></div>
+    </div>
+    <div class="bb-legend">
+      <span>🔴 看多 <b>${bull}</b>（${pct(bull)}%）</span>
+      <span>⚪ 中性 <b>${neu}</b>（${pct(neu)}%）</span>
+      <span>🟢 看空 <b>${bear}</b>（${pct(bear)}%）</span>
+    </div>
+    <div style="font-size:11.5px;color:var(--muted);margin-top:8px">基于多空关键词词典对每条帖子打分统计；多空极端失衡常为逆向信号。</div></div>`;
+}
+
+// 关键词云（近 7 天合并）
+function renderKeywordCloudBox(h, dates) {
+  const recent = dates.slice(-7);
+  const kw = {};
+  recent.forEach(d => {
+    Object.entries((h.days[d] || {}).keywords || {}).forEach(([w, c]) => {
+      kw[w] = (kw[w] || 0) + c;
+    });
+  });
+  const top = Object.entries(kw).sort((a, b) => b[1] - a[1]).slice(0, 28);
+  if (!top.length) return `<div class="hist-box"><div class="label">☁️ 近期讨论关键词</div><div class="hist-empty">无关键词数据</div></div>`;
+  const mx = top[0][1], mn = top[top.length - 1][1];
+  const palette = ["#356bb0", "#1e8fff", "#5a8fd6", "#2f5fa8", "#4ba6ff", "#6f7bd6"];
+  const spans = top.map(([w, c], i) => {
+    const size = 12 + (mx > mn ? (c - mn) / (mx - mn) * 14 : 7);
+    return `<span style="font-size:${size.toFixed(1)}px;color:${palette[i % palette.length]}">${esc(w)}<sub style="font-size:9px;color:var(--muted)">${c}</sub></span>`;
+  }).join("");
+  return `<div class="hist-box"><div class="label">☁️ 近 ${recent.length} 天讨论热词（${top.length} 个）</div><div class="kw-cloud">${spans}</div></div>`;
+}
+
+// 本周讨论摘要卡
+function renderWeeklySummaryCard(h) {
+  const ws = h.weekly_summaries || {};
+  const weeks = Object.keys(ws).sort();
+  if (!weeks.length) return "";
+  const cur = ws[weeks[weeks.length - 1]];
+  const prev = weeks.length >= 2 ? ws[weeks[weeks.length - 2]] : null;
+  const item = (label, body) => body ? `<div class="ws-item"><div class="label">${label}</div><div class="body">${esc(body)}</div></div>` : "";
+  const srcTag = cur.source === "llm" ? '<span style="color:var(--accent);font-weight:700">🤖 LLM 生成</span>' : '<span style="color:var(--muted)">⚙️ 规则生成</span>';
+  return `<div class="industry-card">
+    <div class="summary-title">📋 行业讨论周报（${esc(weeks[weeks.length - 1])}）</div>
+    <div class="ws-grid">
+      ${item("🎯 本周讨论焦点", cur.focus)}
+      ${item("🔴 多头核心论点", cur.bull_case)}
+      ${item("🟢 空头核心论点", cur.bear_case)}
+      ${item("⚡ 事件驱动", cur.events)}
+      ${item("🔁 与上周变化", cur.change)}
+    </div>
+    <div class="summary-foot">${srcTag}${cur.generated_at ? " · 生成于 " + fmtTime(cur.generated_at) : ""}${prev ? " · 上周周报见下方" : ""}</div>
+    ${prev ? `<details style="margin-top:10px"><summary style="font-size:12.5px;color:var(--muted);cursor:pointer">📅 上周周报（${esc(weeks[weeks.length - 2])}）</summary>
+      <div class="ws-grid" style="margin-top:10px">
+        ${item("🎯 上周焦点", prev.focus)}
+        ${item("🔁 上周→本周预期变化", prev.change)}
+      </div></details>` : ""}
+  </div>`;
+}
+
+// 高质量作者榜
+function renderAuthorsCard(h) {
+  const authors = Object.entries(h.authors || {})
+    .sort((a, b) => (b[1].quality || 0) - (a[1].quality || 0)).slice(0, 10);
+  if (!authors.length) return "";
+  const rows = authors.map(([uid, a], i) => `<tr>
+    <td class="rank ${i < 3 ? "rank-" + (i + 1) : ""}">${i + 1}</td>
+    <td><b>${esc(a.name || uid)}</b></td>
+    <td class="q-score">${(a.quality || 0).toFixed(1)}</td>
+    <td>${a.posts || 0}</td>
+    <td>${fmtNum(a.likes || 0)}</td>
+    <td>${fmtNum(a.comments || 0)}</td>
+    <td style="color:var(--muted);white-space:nowrap">${a.last_active ? fmtTime(a.last_active).slice(5) : "—"}</td>
+  </tr>`).join("");
+  return `<div class="industry-card">
+    <div class="summary-title">👤 雪球高质量作者榜（Top ${authors.length} · 累计沉淀）</div>
+    <div style="overflow-x:auto"><table class="hist-authors">
+      <thead><tr><th>#</th><th>作者</th><th>质量分</th><th>发帖</th><th>获赞</th><th>被评论</th><th>最近活跃</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>
+    <div class="summary-foot">质量分 = log₁₀(总互动+1) × min(发帖数,10)，跨轮累计；高频高质量作者可考虑加入大V监控页持续跟踪。</div>
+  </div>`;
 }
 
 // ============================ 配置管理 ============================
@@ -2227,6 +2520,18 @@ async function load() {
       lastInd = await resp.json();
       document.getElementById("updated-at").textContent = "最后检测: " + fmtTime(lastInd.updated_at);
       document.getElementById("new-badge").innerHTML = lastInd.new_count > 0 ? `<span class="badge-new">+${lastInd.new_count} 新</span>` : "";
+      // 长期追踪：历史库（热度/情绪/词云/作者榜/周报）
+      try {
+        const hr = await fetch("/api/industry-history", { cache: "no-store" });
+        indHistData = hr.ok ? await hr.json() : null;
+      } catch (e) { indHistData = null; }
+      // 行业指数日K（趋势图叠加用；macro 页已加载则复用）
+      if (!klineData) {
+        fetch("/api/daily-kline", { cache: "no-store" })
+          .then(r => r.ok ? r.json() : Promise.reject(r.status))
+          .then(d => { klineData = d; if (MODE === "industry" && lastInd) renderIndustry(lastInd); })
+          .catch(() => {});
+      }
       render();
     }
   } catch (e) {
