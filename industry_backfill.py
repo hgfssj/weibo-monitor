@@ -10,17 +10,20 @@
 
 用法:
     venv/bin/python industry_backfill.py            # 回填全部行业（幂等，每天只跑一次）
-    venv/bin/python industry_backfill.py --force    # 强制重跑（忽略当日完成标记）
+    venv/bin/python industry_backfill.py --force    # 强制重跑（忽略完成标记）
     venv/bin/python industry_backfill.py --days 120 # 指定回看天数（默认 90）
     venv/bin/python industry_backfill.py --only AI硬件
 
-设计要点（v2，修复风控中断后误标完成的问题）:
+设计要点（v3，跨机幂等）:
+  - 唯一数据真相源是档案 data/archive/（git 共享），
+    历史库 data/industry_history.json 只是本机衍生缓存，可随时重建；
+  - 完成标记与标的清单存 data/archive/_meta.json（git 共享）：
+    任何机器 clone 后即知「回填已完成 / 哪些标的已抓过」，不会浪费配额重抓；
+  - 抓到的帖子（含风控中断的部分数据）即时幂等入档（按帖子 id 去重），
+    中断零丢失：进程被杀/关机，已抓部分已在档案与 git 中；
   - 已达深度（回溯 >= 2/3 目标天数）的行业直接跳过，不重抓不重算；
-  - 标的级持久缓存 data/backfill_cache.json：成功抓取的标的后不再重抓，
-    跨轮/跨天累积（缓存只增不减，配合 update_history 的单调合并历史永不缩水）；
-  - 风控中断时抓到一半的标的记为 partial，下轮优先重试；
   - 广度优先：跨行业轮转取标的，保证每轮让所有行业都有增量；
-  - backfill_done 仅当「全部行业要么已达深度、要么标的全部抓完」才标记。
+  - backfill done 仅当「全部行业要么已达深度、要么标的全部抓完」才标记。
 """
 import argparse
 import asyncio
@@ -37,6 +40,7 @@ from playwright.async_api import async_playwright
 from xueqiu_collector import launch_context, check_risk
 from industry_collector import extract_stock_post, parse_symbol, stock_display_name
 import industry_history
+import data_archive
 
 PAGE_SIZE = 20          # 接口单页上限（实测）
 MAX_PAGES = 25          # 每标的最多翻 25 页（500 条采样，控制总请求量）
@@ -111,14 +115,6 @@ async def fetch_stock_history(page, symbol: str, days: int):
     return posts, False
 
 
-def _save_cache(path: str, cache: dict):
-    try:
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(cache, f, ensure_ascii=False)
-    except Exception:
-        pass
-
-
 def _industry_reach_days(h_ind: dict) -> int:
     """历史库中该行业最早记录距今天数（无记录返回 0）。"""
     ds = sorted((h_ind or {}).get("days", {}).keys())
@@ -131,17 +127,55 @@ def _industry_reach_days(h_ind: dict) -> int:
     return max(0, (datetime.now() - earliest).days)
 
 
-def _industry_complete(ind: dict, h_ind: dict, cache: dict, days: int) -> tuple:
-    """判断行业是否回填完成：已达深度 或 全部标的已抓取。返回 (done, reason)。"""
+def _industry_complete(ind: dict, h_ind: dict, meta: dict, days: int) -> tuple:
+    """判断行业是否回填完成：已达深度 或 全部标的已抓取（以 _meta 为准，跨机共享）。
+    返回 (done, reason)。"""
     reach = _industry_reach_days(h_ind)
     if reach >= int(days * 2 / 3):
         return True, f"历史已回溯 {reach} 天"
     iid = ind.get("id") or ind.get("name")
     need = {parse_symbol(s) for s in ind.get("stocks", []) if parse_symbol(s)}
-    cached = set(((cache.get(iid) or {}).get("stocks") or {}).keys())
-    if need and need <= cached:
+    done_syms = set(((meta.get("backfill") or {}).get("symbols") or {}).get(iid) or [])
+    if need and need <= done_syms:
         return True, f"{len(need)} 只标的均已抓取（深度受接口上限）"
     return False, ""
+
+
+def _migrate_old_cache(meta: dict) -> dict:
+    """一次性迁移：旧版 backfill_cache.json 的完成清单 → _meta.json，然后删除缓存。
+
+    posts 早已入档（真相源），partial 帖子补入档案后一并清理。
+    迁移是幂等的：缓存不存在时直接返回原 meta。
+    """
+    cache_path = os.path.join(BASE_DIR, "data", "backfill_cache.json")
+    if not os.path.exists(cache_path):
+        return meta
+    old = load_json(cache_path, {})
+    bf = meta.setdefault("backfill", {})
+    syms_map = bf.setdefault("symbols", {})
+    n_mig = 0
+    for iid, sc in old.items():
+        # partial 帖子先补入档案（此前未入档，避免数据丢失）
+        for sym, plist in (sc.get("partial") or {}).items():
+            try:
+                data_archive.append_posts(iid, plist or [])
+            except Exception:
+                pass
+        have = set(syms_map.get(iid) or [])
+        new = set((sc.get("stocks") or {}).keys()) - have
+        if new:
+            syms_map[iid] = sorted(have | new)
+            n_mig += len(new)
+    try:
+        os.remove(cache_path)
+    except OSError:
+        pass
+    if n_mig:
+        data_archive.write_meta(meta)
+        print(f"  📦 迁移: {n_mig} 只已完成标的 → 档案元数据(_meta.json)，旧缓存已清理")
+    else:
+        print("  🧹 旧缓存 backfill_cache.json 已清理（数据以档案为准）")
+    return meta
 
 
 async def backfill(days: int, force: bool, only: str = None):
@@ -157,23 +191,23 @@ async def backfill(days: int, force: bool, only: str = None):
         print("⚠️ 配置中无行业，先编辑 weibo_config.json")
         return
 
-    hist = industry_history._load_history()
-    done_mark = hist.get("backfill_done")
-    today = datetime.now().strftime("%Y-%m-%d")
-    if done_mark == today and not force:
-        print(f"✅ 今日已回填过（{done_mark}），跳过。如需重跑加 --force")
-        return
-
-    # 标的级持久缓存（跨轮/跨天累积，只增不减）
-    cache_path = os.path.join(BASE_DIR, "data", "backfill_cache.json")
-    cache = load_json(cache_path, {})
-
-    # 多机协同：先拉取他机档案并入历史库（他机已抓的深度可直接免抓）
+    # 多机协同：先拉取他机档案并入历史库（他机已抓的深度/标记可直接免抓）
     try:
         import data_sync
         data_sync.pull_and_rebuild(cfg)
     except Exception as e:
         print(f"  ⚠️ 拉取他机档案跳过: {e}")
+
+    # 拉取后重读：他机的 _meta / 历史深度可能已让本机无需再抓
+    meta = data_archive.read_meta()
+    hist = industry_history._load_history()
+    meta = _migrate_old_cache(meta)
+
+    today = datetime.now().strftime("%Y-%m-%d")
+    done_mark = (meta.get("backfill") or {}).get("done_date") or hist.get("backfill_done")
+    if done_mark == today and not force:
+        print(f"✅ 回填已完成（{done_mark}），跳过。如需重跑加 --force")
+        return
 
     # ---- 判定待办：跳过已完成的行业 ----
     todo = []   # [(ind, [待抓标的cfg...]), ...]
@@ -181,19 +215,21 @@ async def backfill(days: int, force: bool, only: str = None):
         iid = ind.get("id") or ind.get("name")
         name = ind.get("name", iid)
         done, reason = _industry_complete(
-            ind, hist.get("industries", {}).get(iid), cache, days)
+            ind, hist.get("industries", {}).get(iid), meta, days)
         if done:
             print(f"[行业] 《{name}》 {reason}，跳过")
             continue
-        cached = set(((cache.get(iid) or {}).get("stocks") or {}).keys())
+        done_syms = set(((meta.get("backfill") or {}).get("symbols") or {}).get(iid) or [])
         missing = [s for s in ind.get("stocks", [])
-                   if parse_symbol(s) and parse_symbol(s) not in cached]
+                   if parse_symbol(s) and parse_symbol(s) not in done_syms]
         if not missing:
             # 无有效标的配置，视为完成避免死循环
             continue
         todo.append((ind, missing))
 
     if not todo:
+        meta.setdefault("backfill", {})["done_date"] = today
+        data_archive.write_meta(meta)
         hist["backfill_done"] = today
         industry_history._save_history(hist)
         print("✅ 全部行业均已完成回填（或已达深度），无需抓取")
@@ -212,6 +248,7 @@ async def backfill(days: int, force: bool, only: str = None):
             if k < len(missing):
                 stock_queue.append((ind, missing[k]))
 
+    bf_syms = meta.setdefault("backfill", {}).setdefault("symbols", {})
     abort = False
     async with async_playwright() as pw:
         context = await launch_context(pw, headless=True)
@@ -231,12 +268,8 @@ async def backfill(days: int, force: bool, only: str = None):
                     break
                 iid = ind.get("id") or ind.get("name")
                 iname = ind.get("name", iid)
-                scache = cache.setdefault(iid, {"name": iname, "stocks": {}})
-                scache["name"] = iname
-                scache["icon"] = ind.get("icon", "🏭")
-                scache.setdefault("partial", {})
                 sym = parse_symbol(s)
-                if not sym or sym in scache.get("stocks", {}):
+                if not sym or sym in set(bf_syms.get(iid) or []):
                     continue
                 sname = stock_display_name(s, sym)
                 await page.goto(f"https://xueqiu.com/S/{sym}",
@@ -251,10 +284,12 @@ async def backfill(days: int, force: bool, only: str = None):
                            default="-")
                 print(f"  · [{iname}] {sname}({sym}): {len(posts)} 帖  {dmin} ~ {dmax}")
                 if blocked:
+                    # 部分数据也即时入档（幂等，进程中断零丢失）
                     if posts:
-                        # 风控中断，部分数据暂存 partial，下轮重试补全
-                        scache["partial"][sym] = posts
-                        _save_cache(cache_path, cache)
+                        try:
+                            data_archive.append_posts(iid, posts)
+                        except Exception:
+                            pass
                     fail_streak += 1
                     # 指数退避：90 → 180 → 360s；连续 4 个标的全失败则本轮收尾
                     wait = min(cooldown, 360)
@@ -265,15 +300,15 @@ async def backfill(days: int, force: bool, only: str = None):
                         print("  🛑 连续风控失败，本轮提前收尾（已有数据写库）")
                         abort = True
                 else:
-                    # 完整抓取（含 0 帖标的）记入 stocks，此后不再重抓
-                    scache["stocks"][sym] = posts
-                    scache["partial"].pop(sym, None)
-                    _save_cache(cache_path, cache)
+                    # 完整抓取（含 0 帖标的）：入档 + 元数据标记（他机免抓）
                     try:
-                        import data_archive
                         data_archive.append_posts(iid, posts)
                     except Exception:
                         pass
+                    lst = bf_syms.setdefault(iid, [])
+                    if sym not in lst:
+                        lst.append(sym)
+                        data_archive.write_meta(meta)
                     fail_streak = 0
                     cooldown = COOLDOWN_SEC
                     await asyncio.sleep(SLEEP_STOCK)
@@ -283,44 +318,23 @@ async def backfill(days: int, force: bool, only: str = None):
         finally:
             await context.close()
 
-    # ---- 由缓存组装本轮涉及行业的 viewpoints，单调合并进历史库 ----
-    result = {}
-    for ind, _ in todo:
-        iid = ind.get("id") or ind.get("name")
-        sc = cache.get(iid) or {}
-        posts = []
-        for sym, plist in (sc.get("stocks") or {}).items():
-            posts.extend(plist or [])
-        for sym, plist in (sc.get("partial") or {}).items():
-            posts.extend(plist or [])
-        if not posts:
-            continue
-        result[iid] = {
-            "id": iid, "name": sc.get("name") or ind.get("name", iid),
-            "icon": ind.get("icon", "🏭"), "viewpoints": posts,
-        }
-
-    if not result:
-        print("❌ 本轮未取到任何帖子（风控?），历史库未做修改")
-        return
-
-    # 合并日常采集的最新帖子（industry_data.json），保证近期数据完整
-    recent_data = load_json(os.path.join(BASE_DIR, "data", "industry_data.json"), {})
-    for iid, ind in result.items():
-        recent_posts = ((recent_data.get("industries") or {}).get(iid) or {}) \
-            .get("viewpoints") or []
-        if recent_posts:
-            seen_ids = {str(p.get("id")) for p in ind.get("viewpoints", [])}
-            extra = [p for p in recent_posts
-                     if str(p.get("id")) not in seen_ids]
-            ind["viewpoints"] = list(ind.get("viewpoints", [])) + extra
-
-    industry_data = {"industries": result, "updated_at": datetime.now().isoformat()}
-    industry_history.update_history(industry_data, cfg)
-
-    # 为缺失周补摘要
+    # ---- 日常快照并入档案（幂等），统一由档案重建历史库 ----
+    recent = load_json(os.path.join(BASE_DIR, "data", "industry_data.json"), {})
+    if (recent.get("industries") or {}):
+        try:
+            data_archive.append_round(recent)
+        except Exception as e:
+            print(f"  ⚠️ 近期快照入档跳过: {e}")
     try:
-        industry_history.generate_weekly_summaries(industry_data)
+        data_archive.rebuild_into_history(cfg)
+    except Exception as e:
+        print(f"  ⚠️ 档案重建历史库失败: {e}")
+
+    # 周摘要（由档案生成）
+    try:
+        arch = data_archive.load_all()
+        industry_history.generate_weekly_summaries(
+            {"industries": {iid: {"viewpoints": ps} for iid, ps in arch.items()}})
     except Exception as e:
         print(f"  ⚠️ 周摘要生成失败(不影响回填): {e}")
 
@@ -330,10 +344,12 @@ async def backfill(days: int, force: bool, only: str = None):
     for ind in industries:
         iid = ind.get("id") or ind.get("name")
         done, _ = _industry_complete(
-            ind, hist.get("industries", {}).get(iid), cache, days)
+            ind, hist.get("industries", {}).get(iid), meta, days)
         if not done:
             pending.append(ind.get("name", iid))
     if not pending:
+        meta["backfill"]["done_date"] = today
+        data_archive.write_meta(meta)
         hist["backfill_done"] = today
         print("\n🎉 全部行业回填完成")
     else:
@@ -358,7 +374,7 @@ async def backfill(days: int, force: bool, only: str = None):
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--days", type=int, default=90, help="回看天数（默认 90）")
-    ap.add_argument("--force", action="store_true", help="忽略当日已完成标记强制重跑")
+    ap.add_argument("--force", action="store_true", help="忽略完成标记强制重跑")
     ap.add_argument("--only", default=None, help="仅回填指定行业 id 或名称")
     args = ap.parse_args()
     asyncio.run(backfill(args.days, args.force, args.only))

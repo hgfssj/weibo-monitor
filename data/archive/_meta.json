@@ -1,0 +1,54 @@
+{
+ "backfill": {
+  "days": 90,
+  "done_date": "2026-08-23",
+  "symbols": {
+   "ai_application": [
+    "IGV",
+    "MSFT",
+    "PLTR"
+   ],
+   "ai_hardware": [
+    "00981",
+    "MU",
+    "NVDA",
+    "SH603986",
+    "SH688256",
+    "SH688825",
+    "SKHY",
+    "SNDK",
+    "SZ300308",
+    "SZ300502",
+    "TSM"
+   ],
+   "ai_pharma": [
+    "01548",
+    "02228",
+    "03696",
+    "07666",
+    "09926",
+    "SH603259"
+   ],
+   "lithium_battery": [
+    "SZ002460",
+    "SZ002466",
+    "SZ002594",
+    "SZ002738",
+    "SZ300014",
+    "SZ300274",
+    "SZ300750",
+    "TSLA"
+   ],
+   "model_cloud": [
+    "00700",
+    "02513",
+    "03896",
+    "09988",
+    "AMZN",
+    "GOOGL",
+    "META"
+   ]
+  }
+ },
+ "schema_version": 2
+}
