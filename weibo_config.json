@@ -49,14 +49,6 @@
       "display_limit": 30,
       "fetch_pages": 2,
       "name": "最爱番茄炒蛋"
-    },
-    {
-      "platform": "xhs",
-      "uid": "679d62ba000000000e0117c8",
-      "filter": false,
-      "display_limit": 100,
-      "fetch_pages": 5,
-      "name": "679d62ba000000000e0117c8"
     }
   ],
   "peak_interval_sec": 1800,

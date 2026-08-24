@@ -405,7 +405,6 @@ function fmtNum(n) {
 const PLATFORMS = {
   weibo:  { label: "微博", icon: "🔴" },
   xueqiu: { label: "雪球", icon: "🔵" },
-  xhs:    { label: "小红书", icon: "📕" },
 };
 
 // ============================ 全局状态 ============================
@@ -1050,7 +1049,6 @@ function renderConfig() {
       <select onchange="cfgEdit.users[${i}].platform=this.value">
         <option value="weibo" ${u.platform === "weibo" ? "selected" : ""}>微博</option>
         <option value="xueqiu" ${u.platform === "xueqiu" ? "selected" : ""}>雪球</option>
-        <option value="xhs" ${u.platform === "xhs" ? "selected" : ""}>小红书</option>
       </select>
       <input placeholder="uid" value="${esc(u.uid || "")}" oninput="cfgEdit.users[${i}].uid=this.value">
       <input placeholder="名称" value="${esc(u.name || "")}" oninput="cfgEdit.users[${i}].name=this.value">

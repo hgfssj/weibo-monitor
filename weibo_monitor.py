@@ -35,7 +35,6 @@ if os.path.exists(_env_path):
 
 from weibo_collector import collect_users, load_config, save_config
 from xueqiu_collector import collect_users as collect_xueqiu_users
-from xhs_collector import collect_users as collect_xhs_users
 from weibo_filter import is_stock_related
 from weibo_summary import analyze_bigv, heuristic_summary, LLM_AVAILABLE
 from industry_collector import collect_industries
@@ -93,10 +92,10 @@ def save_if_posts(data, name=""):
 # ============================ 核心逻辑 ============================
 
 def qkey(platform: str, uid: str) -> str:
-    """平台隔离的唯一键，避免微博/雪球/小红书 uid 数字撞车"""
+    """平台隔离的唯一键，避免微博/雪球 uid 数字撞车"""
     if platform == "weibo":
         return uid
-    prefix = {"xueqiu": "xq:", "xhs": "xhs:"}.get(platform, f"{platform}:")
+    prefix = {"xueqiu": "xq:"}.get(platform, f"{platform}:")
     return prefix + uid
 
 
@@ -106,7 +105,6 @@ def run_once(cfg) -> dict:
     pages = cfg.get("pages_per_user", 2)
     weibo_users = [u for u in users if u.get("platform", "weibo") == "weibo"]
     xueqiu_users = [u for u in users if u.get("platform") == "xueqiu"]
-    xhs_users = [u for u in users if u.get("platform") == "xhs"]
 
     # 股指期货大V（机构多空单复盘）：单独采集，不进入主大V视图
     if_cfg = cfg.get("index_futures") or {}
@@ -114,8 +112,7 @@ def run_once(cfg) -> dict:
     if_name = if_cfg.get("monitor_name") or "股指期货机构持仓复盘"
 
     print(f"\n[{datetime.now().strftime('%H:%M:%S')}] 🔍 开始检测 "
-          f"微博 {len(weibo_users)} 个 + 雪球 {len(xueqiu_users)} 个"
-          f" + 小红书 {len(xhs_users)} 个账号...")
+          f"微博 {len(weibo_users)} 个 + 雪球 {len(xueqiu_users)} 个账号...")
 
     # 分平台采集，结果按 平台:uid 归并
     collected = {}
@@ -132,15 +129,6 @@ def run_once(cfg) -> dict:
                 collect_xueqiu_users(xueqiu_to_collect, pages=pages,
                                      headless=True, cfg=cfg)).items():
             collected[qkey("xueqiu", uid)] = dict(data, platform="xueqiu")
-    # 小红书采集：用户主页滚动 + 接口拦截
-    if xhs_users:
-        try:
-            for uid, data in asyncio.run(
-                    collect_xhs_users(xhs_users, pages=pages,
-                                      headless=True, cfg=cfg)).items():
-                collected[qkey("xhs", uid)] = dict(data, platform="xhs")
-        except Exception as e:
-            print(f"  ⚠️ 小红书采集失败(不影响主流程): {e}")
     # 股指期货数据更新
     if_source = (if_cfg.get("source") or "public").lower()
     # 公开渠道直连（中金所每日前20会员持仓）：每轮更新，
@@ -234,8 +222,7 @@ def run_once(cfg) -> dict:
             print(f"  [{name}] 🆕 发现 {len(new_here)} 条新发言/评论:")
             for p in new_here:
                 tag = "💬评论" if p.get("type") == "comment" else (
-                    "雪球" if platform == "xueqiu"
-                    else "小红书" if platform == "xhs" else "微博")
+                    "雪球" if platform == "xueqiu" else "微博")
                 snippet = p["text"].replace("\n", " ")[:55]
                 print(f"      - [{tag}] {snippet}")
                 new_posts_total.append(p)
@@ -283,15 +270,13 @@ def run_once(cfg) -> dict:
     save_json(STATE_FILE, state)
 
     # ===== 生成页面数据（按平台分组 + 每用户策略）=====
-    platforms = {"weibo": [], "xueqiu": [], "xhs": []}
+    platforms = {"weibo": [], "xueqiu": []}
     total_filtered = 0
     for u in users:
         platform = u.get("platform", "weibo")
         uid = str(u["uid"])
         key = qkey(platform, uid)
         default_url = (f"https://xueqiu.com/u/{uid}" if platform == "xueqiu"
-                       else f"https://www.xiaohongshu.com/user/profile/{uid}"
-                       if platform == "xhs"
                        else f"https://weibo.com/u/{uid}")
         info = users_info.get(key, {"uid": uid, "name": u.get("name") or uid})
         limit = int(u.get("display_limit", 50))
