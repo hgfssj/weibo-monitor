@@ -366,34 +366,67 @@ def collect(backfill_days=90, end_date=None, force_full=False):
         })
 
     # 按宽基类别聚合（金额、净申购，单位亿元）
+    # 同时记录每日覆盖数：部分 ETF 缺数时该类别 level 只是「部分和」，
+    # 若不告警，环比会形成虚假暴涨/暴跌（例如深市缺数导致沪深300假摔 -290 亿）。
     series = {}
+    coverage = {}      # cat -> 每日有数 ETF 数量
+    total_in_cat = {}  # cat -> 该类别 ETF 总数
     for cat in CATEGORIES:
         lvl = []
         net = []
+        cov = []
+        total = sum(1 for e in etfs if e["category"] == cat)
+        total_in_cat[cat] = total
         for i, dt in enumerate(all_dates):
             s = 0.0
             n = 0.0
-            has = False
+            cnt = 0
             for e in etfs:
                 if e["category"] == cat and e["amount"][i] is not None:
                     s += e["amount"][i]
-                    has = True
+                    cnt += 1
                     if e["net"][i] is not None:
                         n += e["net"][i]
-            lvl.append(round(s, 4) if has else None)
-            net.append(round(n, 4) if has else None)
+            lvl.append(round(s, 4) if cnt else None)
+            net.append(round(n, 4) if cnt else None)
+            cov.append(cnt)
         series[cat] = {"level": lvl, "net": net}
+        coverage[cat] = cov
+
+    # 覆盖完整性检查：最近 5 个交易日内若有类别只是部分覆盖，响亮告警并写入 JSON
+    partial_dates = []
+    n_dates = len(all_dates)
+    for cat, cov in coverage.items():
+        for i in range(max(0, n_dates - 5), n_dates):
+            if cov[i] and cov[i] < total_in_cat[cat]:
+                missing = [e["code"] for e in etfs
+                           if e["category"] == cat and e["amount"][i] is None]
+                partial_dates.append({
+                    "date": all_dates[i], "category": cat,
+                    "covered": cov[i], "total": total_in_cat[cat],
+                    "missing": missing,
+                })
+    if partial_dates:
+        print("  🚨🚨 覆盖完整性告警：以下日期部分 ETF 缺数，level 为「部分和」而非真实水位，日环比无意义！")
+        seen = set()
+        for w in partial_dates:
+            key = (w["date"], w["category"])
+            if key in seen:
+                continue
+            seen.add(key)
+            print(f"     🚨 {w['date']} {w['category']}: {w['covered']}/{w['total']} 只有数，缺 {','.join(w['missing'])}")
+        print("  👉 处理：等深交所/上交所发布当日数据后重跑 national_team_etf.py 回补；回补前勿将该日 level 与前日直接相减。")
 
     # 上证指数对齐
     sh_map = fetch_sh_index(all_dates)
     sh_index = [round(sh_map.get(dt), 2) if dt in sh_map else None for dt in all_dates]
 
-    data = build_output(all_dates, series, etfs, sh_index)
+    data = build_output(all_dates, series, etfs, sh_index, partial_dates)
     write_positions(data)
     return data
 
 
-def build_output(dates, series, etfs, sh_index):
+def build_output(dates, series, etfs, sh_index, partial_dates=None):
     return {
         "updated": datetime.date.today().isoformat(),
         "source": "上交所每日ETF份额(沪市历史) × 东方财富历史单位净值 = 持仓金额(亿元)；深市ETF份额经 akshare 取深交所每日历史份额(真实)",
@@ -403,6 +436,8 @@ def build_output(dates, series, etfs, sh_index):
         "series": series,
         "sh_index": sh_index,
         "etfs": etfs,
+        # 覆盖完整性：列出的日期 level 为「部分和」，日环比解读无效，需回补后重算
+        "partial_dates": partial_dates or [],
     }
 
 
