@@ -1,0 +1,8459 @@
+{
+  "institutions": [
+    "中信期货",
+    "其他大机构",
+    "头部机构"
+  ],
+  "records": [
+    {
+      "date": "2024-08-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": null,
+        "其他大机构": null,
+        "头部机构": null
+      },
+      "net_short_cumulative": {
+        "中信期货": 74377,
+        "其他大机构": -767,
+        "头部机构": 73610
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-08-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1930,
+        "其他大机构": -592,
+        "头部机构": -2522
+      },
+      "net_short_cumulative": {
+        "中信期货": 72447,
+        "其他大机构": -1359,
+        "头部机构": 71088
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-08-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 772,
+        "其他大机构": -8,
+        "头部机构": 764
+      },
+      "net_short_cumulative": {
+        "中信期货": 73219,
+        "其他大机构": -1367,
+        "头部机构": 71852
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-08-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -482,
+        "其他大机构": 2477,
+        "头部机构": 1995
+      },
+      "net_short_cumulative": {
+        "中信期货": 72737,
+        "其他大机构": 1110,
+        "头部机构": 73847
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-08-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2639,
+        "其他大机构": 453,
+        "头部机构": 3092
+      },
+      "net_short_cumulative": {
+        "中信期货": 75376,
+        "其他大机构": 1563,
+        "头部机构": 76939
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-02",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 454,
+        "其他大机构": -5192,
+        "头部机构": -4738
+      },
+      "net_short_cumulative": {
+        "中信期货": 75830,
+        "其他大机构": -3629,
+        "头部机构": 72201
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3430,
+        "其他大机构": 1329,
+        "头部机构": -2101
+      },
+      "net_short_cumulative": {
+        "中信期货": 72400,
+        "其他大机构": -2300,
+        "头部机构": 70100
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 140,
+        "其他大机构": -1365,
+        "头部机构": -1225
+      },
+      "net_short_cumulative": {
+        "中信期货": 72540,
+        "其他大机构": -3665,
+        "头部机构": 68875
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2791,
+        "其他大机构": -1917,
+        "头部机构": 874
+      },
+      "net_short_cumulative": {
+        "中信期货": 75331,
+        "其他大机构": -5582,
+        "头部机构": 69749
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -685,
+        "其他大机构": -606,
+        "头部机构": -1291
+      },
+      "net_short_cumulative": {
+        "中信期货": 74646,
+        "其他大机构": -6188,
+        "头部机构": 68458
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -174,
+        "其他大机构": 2868,
+        "头部机构": 2694
+      },
+      "net_short_cumulative": {
+        "中信期货": 74472,
+        "其他大机构": -3320,
+        "头部机构": 71152
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -87,
+        "其他大机构": -582,
+        "头部机构": -669
+      },
+      "net_short_cumulative": {
+        "中信期货": 74385,
+        "其他大机构": -3902,
+        "头部机构": 70483
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 148,
+        "其他大机构": 4680,
+        "头部机构": 4828
+      },
+      "net_short_cumulative": {
+        "中信期货": 74533,
+        "其他大机构": 778,
+        "头部机构": 75311
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1072,
+        "其他大机构": 699,
+        "头部机构": 1771
+      },
+      "net_short_cumulative": {
+        "中信期货": 75605,
+        "其他大机构": 1477,
+        "头部机构": 77082
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 463,
+        "其他大机构": -2793,
+        "头部机构": -2330
+      },
+      "net_short_cumulative": {
+        "中信期货": 76068,
+        "其他大机构": -1316,
+        "头部机构": 74752
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2206,
+        "其他大机构": -914,
+        "头部机构": -3120
+      },
+      "net_short_cumulative": {
+        "中信期货": 73862,
+        "其他大机构": -2230,
+        "头部机构": 71632
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -81,
+        "其他大机构": 7758,
+        "头部机构": 7677
+      },
+      "net_short_cumulative": {
+        "中信期货": 73781,
+        "其他大机构": 5528,
+        "头部机构": 79309
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1721,
+        "其他大机构": -9469,
+        "头部机构": -11190
+      },
+      "net_short_cumulative": {
+        "中信期货": 72060,
+        "其他大机构": -3941,
+        "头部机构": 68119
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1183,
+        "其他大机构": -2669,
+        "头部机构": -1486
+      },
+      "net_short_cumulative": {
+        "中信期货": 73243,
+        "其他大机构": -6610,
+        "头部机构": 66633
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 5225,
+        "其他大机构": 5008,
+        "头部机构": 10233
+      },
+      "net_short_cumulative": {
+        "中信期货": 78468,
+        "其他大机构": -1602,
+        "头部机构": 76866
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 7166,
+        "其他大机构": -3743,
+        "头部机构": 3423
+      },
+      "net_short_cumulative": {
+        "中信期货": 85634,
+        "其他大机构": -5345,
+        "头部机构": 80289
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -921,
+        "其他大机构": 13263,
+        "头部机构": 12342
+      },
+      "net_short_cumulative": {
+        "中信期货": 84713,
+        "其他大机构": 7918,
+        "头部机构": 92631
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1789,
+        "其他大机构": 8948,
+        "头部机构": 7159
+      },
+      "net_short_cumulative": {
+        "中信期货": 82924,
+        "其他大机构": 16866,
+        "头部机构": 99790
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-09-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2145,
+        "其他大机构": 12579,
+        "头部机构": 10434
+      },
+      "net_short_cumulative": {
+        "中信期货": 80779,
+        "其他大机构": 29445,
+        "头部机构": 110224
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1753,
+        "其他大机构": 16584,
+        "头部机构": 18337
+      },
+      "net_short_cumulative": {
+        "中信期货": 82532,
+        "其他大机构": 46029,
+        "头部机构": 128561
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2178,
+        "其他大机构": -4753,
+        "头部机构": -2575
+      },
+      "net_short_cumulative": {
+        "中信期货": 84710,
+        "其他大机构": 41276,
+        "头部机构": 125986
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2567,
+        "其他大机构": 2452,
+        "头部机构": -115
+      },
+      "net_short_cumulative": {
+        "中信期货": 82143,
+        "其他大机构": 43728,
+        "头部机构": 125871
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -76,
+        "其他大机构": -728,
+        "头部机构": -804
+      },
+      "net_short_cumulative": {
+        "中信期货": 82067,
+        "其他大机构": 43000,
+        "头部机构": 125067
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 994,
+        "其他大机构": -2921,
+        "头部机构": -1927
+      },
+      "net_short_cumulative": {
+        "中信期货": 83061,
+        "其他大机构": 40079,
+        "头部机构": 123140
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1108,
+        "其他大机构": -6789,
+        "头部机构": -5681
+      },
+      "net_short_cumulative": {
+        "中信期货": 84169,
+        "其他大机构": 33290,
+        "头部机构": 117459
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -6,
+        "其他大机构": 3317,
+        "头部机构": 3311
+      },
+      "net_short_cumulative": {
+        "中信期货": 84163,
+        "其他大机构": 36607,
+        "头部机构": 120770
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -962,
+        "其他大机构": -11052,
+        "头部机构": -12014
+      },
+      "net_short_cumulative": {
+        "中信期货": 83201,
+        "其他大机构": 25555,
+        "头部机构": 108756
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 4717,
+        "其他大机构": 6913,
+        "头部机构": 11630
+      },
+      "net_short_cumulative": {
+        "中信期货": 87918,
+        "其他大机构": 32468,
+        "头部机构": 120386
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3189,
+        "其他大机构": -8818,
+        "头部机构": -5629
+      },
+      "net_short_cumulative": {
+        "中信期货": 91107,
+        "其他大机构": 23650,
+        "头部机构": 114757
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 153,
+        "其他大机构": -1769,
+        "头部机构": -1616
+      },
+      "net_short_cumulative": {
+        "中信期货": 91260,
+        "其他大机构": 21881,
+        "头部机构": 113141
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -26,
+        "其他大机构": -819,
+        "头部机构": -845
+      },
+      "net_short_cumulative": {
+        "中信期货": 91234,
+        "其他大机构": 21062,
+        "头部机构": 112296
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1813,
+        "其他大机构": -4031,
+        "头部机构": -2218
+      },
+      "net_short_cumulative": {
+        "中信期货": 93047,
+        "其他大机构": 17031,
+        "头部机构": 110078
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -5008,
+        "其他大机构": 6895,
+        "头部机构": 1887
+      },
+      "net_short_cumulative": {
+        "中信期货": 88039,
+        "其他大机构": 23926,
+        "头部机构": 111965
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1762,
+        "其他大机构": -586,
+        "头部机构": -2348
+      },
+      "net_short_cumulative": {
+        "中信期货": 86277,
+        "其他大机构": 23340,
+        "头部机构": 109617
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 570,
+        "其他大机构": -2050,
+        "头部机构": -1480
+      },
+      "net_short_cumulative": {
+        "中信期货": 86847,
+        "其他大机构": 21290,
+        "头部机构": 108137
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1588,
+        "其他大机构": -1885,
+        "头部机构": -3473
+      },
+      "net_short_cumulative": {
+        "中信期货": 85259,
+        "其他大机构": 19405,
+        "头部机构": 104664
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-10-31",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -735,
+        "其他大机构": -1012,
+        "头部机构": -1747
+      },
+      "net_short_cumulative": {
+        "中信期货": 84524,
+        "其他大机构": 18393,
+        "头部机构": 102917
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-01",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3427,
+        "其他大机构": -2989,
+        "头部机构": 438
+      },
+      "net_short_cumulative": {
+        "中信期货": 87951,
+        "其他大机构": 15404,
+        "头部机构": 103355
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1332,
+        "其他大机构": 5083,
+        "头部机构": 3751
+      },
+      "net_short_cumulative": {
+        "中信期货": 86619,
+        "其他大机构": 20487,
+        "头部机构": 107106
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 498,
+        "其他大机构": 10180,
+        "头部机构": 10678
+      },
+      "net_short_cumulative": {
+        "中信期货": 87117,
+        "其他大机构": 30667,
+        "头部机构": 117784
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -626,
+        "其他大机构": -4365,
+        "头部机构": -4991
+      },
+      "net_short_cumulative": {
+        "中信期货": 86491,
+        "其他大机构": 26302,
+        "头部机构": 112793
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -970,
+        "其他大机构": 17501,
+        "头部机构": 16531
+      },
+      "net_short_cumulative": {
+        "中信期货": 85521,
+        "其他大机构": 43803,
+        "头部机构": 129324
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 188,
+        "其他大机构": -1816,
+        "头部机构": -1628
+      },
+      "net_short_cumulative": {
+        "中信期货": 85709,
+        "其他大机构": 41987,
+        "头部机构": 127696
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3077,
+        "其他大机构": 3651,
+        "头部机构": 574
+      },
+      "net_short_cumulative": {
+        "中信期货": 82632,
+        "其他大机构": 45638,
+        "头部机构": 128270
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 430,
+        "其他大机构": -7824,
+        "头部机构": -7394
+      },
+      "net_short_cumulative": {
+        "中信期货": 83062,
+        "其他大机构": 37814,
+        "头部机构": 120876
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 138,
+        "其他大机构": -985,
+        "头部机构": -847
+      },
+      "net_short_cumulative": {
+        "中信期货": 83200,
+        "其他大机构": 36829,
+        "头部机构": 120029
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1293,
+        "其他大机构": -8995,
+        "头部机构": -7702
+      },
+      "net_short_cumulative": {
+        "中信期货": 84493,
+        "其他大机构": 27834,
+        "头部机构": 112327
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1473,
+        "其他大机构": 526,
+        "头部机构": 1999
+      },
+      "net_short_cumulative": {
+        "中信期货": 85966,
+        "其他大机构": 28360,
+        "头部机构": 114326
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3091,
+        "其他大机构": 3889,
+        "头部机构": 798
+      },
+      "net_short_cumulative": {
+        "中信期货": 82875,
+        "其他大机构": 32249,
+        "头部机构": 115124
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1456,
+        "其他大机构": 3861,
+        "头部机构": 2405
+      },
+      "net_short_cumulative": {
+        "中信期货": 81419,
+        "其他大机构": 36110,
+        "头部机构": 117529
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -6025,
+        "其他大机构": -3439,
+        "头部机构": -9464
+      },
+      "net_short_cumulative": {
+        "中信期货": 75394,
+        "其他大机构": 32671,
+        "头部机构": 108065
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -584,
+        "其他大机构": -1531,
+        "头部机构": -2115
+      },
+      "net_short_cumulative": {
+        "中信期货": 74810,
+        "其他大机构": 31140,
+        "头部机构": 105950
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -4669,
+        "其他大机构": -912,
+        "头部机构": -5581
+      },
+      "net_short_cumulative": {
+        "中信期货": 70141,
+        "其他大机构": 30228,
+        "头部机构": 100369
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 532,
+        "其他大机构": -2315,
+        "头部机构": -1783
+      },
+      "net_short_cumulative": {
+        "中信期货": 70673,
+        "其他大机构": 27913,
+        "头部机构": 98586
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1783,
+        "其他大机构": -1609,
+        "头部机构": -3392
+      },
+      "net_short_cumulative": {
+        "中信期货": 68890,
+        "其他大机构": 26304,
+        "头部机构": 95194
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1955,
+        "其他大机构": 3799,
+        "头部机构": 5754
+      },
+      "net_short_cumulative": {
+        "中信期货": 70845,
+        "其他大机构": 30103,
+        "头部机构": 100948
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -839,
+        "其他大机构": -2959,
+        "头部机构": -3798
+      },
+      "net_short_cumulative": {
+        "中信期货": 70006,
+        "其他大机构": 27144,
+        "头部机构": 97150
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-11-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 849,
+        "其他大机构": 11996,
+        "头部机构": 12845
+      },
+      "net_short_cumulative": {
+        "中信期货": 70855,
+        "其他大机构": 39140,
+        "头部机构": 109995
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-02",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -187,
+        "其他大机构": 387,
+        "头部机构": 200
+      },
+      "net_short_cumulative": {
+        "中信期货": 70668,
+        "其他大机构": 39527,
+        "头部机构": 110195
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -462,
+        "其他大机构": -5713,
+        "头部机构": -6175
+      },
+      "net_short_cumulative": {
+        "中信期货": 70206,
+        "其他大机构": 33814,
+        "头部机构": 104020
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1481,
+        "其他大机构": -5148,
+        "头部机构": -3667
+      },
+      "net_short_cumulative": {
+        "中信期货": 71687,
+        "其他大机构": 28666,
+        "头部机构": 100353
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 428,
+        "其他大机构": 738,
+        "头部机构": 1166
+      },
+      "net_short_cumulative": {
+        "中信期货": 72115,
+        "其他大机构": 29404,
+        "头部机构": 101519
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 560,
+        "其他大机构": 4379,
+        "头部机构": 4939
+      },
+      "net_short_cumulative": {
+        "中信期货": 72675,
+        "其他大机构": 33783,
+        "头部机构": 106458
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1748,
+        "其他大机构": -5531,
+        "头部机构": -7279
+      },
+      "net_short_cumulative": {
+        "中信期货": 70927,
+        "其他大机构": 28252,
+        "头部机构": 99179
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1097,
+        "其他大机构": 13451,
+        "头部机构": 12354
+      },
+      "net_short_cumulative": {
+        "中信期货": 69830,
+        "其他大机构": 41703,
+        "头部机构": 111533
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1747,
+        "其他大机构": 4988,
+        "头部机构": 6735
+      },
+      "net_short_cumulative": {
+        "中信期货": 71577,
+        "其他大机构": 46691,
+        "头部机构": 118268
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -920,
+        "其他大机构": 6956,
+        "头部机构": 6036
+      },
+      "net_short_cumulative": {
+        "中信期货": 70657,
+        "其他大机构": 53647,
+        "头部机构": 124304
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1658,
+        "其他大机构": -12104,
+        "头部机构": -13762
+      },
+      "net_short_cumulative": {
+        "中信期货": 68999,
+        "其他大机构": 41543,
+        "头部机构": 110542
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3475,
+        "其他大机构": -4344,
+        "头部机构": -869
+      },
+      "net_short_cumulative": {
+        "中信期货": 72474,
+        "其他大机构": 37199,
+        "头部机构": 109673
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1376,
+        "其他大机构": 4920,
+        "头部机构": 3544
+      },
+      "net_short_cumulative": {
+        "中信期货": 71098,
+        "其他大机构": 42119,
+        "头部机构": 113217
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -516,
+        "其他大机构": 2804,
+        "头部机构": 2288
+      },
+      "net_short_cumulative": {
+        "中信期货": 70582,
+        "其他大机构": 44923,
+        "头部机构": 115505
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -199,
+        "其他大机构": 5897,
+        "头部机构": 5698
+      },
+      "net_short_cumulative": {
+        "中信期货": 70383,
+        "其他大机构": 50820,
+        "头部机构": 121203
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1215,
+        "其他大机构": 301,
+        "头部机构": -914
+      },
+      "net_short_cumulative": {
+        "中信期货": 69168,
+        "其他大机构": 51121,
+        "头部机构": 120289
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -962,
+        "其他大机构": -284,
+        "头部机构": -1246
+      },
+      "net_short_cumulative": {
+        "中信期货": 68206,
+        "其他大机构": 50837,
+        "头部机构": 119043
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1003,
+        "其他大机构": 1362,
+        "头部机构": 359
+      },
+      "net_short_cumulative": {
+        "中信期货": 67203,
+        "其他大机构": 52199,
+        "头部机构": 119402
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1739,
+        "其他大机构": -6050,
+        "头部机构": -4311
+      },
+      "net_short_cumulative": {
+        "中信期货": 68942,
+        "其他大机构": 46149,
+        "头部机构": 115091
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 28,
+        "其他大机构": 3468,
+        "头部机构": 3496
+      },
+      "net_short_cumulative": {
+        "中信期货": 68970,
+        "其他大机构": 49617,
+        "头部机构": 118587
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -686,
+        "其他大机构": 5367,
+        "头部机构": 4681
+      },
+      "net_short_cumulative": {
+        "中信期货": 68284,
+        "其他大机构": 54984,
+        "头部机构": 123268
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 547,
+        "其他大机构": 1743,
+        "头部机构": 2290
+      },
+      "net_short_cumulative": {
+        "中信期货": 68831,
+        "其他大机构": 56727,
+        "头部机构": 125558
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2024-12-31",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2469,
+        "其他大机构": -2081,
+        "头部机构": -4550
+      },
+      "net_short_cumulative": {
+        "中信期货": 66362,
+        "其他大机构": 54646,
+        "头部机构": 121008
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-02",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -6636,
+        "其他大机构": -107,
+        "头部机构": -6743
+      },
+      "net_short_cumulative": {
+        "中信期货": 59726,
+        "其他大机构": 54539,
+        "头部机构": 114265
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -538,
+        "其他大机构": 4433,
+        "头部机构": 3895
+      },
+      "net_short_cumulative": {
+        "中信期货": 59188,
+        "其他大机构": 58972,
+        "头部机构": 118160
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -423,
+        "其他大机构": -978,
+        "头部机构": -1401
+      },
+      "net_short_cumulative": {
+        "中信期货": 58765,
+        "其他大机构": 57994,
+        "头部机构": 116759
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -662,
+        "其他大机构": -1494,
+        "头部机构": -2156
+      },
+      "net_short_cumulative": {
+        "中信期货": 58103,
+        "其他大机构": 56500,
+        "头部机构": 114603
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1993,
+        "其他大机构": 224,
+        "头部机构": -1769
+      },
+      "net_short_cumulative": {
+        "中信期货": 56110,
+        "其他大机构": 56724,
+        "头部机构": 112834
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1495,
+        "其他大机构": -4610,
+        "头部机构": -3115
+      },
+      "net_short_cumulative": {
+        "中信期货": 57605,
+        "其他大机构": 52114,
+        "头部机构": 109719
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3583,
+        "其他大机构": -957,
+        "头部机构": 2626
+      },
+      "net_short_cumulative": {
+        "中信期货": 61188,
+        "其他大机构": 51157,
+        "头部机构": 112345
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2017,
+        "其他大机构": 16,
+        "头部机构": 2033
+      },
+      "net_short_cumulative": {
+        "中信期货": 63205,
+        "其他大机构": 51173,
+        "头部机构": 114378
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1105,
+        "其他大机构": 7136,
+        "头部机构": 8241
+      },
+      "net_short_cumulative": {
+        "中信期货": 64310,
+        "其他大机构": 58309,
+        "头部机构": 122619
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 969,
+        "其他大机构": -3135,
+        "头部机构": -2166
+      },
+      "net_short_cumulative": {
+        "中信期货": 65279,
+        "其他大机构": 55174,
+        "头部机构": 120453
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1857,
+        "其他大机构": -603,
+        "头部机构": 1254
+      },
+      "net_short_cumulative": {
+        "中信期货": 67136,
+        "其他大机构": 54571,
+        "头部机构": 121707
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 779,
+        "其他大机构": 2869,
+        "头部机构": 3648
+      },
+      "net_short_cumulative": {
+        "中信期货": 67915,
+        "其他大机构": 57440,
+        "头部机构": 125355
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1217,
+        "其他大机构": -1670,
+        "头部机构": -453
+      },
+      "net_short_cumulative": {
+        "中信期货": 69132,
+        "其他大机构": 55770,
+        "头部机构": 124902
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1849,
+        "其他大机构": -6129,
+        "头部机构": -4280
+      },
+      "net_short_cumulative": {
+        "中信期货": 70981,
+        "其他大机构": 49641,
+        "头部机构": 120622
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -470,
+        "其他大机构": -4025,
+        "头部机构": -4495
+      },
+      "net_short_cumulative": {
+        "中信期货": 70511,
+        "其他大机构": 45616,
+        "头部机构": 116127
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3725,
+        "其他大机构": 449,
+        "头部机构": 4174
+      },
+      "net_short_cumulative": {
+        "中信期货": 74236,
+        "其他大机构": 46065,
+        "头部机构": 120301
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 113,
+        "其他大机构": 5414,
+        "头部机构": 5527
+      },
+      "net_short_cumulative": {
+        "中信期货": 74349,
+        "其他大机构": 51479,
+        "头部机构": 125828
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-01-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2823,
+        "其他大机构": -1166,
+        "头部机构": -3989
+      },
+      "net_short_cumulative": {
+        "中信期货": 71526,
+        "其他大机构": 50313,
+        "头部机构": 121839
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 729,
+        "其他大机构": -3221,
+        "头部机构": -2492
+      },
+      "net_short_cumulative": {
+        "中信期货": 72255,
+        "其他大机构": 47092,
+        "头部机构": 119347
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -531,
+        "其他大机构": 6676,
+        "头部机构": 6145
+      },
+      "net_short_cumulative": {
+        "中信期货": 71724,
+        "其他大机构": 53768,
+        "头部机构": 125492
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3408,
+        "其他大机构": -3835,
+        "头部机构": -427
+      },
+      "net_short_cumulative": {
+        "中信期货": 75132,
+        "其他大机构": 49933,
+        "头部机构": 125065
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2686,
+        "其他大机构": -2871,
+        "头部机构": -5557
+      },
+      "net_short_cumulative": {
+        "中信期货": 72446,
+        "其他大机构": 47062,
+        "头部机构": 119508
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 504,
+        "其他大机构": -6382,
+        "头部机构": -5878
+      },
+      "net_short_cumulative": {
+        "中信期货": 72950,
+        "其他大机构": 40680,
+        "头部机构": 113630
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -710,
+        "其他大机构": 4586,
+        "头部机构": 3876
+      },
+      "net_short_cumulative": {
+        "中信期货": 72240,
+        "其他大机构": 45266,
+        "头部机构": 117506
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -940,
+        "其他大机构": -7246,
+        "头部机构": -8186
+      },
+      "net_short_cumulative": {
+        "中信期货": 71300,
+        "其他大机构": 38020,
+        "头部机构": 109320
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1036,
+        "其他大机构": 3572,
+        "头部机构": 2536
+      },
+      "net_short_cumulative": {
+        "中信期货": 70264,
+        "其他大机构": 41592,
+        "头部机构": 111856
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -365,
+        "其他大机构": -2206,
+        "头部机构": -2571
+      },
+      "net_short_cumulative": {
+        "中信期货": 69899,
+        "其他大机构": 39386,
+        "头部机构": 109285
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1344,
+        "其他大机构": -1298,
+        "头部机构": -2642
+      },
+      "net_short_cumulative": {
+        "中信期货": 68555,
+        "其他大机构": 38088,
+        "头部机构": 106643
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3,
+        "其他大机构": 3791,
+        "头部机构": 3788
+      },
+      "net_short_cumulative": {
+        "中信期货": 68552,
+        "其他大机构": 41879,
+        "头部机构": 110431
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -548,
+        "其他大机构": 885,
+        "头部机构": 337
+      },
+      "net_short_cumulative": {
+        "中信期货": 68004,
+        "其他大机构": 42764,
+        "头部机构": 110768
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2372,
+        "其他大机构": 9072,
+        "头部机构": 11444
+      },
+      "net_short_cumulative": {
+        "中信期货": 70376,
+        "其他大机构": 51836,
+        "头部机构": 122212
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -132,
+        "其他大机构": -2419,
+        "头部机构": -2551
+      },
+      "net_short_cumulative": {
+        "中信期货": 70244,
+        "其他大机构": 49417,
+        "头部机构": 119661
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3131,
+        "其他大机构": -5404,
+        "头部机构": -8535
+      },
+      "net_short_cumulative": {
+        "中信期货": 67113,
+        "其他大机构": 44013,
+        "头部机构": 111126
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2700,
+        "其他大机构": 2811,
+        "头部机构": 111
+      },
+      "net_short_cumulative": {
+        "中信期货": 64413,
+        "其他大机构": 46824,
+        "头部机构": 111237
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -827,
+        "其他大机构": -4089,
+        "头部机构": -4916
+      },
+      "net_short_cumulative": {
+        "中信期货": 63586,
+        "其他大机构": 42735,
+        "头部机构": 106321
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-02-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2414,
+        "其他大机构": -3244,
+        "头部机构": -830
+      },
+      "net_short_cumulative": {
+        "中信期货": 66000,
+        "其他大机构": 39491,
+        "头部机构": 105491
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3665,
+        "其他大机构": 4252,
+        "头部机构": 587
+      },
+      "net_short_cumulative": {
+        "中信期货": 62335,
+        "其他大机构": 43743,
+        "头部机构": 106078
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3693,
+        "其他大机构": -2340,
+        "头部机构": 1353
+      },
+      "net_short_cumulative": {
+        "中信期货": 66028,
+        "其他大机构": 41403,
+        "头部机构": 107431
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1679,
+        "其他大机构": -3204,
+        "头部机构": -4883
+      },
+      "net_short_cumulative": {
+        "中信期货": 64349,
+        "其他大机构": 38199,
+        "头部机构": 102548
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3626,
+        "其他大机构": 9846,
+        "头部机构": 13472
+      },
+      "net_short_cumulative": {
+        "中信期货": 67975,
+        "其他大机构": 48045,
+        "头部机构": 116020
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 437,
+        "其他大机构": -2018,
+        "头部机构": -1581
+      },
+      "net_short_cumulative": {
+        "中信期货": 68412,
+        "其他大机构": 46027,
+        "头部机构": 114439
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -89,
+        "其他大机构": -4255,
+        "头部机构": -4344
+      },
+      "net_short_cumulative": {
+        "中信期货": 68323,
+        "其他大机构": 41772,
+        "头部机构": 110095
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -445,
+        "其他大机构": 465,
+        "头部机构": 20
+      },
+      "net_short_cumulative": {
+        "中信期货": 67878,
+        "其他大机构": 42237,
+        "头部机构": 110115
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -452,
+        "其他大机构": 256,
+        "头部机构": -196
+      },
+      "net_short_cumulative": {
+        "中信期货": 67426,
+        "其他大机构": 42493,
+        "头部机构": 109919
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -748,
+        "其他大机构": -1401,
+        "头部机构": -2149
+      },
+      "net_short_cumulative": {
+        "中信期货": 66678,
+        "其他大机构": 41092,
+        "头部机构": 107770
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -258,
+        "其他大机构": 4973,
+        "头部机构": 4715
+      },
+      "net_short_cumulative": {
+        "中信期货": 66420,
+        "其他大机构": 46065,
+        "头部机构": 112485
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 115,
+        "其他大机构": -534,
+        "头部机构": -419
+      },
+      "net_short_cumulative": {
+        "中信期货": 66535,
+        "其他大机构": 45531,
+        "头部机构": 112066
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -559,
+        "其他大机构": 841,
+        "头部机构": 282
+      },
+      "net_short_cumulative": {
+        "中信期货": 65976,
+        "其他大机构": 46372,
+        "头部机构": 112348
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2823,
+        "其他大机构": 813,
+        "头部机构": -2010
+      },
+      "net_short_cumulative": {
+        "中信期货": 63153,
+        "其他大机构": 47185,
+        "头部机构": 110338
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1801,
+        "其他大机构": 1206,
+        "头部机构": 3007
+      },
+      "net_short_cumulative": {
+        "中信期货": 64954,
+        "其他大机构": 48391,
+        "头部机构": 113345
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 9042,
+        "其他大机构": -10695,
+        "头部机构": -1653
+      },
+      "net_short_cumulative": {
+        "中信期货": 73996,
+        "其他大机构": 37696,
+        "头部机构": 111692
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -631,
+        "其他大机构": 2494,
+        "头部机构": 1863
+      },
+      "net_short_cumulative": {
+        "中信期货": 73365,
+        "其他大机构": 40190,
+        "头部机构": 113555
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2928,
+        "其他大机构": -311,
+        "头部机构": -3239
+      },
+      "net_short_cumulative": {
+        "中信期货": 70437,
+        "其他大机构": 39879,
+        "头部机构": 110316
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -976,
+        "其他大机构": 2284,
+        "头部机构": 1308
+      },
+      "net_short_cumulative": {
+        "中信期货": 69461,
+        "其他大机构": 42163,
+        "头部机构": 111624
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -27,
+        "其他大机构": 639,
+        "头部机构": 612
+      },
+      "net_short_cumulative": {
+        "中信期货": 69434,
+        "其他大机构": 42802,
+        "头部机构": 112236
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 814,
+        "其他大机构": 6093,
+        "头部机构": 6907
+      },
+      "net_short_cumulative": {
+        "中信期货": 70248,
+        "其他大机构": 48895,
+        "头部机构": 119143
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-03-31",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 102,
+        "其他大机构": -1644,
+        "头部机构": -1542
+      },
+      "net_short_cumulative": {
+        "中信期货": 70350,
+        "其他大机构": 47251,
+        "头部机构": 117601
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-01",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2955,
+        "其他大机构": 408,
+        "头部机构": -2547
+      },
+      "net_short_cumulative": {
+        "中信期货": 67395,
+        "其他大机构": 47659,
+        "头部机构": 115054
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-02",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1388,
+        "其他大机构": 473,
+        "头部机构": -915
+      },
+      "net_short_cumulative": {
+        "中信期货": 66007,
+        "其他大机构": 48132,
+        "头部机构": 114139
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 434,
+        "其他大机构": 4316,
+        "头部机构": 4750
+      },
+      "net_short_cumulative": {
+        "中信期货": 66441,
+        "其他大机构": 52448,
+        "头部机构": 118889
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -10709,
+        "其他大机构": -9335,
+        "头部机构": -20044
+      },
+      "net_short_cumulative": {
+        "中信期货": 55732,
+        "其他大机构": 43113,
+        "头部机构": 98845
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2423,
+        "其他大机构": -13414,
+        "头部机构": -10991
+      },
+      "net_short_cumulative": {
+        "中信期货": 58155,
+        "其他大机构": 29699,
+        "头部机构": 87854
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 690,
+        "其他大机构": -277,
+        "头部机构": 413
+      },
+      "net_short_cumulative": {
+        "中信期货": 58845,
+        "其他大机构": 29422,
+        "头部机构": 88267
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 5347,
+        "其他大机构": -4575,
+        "头部机构": 772
+      },
+      "net_short_cumulative": {
+        "中信期货": 64192,
+        "其他大机构": 24847,
+        "头部机构": 89039
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -205,
+        "其他大机构": 5631,
+        "头部机构": 5426
+      },
+      "net_short_cumulative": {
+        "中信期货": 63987,
+        "其他大机构": 30478,
+        "头部机构": 94465
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -357,
+        "其他大机构": -2288,
+        "头部机构": -2645
+      },
+      "net_short_cumulative": {
+        "中信期货": 63630,
+        "其他大机构": 28190,
+        "头部机构": 91820
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3174,
+        "其他大机构": -5438,
+        "头部机构": -8612
+      },
+      "net_short_cumulative": {
+        "中信期货": 60456,
+        "其他大机构": 22752,
+        "头部机构": 83208
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -544,
+        "其他大机构": -2662,
+        "头部机构": -3206
+      },
+      "net_short_cumulative": {
+        "中信期货": 59912,
+        "其他大机构": 20090,
+        "头部机构": 80002
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -134,
+        "其他大机构": 4854,
+        "头部机构": 4720
+      },
+      "net_short_cumulative": {
+        "中信期货": 59778,
+        "其他大机构": 24944,
+        "头部机构": 84722
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1597,
+        "其他大机构": 2043,
+        "头部机构": 3640
+      },
+      "net_short_cumulative": {
+        "中信期货": 61375,
+        "其他大机构": 26987,
+        "头部机构": 88362
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3111,
+        "其他大机构": 2587,
+        "头部机构": -524
+      },
+      "net_short_cumulative": {
+        "中信期货": 58264,
+        "其他大机构": 29574,
+        "头部机构": 87838
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1586,
+        "其他大机构": -2751,
+        "头部机构": -4337
+      },
+      "net_short_cumulative": {
+        "中信期货": 56678,
+        "其他大机构": 26823,
+        "头部机构": 83501
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -690,
+        "其他大机构": 443,
+        "头部机构": -247
+      },
+      "net_short_cumulative": {
+        "中信期货": 55988,
+        "其他大机构": 27266,
+        "头部机构": 83254
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 376,
+        "其他大机构": -4264,
+        "头部机构": -3888
+      },
+      "net_short_cumulative": {
+        "中信期货": 56364,
+        "其他大机构": 23002,
+        "头部机构": 79366
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1656,
+        "其他大机构": 3575,
+        "头部机构": 1919
+      },
+      "net_short_cumulative": {
+        "中信期货": 54708,
+        "其他大机构": 26577,
+        "头部机构": 81285
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2372,
+        "其他大机构": -4880,
+        "头部机构": -2508
+      },
+      "net_short_cumulative": {
+        "中信期货": 57080,
+        "其他大机构": 21697,
+        "头部机构": 78777
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1701,
+        "其他大机构": 4142,
+        "头部机构": 2441
+      },
+      "net_short_cumulative": {
+        "中信期货": 55379,
+        "其他大机构": 25839,
+        "头部机构": 81218
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-04-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -514,
+        "其他大机构": 1818,
+        "头部机构": 1304
+      },
+      "net_short_cumulative": {
+        "中信期货": 54865,
+        "其他大机构": 27657,
+        "头部机构": 82522
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -377,
+        "其他大机构": -1626,
+        "头部机构": -2003
+      },
+      "net_short_cumulative": {
+        "中信期货": 54488,
+        "其他大机构": 26031,
+        "头部机构": 80519
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2071,
+        "其他大机构": -1499,
+        "头部机构": 572
+      },
+      "net_short_cumulative": {
+        "中信期货": 56559,
+        "其他大机构": 24532,
+        "头部机构": 81091
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1201,
+        "其他大机构": -736,
+        "头部机构": -1937
+      },
+      "net_short_cumulative": {
+        "中信期货": 55358,
+        "其他大机构": 23796,
+        "头部机构": 79154
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 221,
+        "其他大机构": -3479,
+        "头部机构": -3258
+      },
+      "net_short_cumulative": {
+        "中信期货": 55579,
+        "其他大机构": 20317,
+        "头部机构": 75896
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 308,
+        "其他大机构": 11925,
+        "头部机构": 12233
+      },
+      "net_short_cumulative": {
+        "中信期货": 55887,
+        "其他大机构": 32242,
+        "头部机构": 88129
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -796,
+        "其他大机构": -6222,
+        "头部机构": -7018
+      },
+      "net_short_cumulative": {
+        "中信期货": 55091,
+        "其他大机构": 26020,
+        "头部机构": 81111
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1238,
+        "其他大机构": 7032,
+        "头部机构": 5794
+      },
+      "net_short_cumulative": {
+        "中信期货": 53853,
+        "其他大机构": 33052,
+        "头部机构": 86905
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -821,
+        "其他大机构": -3937,
+        "头部机构": -4758
+      },
+      "net_short_cumulative": {
+        "中信期货": 53032,
+        "其他大机构": 29115,
+        "头部机构": 82147
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1242,
+        "其他大机构": 2261,
+        "头部机构": 1019
+      },
+      "net_short_cumulative": {
+        "中信期货": 51790,
+        "其他大机构": 31376,
+        "头部机构": 83166
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1835,
+        "其他大机构": -1782,
+        "头部机构": -3617
+      },
+      "net_short_cumulative": {
+        "中信期货": 49955,
+        "其他大机构": 29594,
+        "头部机构": 79549
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1471,
+        "其他大机构": 3968,
+        "头部机构": 2497
+      },
+      "net_short_cumulative": {
+        "中信期货": 48484,
+        "其他大机构": 33562,
+        "头部机构": 82046
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2407,
+        "其他大机构": 2334,
+        "头部机构": -73
+      },
+      "net_short_cumulative": {
+        "中信期货": 46077,
+        "其他大机构": 35896,
+        "头部机构": 81973
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2836,
+        "其他大机构": 1845,
+        "头部机构": -991
+      },
+      "net_short_cumulative": {
+        "中信期货": 43241,
+        "其他大机构": 37741,
+        "头部机构": 80982
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1766,
+        "其他大机构": 1985,
+        "头部机构": 219
+      },
+      "net_short_cumulative": {
+        "中信期货": 41475,
+        "其他大机构": 39726,
+        "头部机构": 81201
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1142,
+        "其他大机构": -2272,
+        "头部机构": -3414
+      },
+      "net_short_cumulative": {
+        "中信期货": 40333,
+        "其他大机构": 37454,
+        "头部机构": 77787
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1437,
+        "其他大机构": -3249,
+        "头部机构": -1812
+      },
+      "net_short_cumulative": {
+        "中信期货": 41770,
+        "其他大机构": 34205,
+        "头部机构": 75975
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1359,
+        "其他大机构": -3224,
+        "头部机构": -1865
+      },
+      "net_short_cumulative": {
+        "中信期货": 43129,
+        "其他大机构": 30981,
+        "头部机构": 74110
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1422,
+        "其他大机构": 7784,
+        "头部机构": 6362
+      },
+      "net_short_cumulative": {
+        "中信期货": 41707,
+        "其他大机构": 38765,
+        "头部机构": 80472
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-05-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -877,
+        "其他大机构": -5227,
+        "头部机构": -6104
+      },
+      "net_short_cumulative": {
+        "中信期货": 40830,
+        "其他大机构": 33538,
+        "头部机构": 74368
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1641,
+        "其他大机构": 3253,
+        "头部机构": 1612
+      },
+      "net_short_cumulative": {
+        "中信期货": 39189,
+        "其他大机构": 36791,
+        "头部机构": 75980
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1092,
+        "其他大机构": 38,
+        "头部机构": -1054
+      },
+      "net_short_cumulative": {
+        "中信期货": 38097,
+        "其他大机构": 36829,
+        "头部机构": 74926
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 4260,
+        "其他大机构": -5715,
+        "头部机构": -1455
+      },
+      "net_short_cumulative": {
+        "中信期货": 42357,
+        "其他大机构": 31114,
+        "头部机构": 73471
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 710,
+        "其他大机构": -1750,
+        "头部机构": -1040
+      },
+      "net_short_cumulative": {
+        "中信期货": 43067,
+        "其他大机构": 29364,
+        "头部机构": 72431
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1171,
+        "其他大机构": 4590,
+        "头部机构": 5761
+      },
+      "net_short_cumulative": {
+        "中信期货": 44238,
+        "其他大机构": 33954,
+        "头部机构": 78192
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1692,
+        "其他大机构": -6133,
+        "头部机构": -7825
+      },
+      "net_short_cumulative": {
+        "中信期货": 42546,
+        "其他大机构": 27821,
+        "头部机构": 70367
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2565,
+        "其他大机构": 2099,
+        "头部机构": 4664
+      },
+      "net_short_cumulative": {
+        "中信期货": 45111,
+        "其他大机构": 29920,
+        "头部机构": 75031
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2668,
+        "其他大机构": -984,
+        "头部机构": -3652
+      },
+      "net_short_cumulative": {
+        "中信期货": 42443,
+        "其他大机构": 28936,
+        "头部机构": 71379
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1304,
+        "其他大机构": -1482,
+        "头部机构": -2786
+      },
+      "net_short_cumulative": {
+        "中信期货": 41139,
+        "其他大机构": 27454,
+        "头部机构": 68593
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2819,
+        "其他大机构": 7081,
+        "头部机构": 4262
+      },
+      "net_short_cumulative": {
+        "中信期货": 38320,
+        "其他大机构": 34535,
+        "头部机构": 72855
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 565,
+        "其他大机构": 468,
+        "头部机构": 1033
+      },
+      "net_short_cumulative": {
+        "中信期货": 38885,
+        "其他大机构": 35003,
+        "头部机构": 73888
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -701,
+        "其他大机构": -737,
+        "头部机构": -1438
+      },
+      "net_short_cumulative": {
+        "中信期货": 38184,
+        "其他大机构": 34266,
+        "头部机构": 72450
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1524,
+        "其他大机构": 1828,
+        "头部机构": 304
+      },
+      "net_short_cumulative": {
+        "中信期货": 36660,
+        "其他大机构": 36094,
+        "头部机构": 72754
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 13213,
+        "其他大机构": -15168,
+        "头部机构": -1955
+      },
+      "net_short_cumulative": {
+        "中信期货": 49873,
+        "其他大机构": 20926,
+        "头部机构": 70799
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2774,
+        "其他大机构": 621,
+        "头部机构": 3395
+      },
+      "net_short_cumulative": {
+        "中信期货": 52647,
+        "其他大机构": 21547,
+        "头部机构": 74194
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -220,
+        "其他大机构": 11724,
+        "头部机构": 11504
+      },
+      "net_short_cumulative": {
+        "中信期货": 52427,
+        "其他大机构": 33271,
+        "头部机构": 85698
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1226,
+        "其他大机构": 1491,
+        "头部机构": 2717
+      },
+      "net_short_cumulative": {
+        "中信期货": 53653,
+        "其他大机构": 34762,
+        "头部机构": 88415
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -474,
+        "其他大机构": 1188,
+        "头部机构": 714
+      },
+      "net_short_cumulative": {
+        "中信期货": 53179,
+        "其他大机构": 35950,
+        "头部机构": 89129
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 137,
+        "其他大机构": 2146,
+        "头部机构": 2283
+      },
+      "net_short_cumulative": {
+        "中信期货": 53316,
+        "其他大机构": 38096,
+        "头部机构": 91412
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-06-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -493,
+        "其他大机构": 470,
+        "头部机构": -23
+      },
+      "net_short_cumulative": {
+        "中信期货": 52823,
+        "其他大机构": 38566,
+        "头部机构": 91389
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-01",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2685,
+        "其他大机构": -4515,
+        "头部机构": -7200
+      },
+      "net_short_cumulative": {
+        "中信期货": 50138,
+        "其他大机构": 34051,
+        "头部机构": 84189
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-02",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 518,
+        "其他大机构": -2895,
+        "头部机构": -2377
+      },
+      "net_short_cumulative": {
+        "中信期货": 50656,
+        "其他大机构": 31156,
+        "头部机构": 81812
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2382,
+        "其他大机构": 3567,
+        "头部机构": 1185
+      },
+      "net_short_cumulative": {
+        "中信期货": 48274,
+        "其他大机构": 34723,
+        "头部机构": 82997
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1928,
+        "其他大机构": -756,
+        "头部机构": 1172
+      },
+      "net_short_cumulative": {
+        "中信期货": 50202,
+        "其他大机构": 33967,
+        "头部机构": 84169
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1156,
+        "其他大机构": -1776,
+        "头部机构": -2932
+      },
+      "net_short_cumulative": {
+        "中信期货": 49046,
+        "其他大机构": 32191,
+        "头部机构": 81237
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 850,
+        "其他大机构": 8101,
+        "头部机构": 8951
+      },
+      "net_short_cumulative": {
+        "中信期货": 49896,
+        "其他大机构": 40292,
+        "头部机构": 90188
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 636,
+        "其他大机构": -2858,
+        "头部机构": -2222
+      },
+      "net_short_cumulative": {
+        "中信期货": 50532,
+        "其他大机构": 37434,
+        "头部机构": 87966
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 133,
+        "其他大机构": -210,
+        "头部机构": -77
+      },
+      "net_short_cumulative": {
+        "中信期货": 50665,
+        "其他大机构": 37224,
+        "头部机构": 87889
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 7676,
+        "其他大机构": 1742,
+        "头部机构": 9418
+      },
+      "net_short_cumulative": {
+        "中信期货": 58341,
+        "其他大机构": 38966,
+        "头部机构": 97307
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 881,
+        "其他大机构": -1398,
+        "头部机构": -517
+      },
+      "net_short_cumulative": {
+        "中信期货": 59222,
+        "其他大机构": 37568,
+        "头部机构": 96790
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 199,
+        "其他大机构": -6777,
+        "头部机构": -6578
+      },
+      "net_short_cumulative": {
+        "中信期货": 59421,
+        "其他大机构": 30791,
+        "头部机构": 90212
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1595,
+        "其他大机构": 649,
+        "头部机构": -946
+      },
+      "net_short_cumulative": {
+        "中信期货": 57826,
+        "其他大机构": 31440,
+        "头部机构": 89266
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -369,
+        "其他大机构": 2322,
+        "头部机构": 1953
+      },
+      "net_short_cumulative": {
+        "中信期货": 57457,
+        "其他大机构": 33762,
+        "头部机构": 91219
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2754,
+        "其他大机构": -809,
+        "头部机构": 1945
+      },
+      "net_short_cumulative": {
+        "中信期货": 60211,
+        "其他大机构": 32953,
+        "头部机构": 93164
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -360,
+        "其他大机构": 3205,
+        "头部机构": 2845
+      },
+      "net_short_cumulative": {
+        "中信期货": 59851,
+        "其他大机构": 36158,
+        "头部机构": 96009
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 991,
+        "其他大机构": -5213,
+        "头部机构": -4222
+      },
+      "net_short_cumulative": {
+        "中信期货": 60842,
+        "其他大机构": 30945,
+        "头部机构": 91787
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 4000,
+        "其他大机构": -2061,
+        "头部机构": 1939
+      },
+      "net_short_cumulative": {
+        "中信期货": 64842,
+        "其他大机构": 28884,
+        "头部机构": 93726
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1543,
+        "其他大机构": 5775,
+        "头部机构": 7318
+      },
+      "net_short_cumulative": {
+        "中信期货": 66385,
+        "其他大机构": 34659,
+        "头部机构": 101044
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 524,
+        "其他大机构": -478,
+        "头部机构": 46
+      },
+      "net_short_cumulative": {
+        "中信期货": 66909,
+        "其他大机构": 34181,
+        "头部机构": 101090
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -69,
+        "其他大机构": -3132,
+        "头部机构": -3201
+      },
+      "net_short_cumulative": {
+        "中信期货": 66840,
+        "其他大机构": 31049,
+        "头部机构": 97889
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3023,
+        "其他大机构": -2368,
+        "头部机构": -5391
+      },
+      "net_short_cumulative": {
+        "中信期货": 63817,
+        "其他大机构": 28681,
+        "头部机构": 92498
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2622,
+        "其他大机构": -1051,
+        "头部机构": -3673
+      },
+      "net_short_cumulative": {
+        "中信期货": 61195,
+        "其他大机构": 27630,
+        "头部机构": 88825
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-07-31",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1274,
+        "其他大机构": -156,
+        "头部机构": -1430
+      },
+      "net_short_cumulative": {
+        "中信期货": 59921,
+        "其他大机构": 27474,
+        "头部机构": 87395
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-01",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2605,
+        "其他大机构": 2562,
+        "头部机构": 5167
+      },
+      "net_short_cumulative": {
+        "中信期货": 62526,
+        "其他大机构": 30036,
+        "头部机构": 92562
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2155,
+        "其他大机构": 7593,
+        "头部机构": 5438
+      },
+      "net_short_cumulative": {
+        "中信期货": 60371,
+        "其他大机构": 37629,
+        "头部机构": 98000
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 284,
+        "其他大机构": 382,
+        "头部机构": 666
+      },
+      "net_short_cumulative": {
+        "中信期货": 60655,
+        "其他大机构": 38011,
+        "头部机构": 98666
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1207,
+        "其他大机构": 2378,
+        "头部机构": 3585
+      },
+      "net_short_cumulative": {
+        "中信期货": 61862,
+        "其他大机构": 40389,
+        "头部机构": 102251
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1142,
+        "其他大机构": -2033,
+        "头部机构": -3175
+      },
+      "net_short_cumulative": {
+        "中信期货": 60720,
+        "其他大机构": 38356,
+        "头部机构": 99076
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -457,
+        "其他大机构": -2077,
+        "头部机构": -2534
+      },
+      "net_short_cumulative": {
+        "中信期货": 60263,
+        "其他大机构": 36279,
+        "头部机构": 96542
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 434,
+        "其他大机构": 5710,
+        "头部机构": 6144
+      },
+      "net_short_cumulative": {
+        "中信期货": 60697,
+        "其他大机构": 41989,
+        "头部机构": 102686
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 224,
+        "其他大机构": 411,
+        "头部机构": 635
+      },
+      "net_short_cumulative": {
+        "中信期货": 60921,
+        "其他大机构": 42400,
+        "头部机构": 103321
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1244,
+        "其他大机构": 5663,
+        "头部机构": 6907
+      },
+      "net_short_cumulative": {
+        "中信期货": 62165,
+        "其他大机构": 48063,
+        "头部机构": 110228
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -476,
+        "其他大机构": -5979,
+        "头部机构": -6455
+      },
+      "net_short_cumulative": {
+        "中信期货": 61689,
+        "其他大机构": 42084,
+        "头部机构": 103773
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 241,
+        "其他大机构": 11290,
+        "头部机构": 11531
+      },
+      "net_short_cumulative": {
+        "中信期货": 61930,
+        "其他大机构": 53374,
+        "头部机构": 115304
+      },
+      "sh_index": null,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1059,
+        "其他大机构": 174,
+        "头部机构": 1233
+      },
+      "net_short_cumulative": {
+        "中信期货": 62989,
+        "其他大机构": 53548,
+        "头部机构": 116537
+      },
+      "sh_index": 3728.0273,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -238,
+        "其他大机构": -449,
+        "头部机构": -687
+      },
+      "net_short_cumulative": {
+        "中信期货": 62751,
+        "其他大机构": 53099,
+        "头部机构": 115850
+      },
+      "sh_index": 3727.2879,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2578,
+        "其他大机构": -1013,
+        "头部机构": -3591
+      },
+      "net_short_cumulative": {
+        "中信期货": 60173,
+        "其他大机构": 52086,
+        "头部机构": 112259
+      },
+      "sh_index": 3766.2104,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 907,
+        "其他大机构": -3236,
+        "头部机构": -2329
+      },
+      "net_short_cumulative": {
+        "中信期货": 61080,
+        "其他大机构": 48850,
+        "头部机构": 109930
+      },
+      "sh_index": 3771.0989,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1088,
+        "其他大机构": 9390,
+        "头部机构": 8302
+      },
+      "net_short_cumulative": {
+        "中信期货": 59992,
+        "其他大机构": 58240,
+        "头部机构": 118232
+      },
+      "sh_index": 3825.7592,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 135,
+        "其他大机构": 6655,
+        "头部机构": 6790
+      },
+      "net_short_cumulative": {
+        "中信期货": 60127,
+        "其他大机构": 64895,
+        "头部机构": 125022
+      },
+      "sh_index": 3883.5617,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1107,
+        "其他大机构": -3555,
+        "头部机构": -4662
+      },
+      "net_short_cumulative": {
+        "中信期货": 59020,
+        "其他大机构": 61340,
+        "头部机构": 120360
+      },
+      "sh_index": 3868.382,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2424,
+        "其他大机构": 1656,
+        "头部机构": -768
+      },
+      "net_short_cumulative": {
+        "中信期货": 56596,
+        "其他大机构": 62996,
+        "头部机构": 119592
+      },
+      "sh_index": 3800.3499,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1068,
+        "其他大机构": -1677,
+        "头部机构": -609
+      },
+      "net_short_cumulative": {
+        "中信期货": 57664,
+        "其他大机构": 61319,
+        "头部机构": 118983
+      },
+      "sh_index": 3843.5974,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-08-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3887,
+        "其他大机构": -4175,
+        "头部机构": -8062
+      },
+      "net_short_cumulative": {
+        "中信期货": 53777,
+        "其他大机构": 57144,
+        "头部机构": 110921
+      },
+      "sh_index": 3857.9274,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-01",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -133,
+        "其他大机构": -101,
+        "头部机构": -234
+      },
+      "net_short_cumulative": {
+        "中信期货": 53644,
+        "其他大机构": 57043,
+        "头部机构": 110687
+      },
+      "sh_index": 3875.5304,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-02",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1081,
+        "其他大机构": -2752,
+        "头部机构": -3833
+      },
+      "net_short_cumulative": {
+        "中信期货": 52563,
+        "其他大机构": 54291,
+        "头部机构": 106854
+      },
+      "sh_index": 3858.1334,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2918,
+        "其他大机构": -4105,
+        "头部机构": -7023
+      },
+      "net_short_cumulative": {
+        "中信期货": 49645,
+        "其他大机构": 50186,
+        "头部机构": 99831
+      },
+      "sh_index": 3813.5566,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2581,
+        "其他大机构": -1383,
+        "头部机构": 1198
+      },
+      "net_short_cumulative": {
+        "中信期货": 52226,
+        "其他大机构": 48803,
+        "头部机构": 101029
+      },
+      "sh_index": 3765.8759,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3815,
+        "其他大机构": 1340,
+        "头部机构": 5155
+      },
+      "net_short_cumulative": {
+        "中信期货": 56041,
+        "其他大机构": 50143,
+        "头部机构": 106184
+      },
+      "sh_index": 3812.5143,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2652,
+        "其他大机构": 702,
+        "头部机构": -1950
+      },
+      "net_short_cumulative": {
+        "中信期货": 53389,
+        "其他大机构": 50845,
+        "头部机构": 104234
+      },
+      "sh_index": 3826.8407,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1716,
+        "其他大机构": -3474,
+        "头部机构": -5190
+      },
+      "net_short_cumulative": {
+        "中信期货": 51673,
+        "其他大机构": 47371,
+        "头部机构": 99044
+      },
+      "sh_index": 3807.2923,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1237,
+        "其他大机构": -4780,
+        "头部机构": -3543
+      },
+      "net_short_cumulative": {
+        "中信期货": 52910,
+        "其他大机构": 42591,
+        "头部机构": 95501
+      },
+      "sh_index": 3812.2212,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 4442,
+        "其他大机构": 4314,
+        "头部机构": 8756
+      },
+      "net_short_cumulative": {
+        "中信期货": 57352,
+        "其他大机构": 46905,
+        "头部机构": 104257
+      },
+      "sh_index": 3875.3094,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1145,
+        "其他大机构": 310,
+        "头部机构": -835
+      },
+      "net_short_cumulative": {
+        "中信期货": 56207,
+        "其他大机构": 47215,
+        "头部机构": 103422
+      },
+      "sh_index": 3870.5984,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2366,
+        "其他大机构": 1724,
+        "头部机构": -642
+      },
+      "net_short_cumulative": {
+        "中信期货": 53841,
+        "其他大机构": 48939,
+        "头部机构": 102780
+      },
+      "sh_index": 3860.5036,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2138,
+        "其他大机构": 1363,
+        "头部机构": -775
+      },
+      "net_short_cumulative": {
+        "中信期货": 51703,
+        "其他大机构": 50302,
+        "头部机构": 102005
+      },
+      "sh_index": 3861.8651,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 509,
+        "其他大机构": 6127,
+        "头部机构": 6636
+      },
+      "net_short_cumulative": {
+        "中信期货": 52212,
+        "其他大机构": 56429,
+        "头部机构": 108641
+      },
+      "sh_index": 3876.3409,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -374,
+        "其他大机构": -7818,
+        "头部机构": -8192
+      },
+      "net_short_cumulative": {
+        "中信期货": 51838,
+        "其他大机构": 48611,
+        "头部机构": 100449
+      },
+      "sh_index": 3831.6562,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1035,
+        "其他大机构": -3938,
+        "头部机构": -2903
+      },
+      "net_short_cumulative": {
+        "中信期货": 52873,
+        "其他大机构": 44673,
+        "头部机构": 97546
+      },
+      "sh_index": 3820.0894,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1383,
+        "其他大机构": 1694,
+        "头部机构": 311
+      },
+      "net_short_cumulative": {
+        "中信期货": 51490,
+        "其他大机构": 46367,
+        "头部机构": 97857
+      },
+      "sh_index": 3828.5764,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -371,
+        "其他大机构": 322,
+        "头部机构": -49
+      },
+      "net_short_cumulative": {
+        "中信期货": 51119,
+        "其他大机构": 46689,
+        "头部机构": 97808
+      },
+      "sh_index": 3821.8327,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 281,
+        "其他大机构": 5156,
+        "头部机构": 5437
+      },
+      "net_short_cumulative": {
+        "中信期货": 51400,
+        "其他大机构": 51845,
+        "头部机构": 103245
+      },
+      "sh_index": 3853.6422,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 731,
+        "其他大机构": -1120,
+        "头部机构": -389
+      },
+      "net_short_cumulative": {
+        "中信期货": 52131,
+        "其他大机构": 50725,
+        "头部机构": 102856
+      },
+      "sh_index": 3853.3021,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 4244,
+        "其他大机构": -5018,
+        "头部机构": -774
+      },
+      "net_short_cumulative": {
+        "中信期货": 56375,
+        "其他大机构": 45707,
+        "头部机构": 102082
+      },
+      "sh_index": 3828.106,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1802,
+        "其他大机构": 5875,
+        "头部机构": 7677
+      },
+      "net_short_cumulative": {
+        "中信期货": 58177,
+        "其他大机构": 51582,
+        "头部机构": 109759
+      },
+      "sh_index": 3862.5317,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-09-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 682,
+        "其他大机构": -4739,
+        "头部机构": -4057
+      },
+      "net_short_cumulative": {
+        "中信期货": 58859,
+        "其他大机构": 46843,
+        "头部机构": 105702
+      },
+      "sh_index": 3882.7774,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 126,
+        "其他大机构": 3498,
+        "头部机构": 3624
+      },
+      "net_short_cumulative": {
+        "中信期货": 58985,
+        "其他大机构": 50341,
+        "头部机构": 109326
+      },
+      "sh_index": 3933.9724,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 733,
+        "其他大机构": -6928,
+        "头部机构": -6195
+      },
+      "net_short_cumulative": {
+        "中信期货": 59718,
+        "其他大机构": 43413,
+        "头部机构": 103131
+      },
+      "sh_index": 3897.0281,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1143,
+        "其他大机构": -79,
+        "头部机构": -1222
+      },
+      "net_short_cumulative": {
+        "中信期货": 58575,
+        "其他大机构": 43334,
+        "头部机构": 101909
+      },
+      "sh_index": 3889.5022,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 939,
+        "其他大机构": -7742,
+        "头部机构": -6803
+      },
+      "net_short_cumulative": {
+        "中信期货": 59514,
+        "其他大机构": 35592,
+        "头部机构": 95106
+      },
+      "sh_index": 3865.2289,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2024,
+        "其他大机构": 7301,
+        "头部机构": 9325
+      },
+      "net_short_cumulative": {
+        "中信期货": 61538,
+        "其他大机构": 42893,
+        "头部机构": 104431
+      },
+      "sh_index": 3912.2095,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2526,
+        "其他大机构": -2605,
+        "头部机构": -5131
+      },
+      "net_short_cumulative": {
+        "中信期货": 59012,
+        "其他大机构": 40288,
+        "头部机构": 99300
+      },
+      "sh_index": 3916.228,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -290,
+        "其他大机构": -1948,
+        "头部机构": -2238
+      },
+      "net_short_cumulative": {
+        "中信期货": 58722,
+        "其他大机构": 38340,
+        "头部机构": 97062
+      },
+      "sh_index": 3839.7553,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1040,
+        "其他大机构": -660,
+        "头部机构": 380
+      },
+      "net_short_cumulative": {
+        "中信期货": 59762,
+        "其他大机构": 37680,
+        "头部机构": 97442
+      },
+      "sh_index": 3863.8926,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1695,
+        "其他大机构": 5841,
+        "头部机构": 4146
+      },
+      "net_short_cumulative": {
+        "中信期货": 58067,
+        "其他大机构": 43521,
+        "头部机构": 101588
+      },
+      "sh_index": 3916.3322,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 500,
+        "其他大机构": -3128,
+        "头部机构": -2628
+      },
+      "net_short_cumulative": {
+        "中信期货": 58567,
+        "其他大机构": 40393,
+        "头部机构": 98960
+      },
+      "sh_index": 3913.7576,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -604,
+        "其他大机构": 1187,
+        "头部机构": 583
+      },
+      "net_short_cumulative": {
+        "中信期货": 57963,
+        "其他大机构": 41580,
+        "头部机构": 99543
+      },
+      "sh_index": 3922.4101,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2439,
+        "其他大机构": 1711,
+        "头部机构": -728
+      },
+      "net_short_cumulative": {
+        "中信期货": 55524,
+        "其他大机构": 43291,
+        "头部机构": 98815
+      },
+      "sh_index": 3950.3115,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1220,
+        "其他大机构": -144,
+        "头部机构": 1076
+      },
+      "net_short_cumulative": {
+        "中信期货": 56744,
+        "其他大机构": 43147,
+        "头部机构": 99891
+      },
+      "sh_index": 3996.9445,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1120,
+        "其他大机构": -2774,
+        "头部机构": -1654
+      },
+      "net_short_cumulative": {
+        "中信期货": 57864,
+        "其他大机构": 40373,
+        "头部机构": 98237
+      },
+      "sh_index": 3988.2239,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 570,
+        "其他大机构": -1464,
+        "头部机构": -894
+      },
+      "net_short_cumulative": {
+        "中信期货": 58434,
+        "其他大机构": 38909,
+        "头部机构": 97343
+      },
+      "sh_index": 4016.331,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1601,
+        "其他大机构": -6116,
+        "头部机构": -7717
+      },
+      "net_short_cumulative": {
+        "中信期货": 56833,
+        "其他大机构": 32793,
+        "头部机构": 89626
+      },
+      "sh_index": 3986.9008,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-10-31",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -399,
+        "其他大机构": 4201,
+        "头部机构": 3802
+      },
+      "net_short_cumulative": {
+        "中信期货": 56434,
+        "其他大机构": 36994,
+        "头部机构": 93428
+      },
+      "sh_index": 3954.79,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -828,
+        "其他大机构": -2964,
+        "头部机构": -3792
+      },
+      "net_short_cumulative": {
+        "中信期货": 55606,
+        "其他大机构": 34030,
+        "头部机构": 89636
+      },
+      "sh_index": 3976.5207,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2101,
+        "其他大机构": -1124,
+        "头部机构": -3225
+      },
+      "net_short_cumulative": {
+        "中信期货": 53505,
+        "其他大机构": 32906,
+        "头部机构": 86411
+      },
+      "sh_index": 3960.186,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1098,
+        "其他大机构": 3754,
+        "头部机构": 2656
+      },
+      "net_short_cumulative": {
+        "中信期货": 52407,
+        "其他大机构": 36660,
+        "头部机构": 89067
+      },
+      "sh_index": 3969.2483,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 863,
+        "其他大机构": 2777,
+        "头部机构": 3640
+      },
+      "net_short_cumulative": {
+        "中信期货": 53270,
+        "其他大机构": 39437,
+        "头部机构": 92707
+      },
+      "sh_index": 4007.7599,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2095,
+        "其他大机构": -1227,
+        "头部机构": 868
+      },
+      "net_short_cumulative": {
+        "中信期货": 55365,
+        "其他大机构": 38210,
+        "头部机构": 93575
+      },
+      "sh_index": 3997.5557,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 759,
+        "其他大机构": -5173,
+        "头部机构": -4414
+      },
+      "net_short_cumulative": {
+        "中信期货": 56124,
+        "其他大机构": 33037,
+        "头部机构": 89161
+      },
+      "sh_index": 4018.5972,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -355,
+        "其他大机构": -2720,
+        "头部机构": -3075
+      },
+      "net_short_cumulative": {
+        "中信期货": 55769,
+        "其他大机构": 30317,
+        "头部机构": 86086
+      },
+      "sh_index": 4002.7576,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 143,
+        "其他大机构": 1809,
+        "头部机构": 1952
+      },
+      "net_short_cumulative": {
+        "中信期货": 55912,
+        "其他大机构": 32126,
+        "头部机构": 88038
+      },
+      "sh_index": 4000.1396,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2179,
+        "其他大机构": 1542,
+        "头部机构": -637
+      },
+      "net_short_cumulative": {
+        "中信期货": 53733,
+        "其他大机构": 33668,
+        "头部机构": 87401
+      },
+      "sh_index": 4029.5012,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 639,
+        "其他大机构": -1019,
+        "头部机构": -380
+      },
+      "net_short_cumulative": {
+        "中信期货": 54372,
+        "其他大机构": 32649,
+        "头部机构": 87021
+      },
+      "sh_index": 3990.4921,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2608,
+        "其他大机构": -274,
+        "头部机构": -2882
+      },
+      "net_short_cumulative": {
+        "中信期货": 51764,
+        "其他大机构": 32375,
+        "头部机构": 84139
+      },
+      "sh_index": 3972.0348,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1807,
+        "其他大机构": -988,
+        "头部机构": 819
+      },
+      "net_short_cumulative": {
+        "中信期货": 53571,
+        "其他大机构": 31387,
+        "头部机构": 84958
+      },
+      "sh_index": 3939.8131,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2751,
+        "其他大机构": -2438,
+        "头部机构": 313
+      },
+      "net_short_cumulative": {
+        "中信期货": 56322,
+        "其他大机构": 28949,
+        "头部机构": 85271
+      },
+      "sh_index": 3946.7424,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -265,
+        "其他大机构": 870,
+        "头部机构": 605
+      },
+      "net_short_cumulative": {
+        "中信期货": 56057,
+        "其他大机构": 29819,
+        "头部机构": 85876
+      },
+      "sh_index": 3931.0512,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 5752,
+        "其他大机构": -2759,
+        "头部机构": 2993
+      },
+      "net_short_cumulative": {
+        "中信期货": 61809,
+        "其他大机构": 27060,
+        "头部机构": 88869
+      },
+      "sh_index": 3834.8908,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 135,
+        "其他大机构": -949,
+        "头部机构": -814
+      },
+      "net_short_cumulative": {
+        "中信期货": 61944,
+        "其他大机构": 26111,
+        "头部机构": 88055
+      },
+      "sh_index": 3836.7655,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2677,
+        "其他大机构": 3786,
+        "头部机构": 1109
+      },
+      "net_short_cumulative": {
+        "中信期货": 59267,
+        "其他大机构": 29897,
+        "头部机构": 89164
+      },
+      "sh_index": 3870.0228,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -550,
+        "其他大机构": -1337,
+        "头部机构": -1887
+      },
+      "net_short_cumulative": {
+        "中信期货": 58717,
+        "其他大机构": 28560,
+        "头部机构": 87277
+      },
+      "sh_index": 3864.1844,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 861,
+        "其他大机构": -4011,
+        "头部机构": -3150
+      },
+      "net_short_cumulative": {
+        "中信期货": 59578,
+        "其他大机构": 24549,
+        "头部机构": 84127
+      },
+      "sh_index": 3875.2594,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-11-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 965,
+        "其他大机构": -1178,
+        "头部机构": -213
+      },
+      "net_short_cumulative": {
+        "中信期货": 60543,
+        "其他大机构": 23371,
+        "头部机构": 83914
+      },
+      "sh_index": 3888.5962,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-01",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2093,
+        "其他大机构": 859,
+        "头部机构": -1234
+      },
+      "net_short_cumulative": {
+        "中信期货": 58450,
+        "其他大机构": 24230,
+        "头部机构": 82680
+      },
+      "sh_index": 3914.0061,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-02",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -198,
+        "其他大机构": -4821,
+        "头部机构": -5019
+      },
+      "net_short_cumulative": {
+        "中信期货": 58252,
+        "其他大机构": 19409,
+        "头部机构": 77661
+      },
+      "sh_index": 3897.7116,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2322,
+        "其他大机构": 1352,
+        "头部机构": -970
+      },
+      "net_short_cumulative": {
+        "中信期货": 55930,
+        "其他大机构": 20761,
+        "头部机构": 76691
+      },
+      "sh_index": 3877.9996,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 717,
+        "其他大机构": -408,
+        "头部机构": 309
+      },
+      "net_short_cumulative": {
+        "中信期货": 56647,
+        "其他大机构": 20353,
+        "头部机构": 77000
+      },
+      "sh_index": 3875.7933,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -768,
+        "其他大机构": 8029,
+        "头部机构": 7261
+      },
+      "net_short_cumulative": {
+        "中信期货": 55879,
+        "其他大机构": 28382,
+        "头部机构": 84261
+      },
+      "sh_index": 3902.8076,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1112,
+        "其他大机构": 7120,
+        "头部机构": 8232
+      },
+      "net_short_cumulative": {
+        "中信期货": 56991,
+        "其他大机构": 35502,
+        "头部机构": 92493
+      },
+      "sh_index": 3924.0778,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 138,
+        "其他大机构": -3166,
+        "头部机构": -3028
+      },
+      "net_short_cumulative": {
+        "中信期货": 57129,
+        "其他大机构": 32336,
+        "头部机构": 89465
+      },
+      "sh_index": 3909.5216,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 774,
+        "其他大机构": -1741,
+        "头部机构": -967
+      },
+      "net_short_cumulative": {
+        "中信期货": 57903,
+        "其他大机构": 30595,
+        "头部机构": 88498
+      },
+      "sh_index": 3900.496,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3159,
+        "其他大机构": -2327,
+        "头部机构": -5486
+      },
+      "net_short_cumulative": {
+        "中信期货": 54744,
+        "其他大机构": 28268,
+        "头部机构": 83012
+      },
+      "sh_index": 3873.3176,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -470,
+        "其他大机构": 12169,
+        "头部机构": 11699
+      },
+      "net_short_cumulative": {
+        "中信期货": 54274,
+        "其他大机构": 40437,
+        "头部机构": 94711
+      },
+      "sh_index": 3889.3457,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 141,
+        "其他大机构": -436,
+        "头部机构": -295
+      },
+      "net_short_cumulative": {
+        "中信期货": 54415,
+        "其他大机构": 40001,
+        "头部机构": 94416
+      },
+      "sh_index": 3867.9209,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1313,
+        "其他大机构": -914,
+        "头部机构": -2227
+      },
+      "net_short_cumulative": {
+        "中信期货": 53102,
+        "其他大机构": 39087,
+        "头部机构": 92189
+      },
+      "sh_index": 3824.8119,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1852,
+        "其他大机构": 13118,
+        "头部机构": 14970
+      },
+      "net_short_cumulative": {
+        "中信期货": 54954,
+        "其他大机构": 52205,
+        "头部机构": 107159
+      },
+      "sh_index": 3870.2775,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1361,
+        "其他大机构": -8556,
+        "头部机构": -7195
+      },
+      "net_short_cumulative": {
+        "中信期货": 56315,
+        "其他大机构": 43649,
+        "头部机构": 99964
+      },
+      "sh_index": 3876.3705,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -932,
+        "其他大机构": 6657,
+        "头部机构": 5725
+      },
+      "net_short_cumulative": {
+        "中信期货": 55383,
+        "其他大机构": 50306,
+        "头部机构": 105689
+      },
+      "sh_index": 3890.4475,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -477,
+        "其他大机构": 6230,
+        "头部机构": 5753
+      },
+      "net_short_cumulative": {
+        "中信期货": 54906,
+        "其他大机构": 56536,
+        "头部机构": 111442
+      },
+      "sh_index": 3917.3638,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2875,
+        "其他大机构": -1053,
+        "头部机构": -3928
+      },
+      "net_short_cumulative": {
+        "中信期货": 52031,
+        "其他大机构": 55483,
+        "头部机构": 107514
+      },
+      "sh_index": 3919.9786,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -515,
+        "其他大机构": 7793,
+        "头部机构": 7278
+      },
+      "net_short_cumulative": {
+        "中信期货": 51516,
+        "其他大机构": 63276,
+        "头部机构": 114792
+      },
+      "sh_index": 3940.947,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 917,
+        "其他大机构": 662,
+        "头部机构": 1579
+      },
+      "net_short_cumulative": {
+        "中信期货": 52433,
+        "其他大机构": 63938,
+        "头部机构": 116371
+      },
+      "sh_index": 3959.6211,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -296,
+        "其他大机构": 4752,
+        "头部机构": 4456
+      },
+      "net_short_cumulative": {
+        "中信期货": 52137,
+        "其他大机构": 68690,
+        "头部机构": 120827
+      },
+      "sh_index": 3963.6789,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 417,
+        "其他大机构": -3956,
+        "头部机构": -3539
+      },
+      "net_short_cumulative": {
+        "中信期货": 52554,
+        "其他大机构": 64734,
+        "头部机构": 117288
+      },
+      "sh_index": 3965.2796,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 5133,
+        "其他大机构": -2106,
+        "头部机构": 3027
+      },
+      "net_short_cumulative": {
+        "中信期货": 57687,
+        "其他大机构": 62628,
+        "头部机构": 120315
+      },
+      "sh_index": 3965.1159,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2025-12-31",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -518,
+        "其他大机构": -6311,
+        "头部机构": -6829
+      },
+      "net_short_cumulative": {
+        "中信期货": 57169,
+        "其他大机构": 56317,
+        "头部机构": 113486
+      },
+      "sh_index": 3968.8401,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1732,
+        "其他大机构": 11203,
+        "头部机构": 9471
+      },
+      "net_short_cumulative": {
+        "中信期货": 55437,
+        "其他大机构": 67520,
+        "头部机构": 122957
+      },
+      "sh_index": 4023.4167,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -135,
+        "其他大机构": 3555,
+        "头部机构": 3420
+      },
+      "net_short_cumulative": {
+        "中信期货": 55302,
+        "其他大机构": 71075,
+        "头部机构": 126377
+      },
+      "sh_index": 4083.6672,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -132,
+        "其他大机构": -4055,
+        "头部机构": -4187
+      },
+      "net_short_cumulative": {
+        "中信期货": 55170,
+        "其他大机构": 67020,
+        "头部机构": 122190
+      },
+      "sh_index": 4085.7723,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1280,
+        "其他大机构": -76,
+        "头部机构": -1356
+      },
+      "net_short_cumulative": {
+        "中信期货": 53890,
+        "其他大机构": 66944,
+        "头部机构": 120834
+      },
+      "sh_index": 4082.9788,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3067,
+        "其他大机构": 7860,
+        "头部机构": 10927
+      },
+      "net_short_cumulative": {
+        "中信期货": 56957,
+        "其他大机构": 74804,
+        "头部机构": 131761
+      },
+      "sh_index": 4120.426,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -273,
+        "其他大机构": 5017,
+        "头部机构": 4744
+      },
+      "net_short_cumulative": {
+        "中信期货": 56684,
+        "其他大机构": 79821,
+        "头部机构": 136505
+      },
+      "sh_index": 4165.287,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2257,
+        "其他大机构": -2881,
+        "头部机构": -624
+      },
+      "net_short_cumulative": {
+        "中信期货": 58941,
+        "其他大机构": 76940,
+        "头部机构": 135881
+      },
+      "sh_index": 4138.7585,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3163,
+        "其他大机构": 4050,
+        "头部机构": 7213
+      },
+      "net_short_cumulative": {
+        "中信期货": 62104,
+        "其他大机构": 80990,
+        "头部机构": 143094
+      },
+      "sh_index": 4126.0932,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2020,
+        "其他大机构": 3734,
+        "头部机构": 1714
+      },
+      "net_short_cumulative": {
+        "中信期货": 60084,
+        "其他大机构": 84724,
+        "头部机构": 144808
+      },
+      "sh_index": 4112.6012,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2462,
+        "其他大机构": 4348,
+        "头部机构": 6810
+      },
+      "net_short_cumulative": {
+        "中信期货": 62546,
+        "其他大机构": 89072,
+        "头部机构": 151618
+      },
+      "sh_index": 4101.9127,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 273,
+        "其他大机构": -1153,
+        "头部机构": -880
+      },
+      "net_short_cumulative": {
+        "中信期货": 62819,
+        "其他大机构": 87919,
+        "头部机构": 150738
+      },
+      "sh_index": 4114.0001,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2115,
+        "其他大机构": -4742,
+        "头部机构": -6857
+      },
+      "net_short_cumulative": {
+        "中信期货": 60704,
+        "其他大机构": 83177,
+        "头部机构": 143881
+      },
+      "sh_index": 4113.649,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -429,
+        "其他大机构": 6225,
+        "头部机构": 5796
+      },
+      "net_short_cumulative": {
+        "中信期货": 60275,
+        "其他大机构": 89402,
+        "头部机构": 149677
+      },
+      "sh_index": 4116.94,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -127,
+        "其他大机构": -3332,
+        "头部机构": -3459
+      },
+      "net_short_cumulative": {
+        "中信期货": 60148,
+        "其他大机构": 86070,
+        "头部机构": 146218
+      },
+      "sh_index": 4122.576,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 5272,
+        "其他大机构": 6094,
+        "头部机构": 11366
+      },
+      "net_short_cumulative": {
+        "中信期货": 65420,
+        "其他大机构": 92164,
+        "头部机构": 157584
+      },
+      "sh_index": 4136.1642,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2230,
+        "其他大机构": -1883,
+        "头部机构": -4113
+      },
+      "net_short_cumulative": {
+        "中信期货": 63190,
+        "其他大机构": 90281,
+        "头部机构": 153471
+      },
+      "sh_index": 4132.6052,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2350,
+        "其他大机构": 3075,
+        "头部机构": 725
+      },
+      "net_short_cumulative": {
+        "中信期货": 60840,
+        "其他大机构": 93356,
+        "头部机构": 154196
+      },
+      "sh_index": 4139.9041,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -707,
+        "其他大机构": 7356,
+        "头部机构": 6649
+      },
+      "net_short_cumulative": {
+        "中信期货": 60133,
+        "其他大机构": 100712,
+        "头部机构": 160845
+      },
+      "sh_index": 4151.2378,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 419,
+        "其他大机构": 1332,
+        "头部机构": 1751
+      },
+      "net_short_cumulative": {
+        "中信期货": 60552,
+        "其他大机构": 102044,
+        "头部机构": 162596
+      },
+      "sh_index": 4157.9845,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-01-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2168,
+        "其他大机构": -3156,
+        "头部机构": -988
+      },
+      "net_short_cumulative": {
+        "中信期货": 62720,
+        "其他大机构": 98888,
+        "头部机构": 161608
+      },
+      "sh_index": 4117.9476,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-02-02",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -5156,
+        "其他大机构": -6309,
+        "头部机构": -11465
+      },
+      "net_short_cumulative": {
+        "中信期货": 57564,
+        "其他大机构": 92579,
+        "头部机构": 150143
+      },
+      "sh_index": 4015.7464,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-02-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 5598,
+        "其他大机构": 5852,
+        "头部机构": 11450
+      },
+      "net_short_cumulative": {
+        "中信期货": 63162,
+        "其他大机构": 98431,
+        "头部机构": 161593
+      },
+      "sh_index": 4067.7379,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-02-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 979,
+        "其他大机构": -6757,
+        "头部机构": -5778
+      },
+      "net_short_cumulative": {
+        "中信期货": 64141,
+        "其他大机构": 91674,
+        "头部机构": 155815
+      },
+      "sh_index": 4102.202,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-02-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1608,
+        "其他大机构": -935,
+        "头部机构": -2543
+      },
+      "net_short_cumulative": {
+        "中信期货": 62533,
+        "其他大机构": 90739,
+        "头部机构": 153272
+      },
+      "sh_index": 4075.9167,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-02-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -103,
+        "其他大机构": 4300,
+        "头部机构": 4197
+      },
+      "net_short_cumulative": {
+        "中信期货": 62430,
+        "其他大机构": 95039,
+        "头部机构": 157469
+      },
+      "sh_index": 4065.5834,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-02-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -66,
+        "其他大机构": 1733,
+        "头部机构": 1667
+      },
+      "net_short_cumulative": {
+        "中信期货": 62364,
+        "其他大机构": 96772,
+        "头部机构": 159136
+      },
+      "sh_index": 4123.0897,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-02-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -718,
+        "其他大机构": 195,
+        "头部机构": -523
+      },
+      "net_short_cumulative": {
+        "中信期货": 61646,
+        "其他大机构": 96967,
+        "头部机构": 158613
+      },
+      "sh_index": 4128.3731,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-02-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1757,
+        "其他大机构": 1383,
+        "头部机构": 3140
+      },
+      "net_short_cumulative": {
+        "中信期货": 63403,
+        "其他大机构": 98350,
+        "头部机构": 161753
+      },
+      "sh_index": 4131.985,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-02-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1341,
+        "其他大机构": 2818,
+        "头部机构": 4159
+      },
+      "net_short_cumulative": {
+        "中信期货": 64744,
+        "其他大机构": 101168,
+        "头部机构": 165912
+      },
+      "sh_index": 4134.0178,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-02-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -4380,
+        "其他大机构": -10484,
+        "头部机构": -14864
+      },
+      "net_short_cumulative": {
+        "中信期货": 60364,
+        "其他大机构": 90684,
+        "头部机构": 151048
+      },
+      "sh_index": 4082.0726,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-02-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1563,
+        "其他大机构": 1330,
+        "头部机构": 2893
+      },
+      "net_short_cumulative": {
+        "中信期货": 61927,
+        "其他大机构": 92014,
+        "头部机构": 153941
+      },
+      "sh_index": 4117.4089,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-02-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1268,
+        "其他大机构": 9315,
+        "头部机构": 8047
+      },
+      "net_short_cumulative": {
+        "中信期货": 60659,
+        "其他大机构": 101329,
+        "头部机构": 161988
+      },
+      "sh_index": 4147.2305,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-02-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3238,
+        "其他大机构": -4980,
+        "头部机构": -8218
+      },
+      "net_short_cumulative": {
+        "中信期货": 57421,
+        "其他大机构": 96349,
+        "头部机构": 153770
+      },
+      "sh_index": 4146.6311,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-02-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1145,
+        "其他大机构": 2075,
+        "头部机构": 930
+      },
+      "net_short_cumulative": {
+        "中信期货": 56276,
+        "其他大机构": 98424,
+        "头部机构": 154700
+      },
+      "sh_index": 4162.8815,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-02",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3395,
+        "其他大机构": -5993,
+        "头部机构": -9388
+      },
+      "net_short_cumulative": {
+        "中信期货": 52881,
+        "其他大机构": 92431,
+        "头部机构": 145312
+      },
+      "sh_index": 4182.5909,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -4860,
+        "其他大机构": -1942,
+        "头部机构": -6802
+      },
+      "net_short_cumulative": {
+        "中信期货": 48021,
+        "其他大机构": 90489,
+        "头部机构": 138510
+      },
+      "sh_index": 4122.676,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 595,
+        "其他大机构": 3221,
+        "头部机构": 3816
+      },
+      "net_short_cumulative": {
+        "中信期货": 48616,
+        "其他大机构": 93710,
+        "头部机构": 142326
+      },
+      "sh_index": 4082.474,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2873,
+        "其他大机构": -7949,
+        "头部机构": -10822
+      },
+      "net_short_cumulative": {
+        "中信期货": 45743,
+        "其他大机构": 85761,
+        "头部机构": 131504
+      },
+      "sh_index": 4108.567,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1406,
+        "其他大机构": 2451,
+        "头部机构": 3857
+      },
+      "net_short_cumulative": {
+        "中信期货": 47149,
+        "其他大机构": 88212,
+        "头部机构": 135361
+      },
+      "sh_index": 4124.194,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1111,
+        "其他大机构": -9451,
+        "头部机构": -8340
+      },
+      "net_short_cumulative": {
+        "中信期货": 48260,
+        "其他大机构": 78761,
+        "头部机构": 127021
+      },
+      "sh_index": 4096.6023,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -221,
+        "其他大机构": 2463,
+        "头部机构": 2242
+      },
+      "net_short_cumulative": {
+        "中信期货": 48039,
+        "其他大机构": 81224,
+        "头部机构": 129263
+      },
+      "sh_index": 4123.138,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -547,
+        "其他大机构": -5469,
+        "头部机构": -6016
+      },
+      "net_short_cumulative": {
+        "中信期货": 47492,
+        "其他大机构": 75755,
+        "头部机构": 123247
+      },
+      "sh_index": 4133.4331,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -4014,
+        "其他大机构": 1054,
+        "头部机构": -2960
+      },
+      "net_short_cumulative": {
+        "中信期货": 43478,
+        "其他大机构": 76809,
+        "头部机构": 120287
+      },
+      "sh_index": 4129.1026,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -953,
+        "其他大机构": 584,
+        "头部机构": -369
+      },
+      "net_short_cumulative": {
+        "中信期货": 42525,
+        "其他大机构": 77393,
+        "头部机构": 119918
+      },
+      "sh_index": 4095.4485,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 485,
+        "其他大机构": 865,
+        "头部机构": 1350
+      },
+      "net_short_cumulative": {
+        "中信期货": 43010,
+        "其他大机构": 78258,
+        "头部机构": 121268
+      },
+      "sh_index": 4084.7858,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1211,
+        "其他大机构": -3148,
+        "头部机构": -1937
+      },
+      "net_short_cumulative": {
+        "中信期货": 44221,
+        "其他大机构": 75110,
+        "头部机构": 119331
+      },
+      "sh_index": 4049.9073,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 716,
+        "其他大机构": 5281,
+        "头部机构": 5997
+      },
+      "net_short_cumulative": {
+        "中信期货": 44937,
+        "其他大机构": 80391,
+        "头部机构": 125328
+      },
+      "sh_index": 4062.9844,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -5075,
+        "其他大机构": -3980,
+        "头部机构": -9055
+      },
+      "net_short_cumulative": {
+        "中信期货": 39862,
+        "其他大机构": 76411,
+        "头部机构": 116273
+      },
+      "sh_index": 4006.5523,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 6326,
+        "其他大机构": -252,
+        "头部机构": 6074
+      },
+      "net_short_cumulative": {
+        "中信期货": 46188,
+        "其他大机构": 76159,
+        "头部机构": 122347
+      },
+      "sh_index": 3957.0527,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1035,
+        "其他大机构": -3412,
+        "头部机构": -2377
+      },
+      "net_short_cumulative": {
+        "中信期货": 47223,
+        "其他大机构": 72747,
+        "头部机构": 119970
+      },
+      "sh_index": 3813.2829,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 610,
+        "其他大机构": -4522,
+        "头部机构": -3912
+      },
+      "net_short_cumulative": {
+        "中信期货": 47833,
+        "其他大机构": 68225,
+        "头部机构": 116058
+      },
+      "sh_index": 3881.2797,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1017,
+        "其他大机构": 653,
+        "头部机构": -364
+      },
+      "net_short_cumulative": {
+        "中信期货": 46816,
+        "其他大机构": 68878,
+        "头部机构": 115694
+      },
+      "sh_index": 3931.8375,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1287,
+        "其他大机构": -5773,
+        "头部机构": -4486
+      },
+      "net_short_cumulative": {
+        "中信期货": 48103,
+        "其他大机构": 63105,
+        "头部机构": 111208
+      },
+      "sh_index": 3889.0835,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 698,
+        "其他大机构": 2176,
+        "头部机构": 2874
+      },
+      "net_short_cumulative": {
+        "中信期货": 48801,
+        "其他大机构": 65281,
+        "头部机构": 114082
+      },
+      "sh_index": 3913.7238,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -68,
+        "其他大机构": -1343,
+        "头部机构": -1411
+      },
+      "net_short_cumulative": {
+        "中信期货": 48733,
+        "其他大机构": 63938,
+        "头部机构": 112671
+      },
+      "sh_index": 3923.2869,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-03-31",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2224,
+        "其他大机构": 671,
+        "头部机构": 2895
+      },
+      "net_short_cumulative": {
+        "中信期货": 50957,
+        "其他大机构": 64609,
+        "头部机构": 115566
+      },
+      "sh_index": 3891.8605,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-01",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1044,
+        "其他大机构": -934,
+        "头部机构": 110
+      },
+      "net_short_cumulative": {
+        "中信期货": 52001,
+        "其他大机构": 63675,
+        "头部机构": 115676
+      },
+      "sh_index": 3948.5521,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-02",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -4968,
+        "其他大机构": -2462,
+        "头部机构": -7430
+      },
+      "net_short_cumulative": {
+        "中信期货": 47033,
+        "其他大机构": 61213,
+        "头部机构": 108246
+      },
+      "sh_index": 3919.2852,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3429,
+        "其他大机构": -3749,
+        "头部机构": -320
+      },
+      "net_short_cumulative": {
+        "中信期货": 50462,
+        "其他大机构": 57464,
+        "头部机构": 107926
+      },
+      "sh_index": 3880.0967,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3,
+        "其他大机构": 1367,
+        "头部机构": 1370
+      },
+      "net_short_cumulative": {
+        "中信期货": 50465,
+        "其他大机构": 58831,
+        "头部机构": 109296
+      },
+      "sh_index": 3890.1645,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2394,
+        "其他大机构": 13506,
+        "头部机构": 15900
+      },
+      "net_short_cumulative": {
+        "中信期货": 52859,
+        "其他大机构": 72337,
+        "头部机构": 125196
+      },
+      "sh_index": 3994.9975,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3300,
+        "其他大机构": -5092,
+        "头部机构": -8392
+      },
+      "net_short_cumulative": {
+        "中信期货": 49559,
+        "其他大机构": 67245,
+        "头部机构": 116804
+      },
+      "sh_index": 3966.1712,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2328,
+        "其他大机构": 525,
+        "头部机构": 2853
+      },
+      "net_short_cumulative": {
+        "中信期货": 51887,
+        "其他大机构": 67770,
+        "头部机构": 119657
+      },
+      "sh_index": 3986.2247,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 611,
+        "其他大机构": -2770,
+        "头部机构": -2159
+      },
+      "net_short_cumulative": {
+        "中信期货": 52498,
+        "其他大机构": 65000,
+        "头部机构": 117498
+      },
+      "sh_index": 3988.558,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -261,
+        "其他大机构": 454,
+        "头部机构": 193
+      },
+      "net_short_cumulative": {
+        "中信期货": 52237,
+        "其他大机构": 65454,
+        "头部机构": 117691
+      },
+      "sh_index": 4026.6256,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -775,
+        "其他大机构": 3573,
+        "头部机构": 2798
+      },
+      "net_short_cumulative": {
+        "中信期货": 51462,
+        "其他大机构": 69027,
+        "头部机构": 120489
+      },
+      "sh_index": 4027.2095,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1848,
+        "其他大机构": 6488,
+        "头部机构": 8336
+      },
+      "net_short_cumulative": {
+        "中信期货": 53310,
+        "其他大机构": 75515,
+        "头部机构": 128825
+      },
+      "sh_index": 4055.5468,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -61,
+        "其他大机构": -4002,
+        "头部机构": -4063
+      },
+      "net_short_cumulative": {
+        "中信期货": 53249,
+        "其他大机构": 71513,
+        "头部机构": 124762
+      },
+      "sh_index": 4051.4254,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 4067,
+        "其他大机构": -3572,
+        "头部机构": 495
+      },
+      "net_short_cumulative": {
+        "中信期货": 57316,
+        "其他大机构": 67941,
+        "头部机构": 125257
+      },
+      "sh_index": 4082.1271,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -866,
+        "其他大机构": -5412,
+        "头部机构": -6278
+      },
+      "net_short_cumulative": {
+        "中信期货": 56450,
+        "其他大机构": 62529,
+        "头部机构": 118979
+      },
+      "sh_index": 4085.0766,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1776,
+        "其他大机构": 3795,
+        "头部机构": 5571
+      },
+      "net_short_cumulative": {
+        "中信期货": 58226,
+        "其他大机构": 66324,
+        "头部机构": 124550
+      },
+      "sh_index": 4106.2581,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 925,
+        "其他大机构": -9131,
+        "头部机构": -8206
+      },
+      "net_short_cumulative": {
+        "中信期货": 59151,
+        "其他大机构": 57193,
+        "头部机构": 116344
+      },
+      "sh_index": 4093.2501,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2331,
+        "其他大机构": 2101,
+        "头部机构": 4432
+      },
+      "net_short_cumulative": {
+        "中信期货": 61482,
+        "其他大机构": 59294,
+        "头部机构": 120776
+      },
+      "sh_index": 4079.9004,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1750,
+        "其他大机构": -1126,
+        "头部机构": 624
+      },
+      "net_short_cumulative": {
+        "中信期货": 63232,
+        "其他大机构": 58168,
+        "头部机构": 121400
+      },
+      "sh_index": 4086.3442,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 496,
+        "其他大机构": -4763,
+        "头部机构": -4267
+      },
+      "net_short_cumulative": {
+        "中信期货": 63728,
+        "其他大机构": 53405,
+        "头部机构": 117133
+      },
+      "sh_index": 4078.6374,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -707,
+        "其他大机构": 9905,
+        "头部机构": 9198
+      },
+      "net_short_cumulative": {
+        "中信期货": 63021,
+        "其他大机构": 63310,
+        "头部机构": 126331
+      },
+      "sh_index": 4107.5144,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-04-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3146,
+        "其他大机构": -4241,
+        "头部机构": -1095
+      },
+      "net_short_cumulative": {
+        "中信期货": 66167,
+        "其他大机构": 59069,
+        "头部机构": 125236
+      },
+      "sh_index": 4112.1593,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1517,
+        "其他大机构": 10237,
+        "头部机构": 8720
+      },
+      "net_short_cumulative": {
+        "中信期货": 64650,
+        "其他大机构": 69306,
+        "头部机构": 133956
+      },
+      "sh_index": 4160.1737,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 49,
+        "其他大机构": 618,
+        "头部机构": 667
+      },
+      "net_short_cumulative": {
+        "中信期货": 64699,
+        "其他大机构": 69924,
+        "头部机构": 134623
+      },
+      "sh_index": 4180.0922,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1153,
+        "其他大机构": -5250,
+        "头部机构": -4097
+      },
+      "net_short_cumulative": {
+        "中信期货": 65852,
+        "其他大机构": 64674,
+        "头部机构": 130526
+      },
+      "sh_index": 4179.9524,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2046,
+        "其他大机构": 1970,
+        "头部机构": 4016
+      },
+      "net_short_cumulative": {
+        "中信期货": 67898,
+        "其他大机构": 66644,
+        "头部机构": 134542
+      },
+      "sh_index": 4225.0207,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3096,
+        "其他大机构": -3420,
+        "头部机构": -6516
+      },
+      "net_short_cumulative": {
+        "中信期货": 64802,
+        "其他大机构": 63224,
+        "头部机构": 128026
+      },
+      "sh_index": 4214.4891,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 216,
+        "其他大机构": 7028,
+        "头部机构": 7244
+      },
+      "net_short_cumulative": {
+        "中信期货": 65018,
+        "其他大机构": 70252,
+        "头部机构": 135270
+      },
+      "sh_index": 4242.572,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -4860,
+        "其他大机构": -8034,
+        "头部机构": -12894
+      },
+      "net_short_cumulative": {
+        "中信期货": 60158,
+        "其他大机构": 62218,
+        "头部机构": 122376
+      },
+      "sh_index": 4177.9175,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 898,
+        "其他大机构": 27,
+        "头部机构": 925
+      },
+      "net_short_cumulative": {
+        "中信期货": 61056,
+        "其他大机构": 62245,
+        "头部机构": 123301
+      },
+      "sh_index": 4135.3894,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 562,
+        "其他大机构": -311,
+        "头部机构": 251
+      },
+      "net_short_cumulative": {
+        "中信期货": 61618,
+        "其他大机构": 61934,
+        "头部机构": 123552
+      },
+      "sh_index": 4131.5276,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1791,
+        "其他大机构": -1875,
+        "头部机构": -84
+      },
+      "net_short_cumulative": {
+        "中信期货": 63409,
+        "其他大机构": 60059,
+        "头部机构": 123468
+      },
+      "sh_index": 4169.5378,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1988,
+        "其他大机构": -4344,
+        "头部机构": -6332
+      },
+      "net_short_cumulative": {
+        "中信期货": 61421,
+        "其他大机构": 55715,
+        "头部机构": 117136
+      },
+      "sh_index": 4162.1845,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2208,
+        "其他大机构": 2779,
+        "头部机构": 571
+      },
+      "net_short_cumulative": {
+        "中信期货": 59213,
+        "其他大机构": 58494,
+        "头部机构": 117707
+      },
+      "sh_index": 4077.2765,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1346,
+        "其他大机构": 156,
+        "头部机构": 1502
+      },
+      "net_short_cumulative": {
+        "中信期货": 60559,
+        "其他大机构": 58650,
+        "头部机构": 119209
+      },
+      "sh_index": 4112.8996,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -796,
+        "其他大机构": -1211,
+        "头部机构": -2007
+      },
+      "net_short_cumulative": {
+        "中信期货": 59763,
+        "其他大机构": 57439,
+        "头部机构": 117202
+      },
+      "sh_index": 4152.5686,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1271,
+        "其他大机构": -5309,
+        "头部机构": -6580
+      },
+      "net_short_cumulative": {
+        "中信期货": 58492,
+        "其他大机构": 52130,
+        "头部机构": 110622
+      },
+      "sh_index": 4145.373,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2312,
+        "其他大机构": 3381,
+        "头部机构": 1069
+      },
+      "net_short_cumulative": {
+        "中信期货": 56180,
+        "其他大机构": 55511,
+        "头部机构": 111691
+      },
+      "sh_index": 4093.7266,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3445,
+        "其他大机构": 1493,
+        "头部机构": 4938
+      },
+      "net_short_cumulative": {
+        "中信期货": 59625,
+        "其他大机构": 57004,
+        "头部机构": 116629
+      },
+      "sh_index": 4098.6358,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-05-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -933,
+        "其他大机构": 1385,
+        "头部机构": 452
+      },
+      "net_short_cumulative": {
+        "中信期货": 58692,
+        "其他大机构": 58389,
+        "头部机构": 117081
+      },
+      "sh_index": 4068.5691,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-01",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 191,
+        "其他大机构": 3858,
+        "头部机构": 4049
+      },
+      "net_short_cumulative": {
+        "中信期货": 58883,
+        "其他大机构": 62247,
+        "头部机构": 121130
+      },
+      "sh_index": 4057.74,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-02",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1927,
+        "其他大机构": 5295,
+        "头部机构": 3368
+      },
+      "net_short_cumulative": {
+        "中信期货": 56956,
+        "其他大机构": 67542,
+        "头部机构": 124498
+      },
+      "sh_index": 4075.1016,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -100,
+        "其他大机构": -5949,
+        "头部机构": -6049
+      },
+      "net_short_cumulative": {
+        "中信期货": 56856,
+        "其他大机构": 61593,
+        "头部机构": 118449
+      },
+      "sh_index": 4083.974,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2436,
+        "其他大机构": -3617,
+        "头部机构": -1181
+      },
+      "net_short_cumulative": {
+        "中信期货": 59292,
+        "其他大机构": 57976,
+        "头部机构": 117268
+      },
+      "sh_index": 4057.7811,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1040,
+        "其他大机构": -1094,
+        "头部机构": -2134
+      },
+      "net_short_cumulative": {
+        "中信期货": 58252,
+        "其他大机构": 56882,
+        "头部机构": 115134
+      },
+      "sh_index": 4027.7362,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2783,
+        "其他大机构": -1103,
+        "头部机构": 1680
+      },
+      "net_short_cumulative": {
+        "中信期货": 61035,
+        "其他大机构": 55779,
+        "头部机构": 116814
+      },
+      "sh_index": 3959.3378,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -3815,
+        "其他大机构": -2876,
+        "头部机构": -6691
+      },
+      "net_short_cumulative": {
+        "中信期货": 57220,
+        "其他大机构": 52903,
+        "头部机构": 110123
+      },
+      "sh_index": 4010.0307,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -192,
+        "其他大机构": 1270,
+        "头部机构": 1078
+      },
+      "net_short_cumulative": {
+        "中信期货": 57028,
+        "其他大机构": 54173,
+        "头部机构": 111201
+      },
+      "sh_index": 3993.2258,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1231,
+        "其他大机构": 1382,
+        "头部机构": 2613
+      },
+      "net_short_cumulative": {
+        "中信期货": 58259,
+        "其他大机构": 55555,
+        "头部机构": 113814
+      },
+      "sh_index": 3987.0147,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1652,
+        "其他大机构": -2014,
+        "头部机构": -3666
+      },
+      "net_short_cumulative": {
+        "中信期货": 56607,
+        "其他大机构": 53541,
+        "头部机构": 110148
+      },
+      "sh_index": 4031.5129,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1338,
+        "其他大机构": 11337,
+        "头部机构": 12675
+      },
+      "net_short_cumulative": {
+        "中信期货": 57945,
+        "其他大机构": 64878,
+        "头部机构": 122823
+      },
+      "sh_index": 4096.4717,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1613,
+        "其他大机构": -6927,
+        "头部机构": -5314
+      },
+      "net_short_cumulative": {
+        "中信期货": 59558,
+        "其他大机构": 57951,
+        "头部机构": 117509
+      },
+      "sh_index": 4091.8917,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -315,
+        "其他大机构": 3942,
+        "头部机构": 3627
+      },
+      "net_short_cumulative": {
+        "中信期货": 59243,
+        "其他大机构": 61893,
+        "头部机构": 121136
+      },
+      "sh_index": 4108.0762,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1160,
+        "其他大机构": 3137,
+        "头部机构": 1977
+      },
+      "net_short_cumulative": {
+        "中信期货": 58083,
+        "其他大机构": 65030,
+        "头部机构": 123113
+      },
+      "sh_index": 4090.4813,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 5410,
+        "其他大机构": -4161,
+        "头部机构": 1249
+      },
+      "net_short_cumulative": {
+        "中信期货": 63493,
+        "其他大机构": 60869,
+        "头部机构": 124362
+      },
+      "sh_index": 4163.0965,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1446,
+        "其他大机构": -4422,
+        "头部机构": -5868
+      },
+      "net_short_cumulative": {
+        "中信期货": 62047,
+        "其他大机构": 56447,
+        "头部机构": 118494
+      },
+      "sh_index": 4106.2517,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1425,
+        "其他大机构": 2917,
+        "头部机构": 1492
+      },
+      "net_short_cumulative": {
+        "中信期货": 60622,
+        "其他大机构": 59364,
+        "头部机构": 119986
+      },
+      "sh_index": 4110.8134,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2648,
+        "其他大机构": -1086,
+        "头部机构": 1562
+      },
+      "net_short_cumulative": {
+        "中信期货": 63270,
+        "其他大机构": 58278,
+        "头部机构": 121548
+      },
+      "sh_index": 4120.2806,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 784,
+        "其他大机构": -9318,
+        "头部机构": -8534
+      },
+      "net_short_cumulative": {
+        "中信期货": 64054,
+        "其他大机构": 48960,
+        "头部机构": 113014
+      },
+      "sh_index": 4027.2648,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1082,
+        "其他大机构": -309,
+        "头部机构": -1391
+      },
+      "net_short_cumulative": {
+        "中信期货": 62972,
+        "其他大机构": 48651,
+        "头部机构": 111623
+      },
+      "sh_index": 4073.9017,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-06-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1502,
+        "其他大机构": 4891,
+        "头部机构": 3389
+      },
+      "net_short_cumulative": {
+        "中信期货": 61470,
+        "其他大机构": 53542,
+        "头部机构": 115012
+      },
+      "sh_index": 4094.3972,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-01",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 261,
+        "其他大机构": 240,
+        "头部机构": 501
+      },
+      "net_short_cumulative": {
+        "中信期货": 61731,
+        "其他大机构": 53782,
+        "头部机构": 115513
+      },
+      "sh_index": 4112.4453,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-02",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3310,
+        "其他大机构": 4547,
+        "头部机构": 7857
+      },
+      "net_short_cumulative": {
+        "中信期货": 65041,
+        "其他大机构": 58329,
+        "头部机构": 123370
+      },
+      "sh_index": 4028.9038,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2958,
+        "其他大机构": -2640,
+        "头部机构": 318
+      },
+      "net_short_cumulative": {
+        "中信期货": 67999,
+        "其他大机构": 55689,
+        "头部机构": 123688
+      },
+      "sh_index": 4043.6432,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1631,
+        "其他大机构": -170,
+        "头部机构": 1461
+      },
+      "net_short_cumulative": {
+        "中信期货": 69630,
+        "其他大机构": 55519,
+        "头部机构": 125149
+      },
+      "sh_index": 4041.2382,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": null,
+        "其他大机构": null,
+        "头部机构": null
+      },
+      "net_short_cumulative": {
+        "中信期货": 71019,
+        "其他大机构": 59102,
+        "头部机构": 130121
+      },
+      "sh_index": 3990.2353,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2697,
+        "其他大机构": 3851,
+        "头部机构": 6548
+      },
+      "net_short_cumulative": {
+        "中信期货": 73716,
+        "其他大机构": 62953,
+        "头部机构": 136669
+      },
+      "sh_index": 3970.8797,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3761,
+        "其他大机构": 1728,
+        "头部机构": 5489
+      },
+      "net_short_cumulative": {
+        "中信期货": 77477,
+        "其他大机构": 64681,
+        "头部机构": 142158
+      },
+      "sh_index": 4036.5879,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": null,
+        "其他大机构": null,
+        "头部机构": null
+      },
+      "net_short_cumulative": {
+        "中信期货": 75954,
+        "其他大机构": 60665,
+        "头部机构": 136619
+      },
+      "sh_index": 3996.1616,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": null,
+        "其他大机构": null,
+        "头部机构": null
+      },
+      "net_short_cumulative": {
+        "中信期货": 73504,
+        "其他大机构": 72577,
+        "头部机构": 146081
+      },
+      "sh_index": 3913.794,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": null,
+        "其他大机构": null,
+        "头部机构": null
+      },
+      "net_short_cumulative": {
+        "中信期货": 74330,
+        "其他大机构": 72580,
+        "头部机构": 146910
+      },
+      "sh_index": 3967.1262,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-15",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 369,
+        "其他大机构": -5359,
+        "头部机构": -4990
+      },
+      "net_short_cumulative": {
+        "中信期货": 74699,
+        "其他大机构": 67221,
+        "头部机构": 141920
+      },
+      "sh_index": 3955.5781,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-16",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -836,
+        "其他大机构": 8357,
+        "头部机构": 7521
+      },
+      "net_short_cumulative": {
+        "中信期货": 73863,
+        "其他大机构": 75578,
+        "头部机构": 149441
+      },
+      "sh_index": 3882.4126,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1604,
+        "其他大机构": 6361,
+        "头部机构": 7965
+      },
+      "net_short_cumulative": {
+        "中信期货": 75467,
+        "其他大机构": 81939,
+        "头部机构": 157406
+      },
+      "sh_index": 3764.1547,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1244,
+        "其他大机构": -3883,
+        "头部机构": -5127
+      },
+      "net_short_cumulative": {
+        "中信期货": 74223,
+        "其他大机构": 78056,
+        "头部机构": 152279
+      },
+      "sh_index": 3796.2814,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -7657,
+        "其他大机构": 2721,
+        "头部机构": -4936
+      },
+      "net_short_cumulative": {
+        "中信期货": 66566,
+        "其他大机构": 80777,
+        "头部机构": 147343
+      },
+      "sh_index": 3864.3671,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-22",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -1435,
+        "其他大机构": -5184,
+        "头部机构": -6619
+      },
+      "net_short_cumulative": {
+        "中信期货": 65131,
+        "其他大机构": 75593,
+        "头部机构": 140724
+      },
+      "sh_index": 3867.0336,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-23",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 564,
+        "其他大机构": -2386,
+        "头部机构": -1822
+      },
+      "net_short_cumulative": {
+        "中信期货": 65695,
+        "其他大机构": 73207,
+        "头部机构": 138902
+      },
+      "sh_index": 3876.7774,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -298,
+        "其他大机构": -1358,
+        "头部机构": -1656
+      },
+      "net_short_cumulative": {
+        "中信期货": 65397,
+        "其他大机构": 71849,
+        "头部机构": 137246
+      },
+      "sh_index": 3814.1978,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2159,
+        "其他大机构": 3139,
+        "头部机构": 5298
+      },
+      "net_short_cumulative": {
+        "中信期货": 67556,
+        "其他大机构": 74988,
+        "头部机构": 142544
+      },
+      "sh_index": 3858.245,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 195,
+        "其他大机构": -2501,
+        "头部机构": -2306
+      },
+      "net_short_cumulative": {
+        "中信期货": 67751,
+        "其他大机构": 72487,
+        "头部机构": 140238
+      },
+      "sh_index": 3813.3146,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-29",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2209,
+        "其他大机构": 3101,
+        "头部机构": 5310
+      },
+      "net_short_cumulative": {
+        "中信期货": 69960,
+        "其他大机构": 75588,
+        "头部机构": 145548
+      },
+      "sh_index": 3828.469,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-30",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 455,
+        "其他大机构": -603,
+        "头部机构": -148
+      },
+      "net_short_cumulative": {
+        "中信期货": 70415,
+        "其他大机构": 74985,
+        "头部机构": 145400
+      },
+      "sh_index": 3804.6926,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-07-31",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 4760,
+        "其他大机构": -4840,
+        "头部机构": -80
+      },
+      "net_short_cumulative": {
+        "中信期货": 75175,
+        "其他大机构": 70145,
+        "头部机构": 145320
+      },
+      "sh_index": 3832.2624,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 676,
+        "其他大机构": -1592,
+        "头部机构": -916
+      },
+      "net_short_cumulative": {
+        "中信期货": 75851,
+        "其他大机构": 68553,
+        "头部机构": 144404
+      },
+      "sh_index": 3809.6629,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1974,
+        "其他大机构": 661,
+        "头部机构": 2635
+      },
+      "net_short_cumulative": {
+        "中信期货": 77825,
+        "其他大机构": 69214,
+        "头部机构": 147039
+      },
+      "sh_index": 3822.2846,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-05",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1970,
+        "其他大机构": -3488,
+        "头部机构": -1518
+      },
+      "net_short_cumulative": {
+        "中信期货": 79795,
+        "其他大机构": 65726,
+        "头部机构": 145521
+      },
+      "sh_index": 3878.4296,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-06",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1555,
+        "其他大机构": -6613,
+        "头部机构": -5058
+      },
+      "net_short_cumulative": {
+        "中信期货": 81350,
+        "其他大机构": 59113,
+        "头部机构": 140463
+      },
+      "sh_index": 3900.3523,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2723,
+        "其他大机构": -4621,
+        "头部机构": -7344
+      },
+      "net_short_cumulative": {
+        "中信期货": 78627,
+        "其他大机构": 54492,
+        "头部机构": 133119
+      },
+      "sh_index": 3940.0371,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -6068,
+        "其他大机构": 2471,
+        "头部机构": -3597
+      },
+      "net_short_cumulative": {
+        "中信期货": 72559,
+        "其他大机构": 56963,
+        "头部机构": 129522
+      },
+      "sh_index": 3966.5935,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -757,
+        "其他大机构": -883,
+        "头部机构": -1640
+      },
+      "net_short_cumulative": {
+        "中信期货": 71802,
+        "其他大机构": 56080,
+        "头部机构": 127882
+      },
+      "sh_index": 3934.0929,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-12",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2185,
+        "其他大机构": 425,
+        "头部机构": -1760
+      },
+      "net_short_cumulative": {
+        "中信期货": 69617,
+        "其他大机构": 56505,
+        "头部机构": 126122
+      },
+      "sh_index": 3946.6752,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-13",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -33,
+        "其他大机构": -3932,
+        "头部机构": -3965
+      },
+      "net_short_cumulative": {
+        "中信期货": 69584,
+        "其他大机构": 52573,
+        "头部机构": 122157
+      },
+      "sh_index": 3926.9648,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-14",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 213,
+        "其他大机构": 1639,
+        "头部机构": 1852
+      },
+      "net_short_cumulative": {
+        "中信期货": 69797,
+        "其他大机构": 54212,
+        "头部机构": 124009
+      },
+      "sh_index": 3927.1764,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-17",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 564,
+        "其他大机构": -1339,
+        "头部机构": -775
+      },
+      "net_short_cumulative": {
+        "中信期货": 70361,
+        "其他大机构": 52873,
+        "头部机构": 123234
+      },
+      "sh_index": 3982.6535,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-18",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -4858,
+        "其他大机构": -3754,
+        "头部机构": -8612
+      },
+      "net_short_cumulative": {
+        "中信期货": 65503,
+        "其他大机构": 49119,
+        "头部机构": 114622
+      },
+      "sh_index": 3990.3037,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-19",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3130,
+        "其他大机构": 1450,
+        "头部机构": 4580
+      },
+      "net_short_cumulative": {
+        "中信期货": 68633,
+        "其他大机构": 50569,
+        "头部机构": 119202
+      },
+      "sh_index": 3894.4224,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-20",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 2057,
+        "其他大机构": -849,
+        "头部机构": 1208
+      },
+      "net_short_cumulative": {
+        "中信期货": 70690,
+        "其他大机构": 49720,
+        "头部机构": 120410
+      },
+      "sh_index": 3903.721,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-21",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3019,
+        "其他大机构": -4276,
+        "头部机构": -1257
+      },
+      "net_short_cumulative": {
+        "中信期货": 73709,
+        "其他大机构": 45444,
+        "头部机构": 119153
+      },
+      "sh_index": 3905.2026,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-24",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1767,
+        "其他大机构": -1868,
+        "头部机构": -101
+      },
+      "net_short_cumulative": {
+        "中信期货": 75476,
+        "其他大机构": 43576,
+        "头部机构": 119052
+      },
+      "sh_index": 3882.0079,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-25",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -113,
+        "其他大机构": 4698,
+        "头部机构": 4585
+      },
+      "net_short_cumulative": {
+        "中信期货": 75363,
+        "其他大机构": 48274,
+        "头部机构": 123637
+      },
+      "sh_index": 3889.4449,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-26",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 460,
+        "其他大机构": -1186,
+        "头部机构": -726
+      },
+      "net_short_cumulative": {
+        "中信期货": 75823,
+        "其他大机构": 47088,
+        "头部机构": 122911
+      },
+      "sh_index": 3912.5235,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-27",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 123,
+        "其他大机构": -265,
+        "头部机构": -142
+      },
+      "net_short_cumulative": {
+        "中信期货": 75946,
+        "其他大机构": 46823,
+        "头部机构": 122769
+      },
+      "sh_index": 3956.571,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-28",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 583,
+        "其他大机构": -3675,
+        "头部机构": -3092
+      },
+      "net_short_cumulative": {
+        "中信期货": 76529,
+        "其他大机构": 43148,
+        "头部机构": 119677
+      },
+      "sh_index": 3952.179,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-08-31",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": null,
+        "其他大机构": null,
+        "头部机构": null
+      },
+      "net_short_cumulative": {
+        "中信期货": 74388,
+        "其他大机构": 41259,
+        "头部机构": 115647
+      },
+      "sh_index": 3986.298,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-09-01",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 67,
+        "其他大机构": -4877,
+        "头部机构": -4810
+      },
+      "net_short_cumulative": {
+        "中信期货": 74455,
+        "其他大机构": 36382,
+        "头部机构": 110837
+      },
+      "sh_index": 3979.8877,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-09-02",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2271,
+        "其他大机构": -4912,
+        "头部机构": -7183
+      },
+      "net_short_cumulative": {
+        "中信期货": 72184,
+        "其他大机构": 31470,
+        "头部机构": 103654
+      },
+      "sh_index": 3941.3862,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-09-03",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 3817,
+        "其他大机构": -2961,
+        "头部机构": 856
+      },
+      "net_short_cumulative": {
+        "中信期货": 76001,
+        "其他大机构": 28509,
+        "头部机构": 104510
+      },
+      "sh_index": 3942.0879,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-09-04",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 1983,
+        "其他大机构": 6076,
+        "头部机构": 8059
+      },
+      "net_short_cumulative": {
+        "中信期货": 77984,
+        "其他大机构": 34585,
+        "头部机构": 112569
+      },
+      "sh_index": 3930.1164,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-09-07",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": 573,
+        "其他大机构": 3865,
+        "头部机构": 4438
+      },
+      "net_short_cumulative": {
+        "中信期货": 78557,
+        "其他大机构": 38450,
+        "头部机构": 117007
+      },
+      "sh_index": 3932.6992,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-09-08",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -461,
+        "其他大机构": -2881,
+        "头部机构": -3342
+      },
+      "net_short_cumulative": {
+        "中信期货": 78096,
+        "其他大机构": 35569,
+        "头部机构": 113665
+      },
+      "sh_index": 3940.5509,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-09-09",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -189,
+        "其他大机构": -1416,
+        "头部机构": -1605
+      },
+      "net_short_cumulative": {
+        "中信期货": 77907,
+        "其他大机构": 34153,
+        "头部机构": 112060
+      },
+      "sh_index": 3951.5068,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-09-10",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -448,
+        "其他大机构": 2398,
+        "头部机构": 1950
+      },
+      "net_short_cumulative": {
+        "中信期货": 77459,
+        "其他大机构": 36551,
+        "头部机构": 114010
+      },
+      "sh_index": 3934.4036,
+      "source": "cffex",
+      "note": ""
+    },
+    {
+      "date": "2026-09-11",
+      "positions": {},
+      "net_short_change": {
+        "中信期货": -2432,
+        "其他大机构": -2100,
+        "头部机构": -4532
+      },
+      "net_short_cumulative": {
+        "中信期货": 75027,
+        "其他大机构": 34451,
+        "头部机构": 109478
+      },
+      "sh_index": 3888.11,
+      "source": "cffex",
+      "note": ""
+    }
+  ],
+  "note": "数据源：中国金融期货交易所(CFFEX)每日前20会员持仓排名（公开渠道直连，非大V图片OCR）"
+}

@@ -319,7 +319,12 @@ def update_index_futures_positions(cfg=None, backfill_days=60, end_date=None):
             with open(existing_path, "r", encoding="utf-8") as f:
                 old = json.load(f)
             for r in old.get("records", []):
-                merged.setdefault(r["date"], r)
+                d = r["date"]
+                if d not in merged:
+                    merged[d] = r
+                elif merged[d].get("sh_index") is None and r.get("sh_index") is not None:
+                    # 新窗口重算时统计源缺失会置空 sh_index，保留旧的非空值
+                    merged[d]["sh_index"] = r["sh_index"]
         except Exception:
             pass
     all_records = sorted(merged.values(), key=lambda r: r["date"])
