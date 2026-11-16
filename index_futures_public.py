@@ -295,6 +295,24 @@ def ensure_head_institution(records):
     return records
 
 
+def fill_missing_changes(records):
+    """用相邻记录累计净空单之差补齐缺失的单日变化值。
+
+    增量回补时，窗口内第一天没有前序数据，change 会写成 None 并覆盖
+    历史正确值；这里按累计值重新推算，保证字段不因回补而丢失。
+    """
+    prev = None
+    for r in records:
+        cum = r.get("net_short_cumulative") or {}
+        chg = r.setdefault("net_short_change", {})
+        if prev is not None and any(chg.get(k) is None for k in ("中信期货", "其他大机构")):
+            for k in ("中信期货", "其他大机构", HEAD_INST):
+                if cum.get(k) is not None and prev.get(k) is not None:
+                    chg[k] = cum[k] - prev[k]
+        prev = cum
+    return records
+
+
 def update_index_futures_positions(cfg=None, backfill_days=60, end_date=None):
     """主入口：回补并写入股指期货净空单数据。返回写入的 data dict。
 
@@ -329,6 +347,7 @@ def update_index_futures_positions(cfg=None, backfill_days=60, end_date=None):
             pass
     all_records = sorted(merged.values(), key=lambda r: r["date"])
     ensure_head_institution(all_records)
+    fill_missing_changes(all_records)
     data = write_positions(all_records)
     print(
         f"[if_public] 已写入 {len(all_records)} 条（{all_records[0]['date']} ~ {all_records[-1]['date']}，"
